@@ -1,4 +1,3 @@
-//const moduleUrl='http://31415.000.pe/main.js';
 const moduleUrl='https://tivial19.github.io/lampa/main.js';
 //const moduleUrl='./main.js';
 
