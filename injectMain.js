@@ -1,4 +1,5 @@
-const moduleUrl='https://tivial19.github.io/lampa/main.js';
+const siteRootUrl='https://tivial19.github.io/lampa/';
+const moduleUrl=siteRootUrl + 'main.js';
 //const moduleUrl='./main.js';
 
 const s = document.createElement('script');
