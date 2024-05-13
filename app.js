@@ -3412,7 +3412,7 @@
     loader$2,
     orsay_loaded,
     orsay_call = Date.now();
-  function init$F() {
+  function init$G() {
     $('body').append($("<div style=\"position: absolute; left: -1000px; top: -1000px;\">  \n    <object id=\"pluginObjectNNavi\" border=\"0\" classid=\"clsid:SAMSUNG-INFOLINK-NNAVI\" style=\"opacity: 0.0; background-color: #000; width: 1px; height: 1px;\"></object>\n    <object id=\"pluginObjectTVMW\" border=\"0\" classid=\"clsid:SAMSUNG-INFOLINK-TVMW\" style=\"opacity: 0.0; background-color: #000; width: 1px; height: 1px;\"></object>\n    <object id=\"pluginObjectScreen\" border=0 classid=\"clsid:SAMSUNG-INFOLINK-SCREEN\" style=\"opacity: 0.0; background-color: #000; width: 1px; height: 1px;\"></object>\n</div>"));
     Utils$2.putScript(['$MANAGER_WIDGET/Common/API/Widget.js', '$MANAGER_WIDGET/Common/API/TVKeyValue.js', '$MANAGER_WIDGET/Common/API/Plugin.js', '$MANAGER_WIDGET/Common/webapi/1.0/webapis.js', '$MANAGER_WIDGET/Common/IME_XT9/ime.js', '$MANAGER_WIDGET/Common/IME_XT9/inputCommon/ime_input.js'], function () {
       try {
@@ -3495,7 +3495,7 @@
     if (widgetAPI) widgetAPI.sendReturnEvent();
   }
   var Orsay = {
-    init: init$F,
+    init: init$G,
     isNewWidget: isNewWidget,
     getLoaderUrl: getLoaderUrl,
     setLoaderUrl: setLoaderUrl,
@@ -3507,7 +3507,7 @@
   var need_update = false;
   var need_visible = false;
   var canianimate$1 = typeof requestAnimationFrame !== 'undefined';
-  function init$E() {
+  function init$F() {
     $(window).on('resize', function () {
       clearTimeout(timer$8);
       timer$8 = setTimeout(function () {
@@ -3724,7 +3724,7 @@
   var Layer = {
     update: update$b,
     visible: visible,
-    init: init$E
+    init: init$F
   };
 
   function create$q() {
@@ -4056,7 +4056,7 @@
     }
     e.preventDefault();
   }
-  function init$D() {
+  function init$E() {
     window.addEventListener("keydown", function (e) {
       lastdown = keyCode(e);
       if (!timer$7) {
@@ -4097,7 +4097,7 @@
   }
   var Keypad = {
     listener: listener$j,
-    init: init$D,
+    init: init$E,
     enable: enable$1,
     disable: disable
   };
@@ -4105,7 +4105,7 @@
   var keydown_time = 0;
   var move_time = 0;
   var touch = false;
-  function init$C() {
+  function init$D() {
     Keypad.listener.follow('keydown', function () {
       keydown_time = Date.now();
       move_time = 0;
@@ -4175,7 +4175,7 @@
     return Date.now() - keydown_time < 500 ? false : touch || Platform.is('browser') || Platform.tv() || Platform.desktop() || Date.now() - move_time < 500;
   }
   var DeviceInput = {
-    init: init$C,
+    init: init$D,
     canClick: canClick
   };
 
@@ -4342,7 +4342,7 @@
     }
   };
 
-  function init$B() {
+  function init$C() {
     var agent = navigator.userAgent.toLowerCase();
     if (typeof webOS !== 'undefined' && webOS.platform.tv === true) {
       Storage.set('platform', 'webos');
@@ -4477,7 +4477,7 @@
     }
   }
   var Platform = {
-    init: init$B,
+    init: init$C,
     get: get$d,
     any: any,
     is: is,
@@ -4906,7 +4906,7 @@
   var html$h;
   var scroll$2;
   var active$4;
-  function init$A() {
+  function init$B() {
     html$h = Template$1.get('selectbox');
     scroll$2 = new create$q({
       mask: true,
@@ -5004,7 +5004,7 @@
     return html$h;
   }
   var Select = {
-    init: init$A,
+    init: init$B,
     show: show$9,
     hide: hide$2,
     close: close$5,
@@ -5463,7 +5463,7 @@
   /**
    * Запуск
    */
-  function init$z() {
+  function init$A() {
     html$g = Template$1.get('settings');
     body$3 = html$g.find('.settings__body');
     html$g.find('.settings__layer').on('click', function (e) {
@@ -5542,7 +5542,7 @@
   }
   var Settings = {
     listener: listener$i,
-    init: init$z,
+    init: init$A,
     render: render$d,
     update: update$9,
     create: create$o,
@@ -5932,7 +5932,7 @@
     timer: false,
     prev: ''
   };
-  function init$y() {
+  function init$z() {
     Keypad.listener.follow('keydown', function (e) {
       if (!playning()) return;
       PlayerPanel.rewind();
@@ -6083,7 +6083,7 @@
   }
   var PlayerIPTV = {
     listener: listener$h,
-    init: init$y,
+    init: init$z,
     start: start$6,
     playning: playning,
     channel: channel$1,
@@ -6119,7 +6119,7 @@
   var translates = {};
   var last_settings_action;
   var last_panel_focus;
-  function init$x() {
+  function init$y() {
     html$f = Template$1.get('player_panel');
     elems$1 = {
       peding: $('.player-panel__peding', html$f),
@@ -7046,7 +7046,7 @@
     return html$f;
   }
   var PlayerPanel = {
-    init: init$x,
+    init: init$y,
     listener: listener$g,
     render: render$c,
     toggle: toggle$8,
@@ -11099,7 +11099,7 @@
 
   var extensions$1;
   var listener$e = start$7();
-  function init$w() {}
+  function init$x() {}
   function show$7() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     if (extensions$1) return;
@@ -11126,7 +11126,7 @@
     return js ? html : $(html);
   }
   var Extensions = {
-    init: init$w,
+    init: init$x,
     listener: listener$e,
     show: show$7,
     render: render$b
@@ -11140,7 +11140,7 @@
   /**
    * Запуск
    */
-  function init$v() {
+  function init$w() {
     _loaded = Storage.get('plugins', '[]');
     Settings.main().render().find('[data-component="plugins"]').unbind('hover:enter').on('hover:enter', function () {
       Extensions.show();
@@ -11289,7 +11289,6 @@
           return plugin.url;
         })) : [];
         puts.push('./plugins/modification.js');
-        puts.push('./add/timeCode.js');
         puts.push('https://nb557.github.io/plugins/online_mod.js');
         puts = puts.filter(function (element, index) {
           return puts.indexOf(element) === index;
@@ -11348,7 +11347,7 @@
     });
   }
   var Plugins = {
-    init: init$v,
+    init: init$w,
     load: load$2,
     remove: remove$3,
     loaded: function loaded() {
@@ -11400,7 +11399,7 @@
       dataType: 'text'
     });
   };
-  function init$u() {
+  function init$v() {
     if (Storage.get('vpn_checked_ready', 'false') || Storage.get('tmdb_proxy_api', '') || Storage.get('tmdb_proxy_image', '')) return;
     var install = function install(country) {
       console.log('VPN', 'country ' + country);
@@ -11441,7 +11440,7 @@
     Storage.set('vpn_checked_ready', true);
   }
   var VPN = {
-    init: init$u,
+    init: init$v,
     region: region
   };
 
@@ -11471,7 +11470,7 @@
   var hls_parser;
   var click_nums = 0;
   var click_timer;
-  function init$t() {
+  function init$u() {
     html$e = Template$1.get('player_video');
     display = html$e.find('.player-video__display');
     paused = html$e.find('.player-video__paused');
@@ -12503,7 +12502,7 @@
     return html$e;
   }
   var PlayerVideo = {
-    init: init$t,
+    init: init$u,
     listener: listener$d,
     url: url$5,
     render: render$a,
@@ -12814,7 +12813,7 @@
   var network$8 = new create$p();
   var elems;
   var error, stat_timer;
-  function init$s() {
+  function init$t() {
     html$d = Template$1.get('player_info');
     html$d.find('.player-info__body').prepend(HeadBackward('Плеер'));
     elems = {
@@ -12938,7 +12937,7 @@
     return html$d;
   }
   var PlayerInfo = {
-    init: init$s,
+    init: init$t,
     listener: listener$c,
     render: render$9,
     set: set$3,
@@ -14146,7 +14145,7 @@
   /**
    * Запуск
    */
-  function init$r() {
+  function init$s() {
     Storage.listener.follow('change', function (event) {
       if (event.name == 'background' || event.name == 'background_type') resize();
     });
@@ -14234,7 +14233,7 @@
         item.ctx.fillRect(0, 0, item.canvas[0].width, item.canvas[0].height);
       }
       item.canvas.addClass('visible');
-      if (!Player.opened()) theme('reset');
+      if (!Player$1.opened()) theme('reset');
     });
   }
 
@@ -14358,14 +14357,14 @@
     render: render$8,
     change: change,
     update: resize,
-    init: init$r,
+    init: init$s,
     immediately: immediately,
     theme: theme
   };
 
   var already_requested = false;
   var last_time_requested = 0;
-  function init$q() {
+  function init$r() {
     Params.trigger('parental_control', false);
     Params.select('parental_control_time', {
       'always': '#{settings_parental_control_param_time_always}',
@@ -14521,14 +14520,14 @@
     return Storage.field('parental_control');
   }
   var ParentalControl = {
-    init: init$q,
+    init: init$r,
     query: query,
     enabled: enabled$1,
     install: install$1
   };
 
   var status$1 = false;
-  function init$p() {
+  function init$q() {
     $.ajax({
       url: "./personal.lampa",
       dataType: 'text',
@@ -14541,11 +14540,11 @@
     return status$1;
   }
   var Personal = {
-    init: init$p,
+    init: init$q,
     confirm: confirm$1
   };
 
-  function init$o() {
+  function init$p() {
     console.log("AD preroll init");
   }
   function show$5(data, call) {
@@ -14561,7 +14560,7 @@
     return call();
   }
   var Preroll = {
-    init: init$o,
+    init: init$p,
     show: show$5
   };
 
@@ -14587,7 +14586,7 @@
    * Подписываемся на события
    */
 
-  function init$n() {
+  function init$o() {
     PlayerPanel.init();
     PlayerVideo.init();
     PlayerInfo.init();
@@ -15241,8 +15240,8 @@
   function opened$1() {
     return $('body').find('.player').length ? true : false;
   }
-  var Player = {
-    init: init$n,
+  var Player$1 = {
+    init: init$o,
     listener: listener$9,
     play: play$1,
     playlist: playlist,
@@ -15447,8 +15446,8 @@
           Account.logoff(result.data);
         } else if (result.method == 'other' && result.data.submethod == 'play') {
           Controller.toContent();
-          Player.play(result.data.object.player);
-          Player.playlist(result.data.object.playlist);
+          Player$1.play(result.data.object.player);
+          Player$1.playlist(result.data.object.playlist);
         }
       }
       listener$7.send('message', result);
@@ -15947,7 +15946,7 @@
   /**
    * Запуск
    */
-  function init$m() {
+  function init$n() {
     data$3 = Storage.cache('recomends_scan', 300, []);
     setInterval(function () {
       var history = Favorite.get({
@@ -16019,7 +16018,7 @@
     return items;
   }
   var Recomends = {
-    init: init$m,
+    init: init$n,
     get: get$9
   };
 
@@ -17154,7 +17153,7 @@
   /**
    * Запуск
    */
-  function init$l() {
+  function init$m() {
     data$2 = Storage.cache('timetable', limit$1, []);
     setInterval(extract, 1000 * 60 * (2));
     setInterval(favorites, 1000 * 60 * 10);
@@ -17377,7 +17376,7 @@
     return cards;
   }
   var TimeTable = {
-    init: init$l,
+    init: init$m,
     get: get$7,
     add: add$8,
     all: all$3,
@@ -18601,7 +18600,7 @@
   var html$9 = $('<div class="processing hide"><div><div class="processing__loader"></div><div class="processing__text"></div></div></div>'),
     text = html$9.find('.processing__text');
   var processing = [];
-  function init$k() {
+  function init$l() {
     update$5();
   }
   function update$5() {
@@ -18632,7 +18631,7 @@
     return js ? html$9[0] : html$9;
   }
   var Processing = {
-    init: init$k,
+    init: init$l,
     push: push$2,
     render: render$4
   };
@@ -18725,7 +18724,7 @@
     }));
     return _loadTextFromUrl.apply(this, arguments);
   }
-  var Core$1 = {
+  var Core = {
     loadTextFromUrl: loadTextFromUrl
   };
 
@@ -18740,7 +18739,7 @@
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return Core$1.loadTextFromUrl(favoritesCurrentUrl);
+            return Core.loadTextFromUrl(favoritesCurrentUrl);
           case 2:
             return _context.abrupt("return", _context.sent);
           case 3:
@@ -18787,7 +18786,7 @@
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return Core$1.loadTextFromUrl(favoritesHtmlUrl);
+            return Core.loadTextFromUrl(favoritesHtmlUrl);
           case 2:
             return _context3.abrupt("return", _context3.sent);
           case 3:
@@ -18798,7 +18797,7 @@
     }));
     return _loadFavoritesText.apply(this, arguments);
   }
-  var Res = {
+  var Rep$1 = {
     loadFavoritesQueryDom: loadFavoritesQueryDom,
     loadFavoritesCurent: loadFavoritesCurent
   };
@@ -19103,7 +19102,7 @@
   function clearFavoriteInCategory(category) {
     Favorite.clear(category);
   }
-  var Core = {
+  var Fav = {
     clearAll: clearAll$1,
     clearFavoriteAndSetFromJson: clearFavoriteAndSetFromJson,
     getAllFavoritesJson: getAllFavoritesJson
@@ -19128,7 +19127,7 @@
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return Res.loadFavoritesQueryDom();
+            return Rep$1.loadFavoritesQueryDom();
           case 2:
             htmlQ = _context.sent;
             viewController = new ViewController(view, htmlQ['0']);
@@ -19178,10 +19177,10 @@
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return Res.loadFavoritesCurent();
+            return Rep$1.loadFavoritesCurent();
           case 2:
             favCurJson = _context2.sent;
-            Core.clearFavoriteAndSetFromJson(favCurJson);
+            Fav.clearFavoriteAndSetFromJson(favCurJson);
           case 4:
           case "end":
             return _context2.stop();
@@ -19196,7 +19195,7 @@
     //showComponent(title, favComp.Name);
   }
   function showAllFav() {
-    view.Data = Core.getAllFavoritesJson();
+    view.Data = Fav.getAllFavoritesJson();
   }
   function clearAndAddNew() {
     console.log('data', view.Data);
@@ -19206,7 +19205,7 @@
     }
     var isClearAll = confirm('Все закладки будут удалены безвозвратно и добавлены новые. Продолжить?');
     if (isClearAll) {
-      Core.clearFavoriteAndSetFromJson(view.Data);
+      Fav.clearFavoriteAndSetFromJson(view.Data);
     }
   }
   function clearAllConfirm() {
@@ -19227,7 +19226,7 @@
     Msg.showSelectActionsAny('Очистить текущие?', itemsAdd);
   }
   function clearAll() {
-    Core.clearAll();
+    Fav.clearAll();
   }
   var MyFavs = {
     onFavoriteHeadClick: onFavoriteHeadClick
@@ -19236,7 +19235,7 @@
   var html$8;
   var last$2;
   var activi = false;
-  function init$j() {
+  function init$k() {
     html$8 = Template$1.get('head');
     html$8.find('.head__actions').prepend(Processing.render());
     Utils$2.time(html$8);
@@ -19342,7 +19341,7 @@
   var Head = {
     render: render$3,
     title: title,
-    init: init$j
+    init: init$k
   };
 
   var body$2;
@@ -19359,7 +19358,7 @@
   /**
    * Запуск
    */
-  function init$i() {
+  function init$j() {
     if (!window.lampa_settings.account_use) return;
     Settings.listener.follow('open', function (e) {
       body$2 = null;
@@ -20140,7 +20139,7 @@
   }
   var Account = {
     listener: listener$5,
-    init: init$i,
+    init: init$j,
     working: working,
     canSync: canSync,
     get: get$6,
@@ -20429,7 +20428,7 @@
   /**
    * Запуск
    */
-  function init$h() {
+  function init$i() {
     read$1();
   }
   var Favorite = {
@@ -20439,7 +20438,7 @@
     remove: remove$1,
     toggle: toggle$3,
     get: get$5,
-    init: init$h,
+    init: init$i,
     clear: clear$6,
     continues: continues,
     full: full$2,
@@ -21822,8 +21821,8 @@
                 var playlist = al_lang.filter(function (v) {
                   return !v.separator;
                 });
-                Player.play(a);
-                Player.playlist(playlist);
+                Player$1.play(a);
+                Player$1.playlist(playlist);
               }
             },
             onBack: function onBack() {
@@ -23479,7 +23478,7 @@
       }
     }
   }
-  function init$g() {
+  function init$h() {
     memorys = Storage.cache('helper', 300, {});
     Settings.listener.follow('open', function (e) {
       if (e.name == 'more') {
@@ -23494,7 +23493,7 @@
   }
   var Helper = {
     show: show$4,
-    init: init$g
+    init: init$h
   };
 
   var SERVER = {};
@@ -23795,12 +23794,12 @@
           element.playlist = trim_playlist;
         }
         preload(element, function () {
-          Player.play(element);
-          Player.callback(function () {
+          Player$1.play(element);
+          Player$1.callback(function () {
             Controller.toggle('modal');
           });
-          Player.playlist(playlist);
-          Player.stat(element.url);
+          Player$1.playlist(playlist);
+          Player$1.stat(element.url);
           if (callback$1) {
             callback$1();
             callback$1 = false;
@@ -23870,7 +23869,7 @@
             }
             Controller.toggle(enabled);
             if (a.player) {
-              Player.runas(a.player);
+              Player$1.runas(a.player);
               item.trigger('hover:enter');
             }
           }
@@ -23939,7 +23938,7 @@
 
   var url;
   var network$3 = new create$p();
-  function init$f() {
+  function init$g() {
     var source = {
       title: Lang.translate('title_parser'),
       search: function search(params, oncomplite) {
@@ -24237,7 +24236,7 @@
     network$3.clear();
   }
   var Parser = {
-    init: init$f,
+    init: init$g,
     get: get$3,
     torlook: torlook,
     jackett: jackett,
@@ -26725,7 +26724,7 @@
   /**
    * Запуск
    */
-  function init$e() {
+  function init$f() {
     content = Template$1.js('activitys');
     slides = content.querySelector('.activitys__slides');
     maxsave = Storage.get('pages_save_total', 5);
@@ -27028,7 +27027,7 @@
     push$1(clear ? replace : object);
   }
   var Activity$1 = {
-    init: init$e,
+    init: init$f,
     listener: listener$3,
     push: push$1,
     back: back$3,
@@ -27901,7 +27900,7 @@
   /**
    * Запуск
    */
-  function init$d() {
+  function init$e() {
     if (Platform.is('tizen')) {
       select$1('player', {
         'inner': '#{settings_param_player_inner}',
@@ -28450,7 +28449,7 @@
   select$1('tmdb_proxy_image', '', '');
   var Params = {
     listener: listener$1,
-    init: init$d,
+    init: init$e,
     bind: bind,
     update: update$2,
     field: field$1,
@@ -28813,7 +28812,7 @@
   var listener = start$7();
   var readed$1 = {};
   var workers = {};
-  function init$c() {
+  function init$d() {
     sync('online_view', 'array_string');
     sync('torrents_view', 'array_string');
     sync('search_history', 'array_string');
@@ -28941,7 +28940,7 @@
   }
   var Storage = {
     listener: listener,
-    init: init$c,
+    init: init$d,
     get: get,
     set: set,
     field: field,
@@ -31901,7 +31900,7 @@
   var sort_item;
   var sort_timer;
   var visible_timer;
-  function init$b() {
+  function init$c() {
     html$4 = Template$1.get('menu');
     scroll = new create$q({
       mask: true,
@@ -32247,7 +32246,7 @@
   }
   var Menu = {
     render: render$1,
-    init: init$b,
+    init: init$c,
     ready: ready
   };
 
@@ -32268,7 +32267,7 @@
 
   var html$3;
   var object;
-  function init$a() {
+  function init$b() {
     html$3 = Template$1.get('iframe');
   }
   function show$1() {
@@ -32297,7 +32296,7 @@
     return html$3;
   }
   var Iframe = {
-    init: init$a,
+    init: init$b,
     show: show$1,
     close: close$1,
     render: render
@@ -32309,7 +32308,7 @@
   var scroll_tabs;
   var scroll_body;
   var last_tab;
-  function init$9() {
+  function init$a() {
     Keypad.listener.follow('keydown', function (e) {
       if (e.code == 38 || e.code == 29460) {
         var enable = Controller.enabled();
@@ -32493,7 +32492,7 @@
     });
   }
   var Console = {
-    init: init$9
+    init: init$a
   };
 
   function create$1() {
@@ -32543,7 +32542,7 @@
   /**
    * Запуск
    */
-  function init$8() {
+  function init$9() {
     if (Storage.field('cloud_use')) status(1);
     Settings.listener.follow('open', function (e) {
       body = null;
@@ -32749,7 +32748,7 @@
     }
   }
   var Cloud = {
-    init: init$8
+    init: init$9
   };
 
   function create() {
@@ -32812,7 +32811,7 @@
   /**
    * Запуск
    */
-  function init$7() {
+  function init$8() {
     if (typeof tizen !== 'undefined') {
       setInterval(lauchPick, 1000 * 60 * 10);
       lauchPick();
@@ -32944,7 +32943,7 @@
     }
   }
   var Tizen = {
-    init: init$7
+    init: init$8
   };
 
   function component(object) {
@@ -33151,7 +33150,7 @@
     open: open$1
   };
 
-  function init$6() {
+  function init$7() {
     if (!Platform.is('webos')) return;
     var field = $("<div class=\"settings-folder selector\" data-component=\"webos_launcher\">\n        <div class=\"settings-folder__icon\">\n            <svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 32 32\" xml:space=\"preserve\">\n                <g transform=\"matrix(1.06,0,0,1.06,-0.9600000000000009,-0.9600000000000009)\">\n                    <path d=\"m26.59 31h-21.18c-2.431 0-4.41-1.979-4.41-4.41v-21.18c0-2.431 1.979-4.41 4.41-4.41h21.18c2.431 0 4.41 1.979 4.41 4.41v21.18c0 2.431-1.979 4.41-4.41 4.41zm-21.18-28c-1.329 0-2.41 1.081-2.41 2.41v21.18c0 1.329 1.081 2.41 2.41 2.41h21.18c1.329 0 2.41-1.081 2.41-2.41v-21.18c0-1.329-1.081-2.41-2.41-2.41z\" fill=\"#fff\"></path>\n                    <path d=\"m21.129 24h-10.258c-1.583 0-2.871-1.288-2.871-2.871v-6.167c0-.925.449-1.798 1.202-2.336l5.129-3.664c.998-.712 2.339-.712 3.337 0l5.129 3.665c.754.537 1.203 1.41 1.203 2.335v6.167c0 1.583-1.288 2.871-2.871 2.871zm-5.635-13.41-5.129 3.664c-.229.163-.365.428-.365.708v6.167c0 .48.391.871.871.871h10.259c.479 0 .87-.391.87-.871v-6.167c0-.281-.136-.545-.364-.708l-5.129-3.665c-.303-.215-.71-.215-1.013.001z\" fill=\"#fff\"></path>\n                </g>\n            </svg>\n        </div>\n        <div class=\"settings-folder__name\">".concat(Lang.translate('settings_webos_launcher'), "</div>\n    </div>"));
     Settings.main().render().find('[data-component="more"]').after(field);
@@ -33200,7 +33199,7 @@
     });
   }
   var WebOSLauncher = {
-    init: init$6
+    init: init$7
   };
 
   function open(callSelected) {
@@ -33379,7 +33378,7 @@
   }();
 
   var network;
-  function init$5() {
+  function init$6() {
     network = new create$p();
     Socket.listener.follow('message', function (e) {
       if (e.method == 'premiere') update(e.data);
@@ -33446,7 +33445,7 @@
     });
   }
   var Premiere = {
-    init: init$5
+    init: init$6
   };
 
   var BotClass = /*#__PURE__*/function () {
@@ -33519,7 +33518,7 @@
     }]);
   }();
 
-  function init$4() {
+  function init$5() {
     if (Account.logged() && Lang.selected(['ru', 'uk', 'be', 'bg'])) {
       var user = Storage.get('account_user', '{}');
       if (user.premium && !Account.hasPremium()) setTimeout(push, 5000);
@@ -33551,10 +33550,10 @@
     Notice$1.pushNotice('lampa', notice, function () {}, function (er) {});
   }
   var Extend = {
-    init: init$4
+    init: init$5
   };
 
-  function init$3() {
+  function init$4() {
     Lang.add({
       ad_notice_tv_text_1: {
         ru: 'Будьте в курсе новых серий - получайте уведомления о переводах на свой смартфон!',
@@ -33634,10 +33633,10 @@
     Preroll.init();
   }
   var AdManager = {
-    init: init$3
+    init: init$4
   };
 
-  function init$2() {
+  function init$3() {
     if (Platform.screen('mobile')) {
       var bar = Template$1.get('navigation_bar', {});
       bar.find('.navigation-bar__item').on('click', function () {
@@ -33659,7 +33658,7 @@
     }
   }
   var NavigationBar = {
-    init: init$2
+    init: init$3
   };
 
   function Endless(onRender) {
@@ -33762,7 +33761,7 @@
       }
     });
   }
-  function init$1() {
+  function init$2() {
     if (window.lampa_settings.demo) {
       Lampa.Listener.follow('app', function (e) {
         if (e.type == 'ready') hide();
@@ -33770,7 +33769,7 @@
     }
   }
   var Demo = {
-    init: init$1
+    init: init$2
   };
 
   var html$1;
@@ -33779,7 +33778,7 @@
   var controll;
   var active = {};
   var graph = [];
-  function init() {
+  function init$1() {
     Settings.listener.follow('open', function (e) {
       if (e.name == 'server') {
         var btn = $("<div class=\"settings-param selector\" data-type=\"button\">\n                <div class=\"settings-param__name\">".concat(Lang.translate('speedtest_button'), "</div>\n            </div>"));
@@ -33952,9 +33951,237 @@
     active = {};
   }
   var Speedtest = {
-    init: init,
+    init: init$1,
     close: close,
     start: start
+  };
+
+  var Log = /*#__PURE__*/function () {
+    function Log(autor, scriptName) {
+      _classCallCheck(this, Log);
+      this.autor = autor;
+      this.scriptName = scriptName;
+    }
+    return _createClass(Log, [{
+      key: "event",
+      value: function event(name) {
+        this.eventParam(name, '');
+      }
+    }, {
+      key: "eventParam",
+      value: function eventParam(eventName, param) {
+        console.log(this.autor, this.scriptName, eventName, param);
+      }
+    }, {
+      key: "movie",
+      value: function movie(_movie) {
+        this.eventParam('data', _movie.data);
+        this.eventParam('KpId', _movie.kpid);
+        this.eventParam('ImDbId', _movie.imid);
+      }
+    }]);
+  }();
+
+  var Btn = {
+    'backBtnCode': 8,
+    'zeroBtnCode': 48,
+    'numLockZeroBtnCodeForDeveloper': 96
+  };
+
+  function addEventListenerKeyDown(keyDownAction) {
+    Player$1.listener.follow('ready', onPlayerReady);
+    function onPlayerReady() {
+      document.addEventListener("keydown", keyDownAction);
+      Player$1.listener.follow('destroy', listenDestroy);
+    }
+    function listenDestroy() {
+      document.removeEventListener("keydown", keyDownAction);
+      Player$1.listener.remove('destroy', listenDestroy);
+    }
+  }
+  function addEventListenerLoaded(action) {
+    PlayerVideo.listener.follow('loadeddata', action);
+  }
+  function getPositionByPercent(percent) {
+    return getVideoDuration() * percent / 100;
+  }
+  function getVideoDuration() {
+    return PlayerVideo.video().duration;
+  }
+  function setVideoPositionSec(seconds) {
+    PlayerVideo.to(seconds);
+  }
+  function nextVideoInPlaylist() {
+    PlayerPlaylist.next();
+  }
+  var Player = {
+    addEventListenerKeyDown: addEventListenerKeyDown,
+    addEventListenerLoaded: addEventListenerLoaded,
+    getPositionByPercent: getPositionByPercent,
+    setVideoPositionSec: setVideoPositionSec,
+    nextVideoInPlaylist: nextVideoInPlaylist
+  };
+
+  var pauseMs = 500;
+  var zeroIndex = 0;
+  var timerId;
+  function checkDoubleClick(actionDouble, actionNotDouble) {
+    if (zeroIndex == 0) {
+      zeroIndex++;
+      timerId = setTimeout(resetOneClickAfterDelay, pauseMs);
+    } else {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+      zeroIndex = 0;
+      actionDouble();
+    }
+    function resetOneClickAfterDelay() {
+      zeroIndex = 0;
+      actionNotDouble();
+    }
+  }
+  var DoublePress = {
+    checkDoubleClick: checkDoubleClick
+  };
+
+  var timeCodesUrl = './add/timeCodes.json';
+  function loadTimeCodes() {
+    return _loadTimeCodes.apply(this, arguments);
+  }
+  function _loadTimeCodes() {
+    _loadTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var newTimeCodesJson;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return Core.loadTextFromUrl(timeCodesUrl);
+          case 2:
+            newTimeCodesJson = _context.sent;
+            return _context.abrupt("return", JSON.parse(newTimeCodesJson));
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _loadTimeCodes.apply(this, arguments);
+  }
+  var Rep = {
+    loadTimeCodes: loadTimeCodes
+  };
+
+  function getSecondsFromNumberInTimeFormat(number) {
+    var arrayHMS = new Array(3).fill(0);
+    var currN = number;
+    for (var i = 0; i < 3; i++) {
+      var n = Math.trunc(currN / 100);
+      arrayHMS[i] = currN - n * 100;
+      currN = n;
+    }
+    return arrayHMS[0] + arrayHMS[1] * 60 + arrayHMS[2] * 3600;
+  }
+  var Converter = {
+    getSecondsFromNumberInTimeFormat: getSecondsFromNumberInTimeFormat
+  };
+
+  var timeCodes = [];
+  var log = new Log('TiViAl', 'TimeCode');
+  function init() {
+    initTimeCodes();
+    Player.addEventListenerKeyDown(onPlayerKeyDown);
+    Player.addEventListenerLoaded(setTimeCodesByPercents);
+    log.event('init');
+  }
+  function initTimeCodes() {
+    for (var i = 0; i < 10; i++) {
+      timeCodes.push({
+        keyCode: i + Btn.zeroBtnCode
+      });
+    }
+  }
+  function setTimeCodesByPercents() {
+    for (var i = 0; i < timeCodes.length; i++) {
+      timeCodes[i].timeInSec = Player.getPositionByPercent(i * 10);
+    }
+  }
+  function setTimeCodesBy10min() {
+    for (var i = 0; i < timeCodes.length; i++) {
+      timeCodes[i].timeInSec = i * 10 * 60;
+    }
+  }
+  function setTimeCodesByRemData(timeCode) {
+    for (var i = 0; i < timeCodes.length; i++) {
+      timeCodes[i].timeInSec = getSecondsFromValue(timeCode.timeCodes[i]);
+    }
+  }
+  function getSecondsFromValue(value) {
+    if (value == null || typeof value !== 'number' || !isFinite(value) || isNaN(value) || value == 0) return 0;else return Converter.getSecondsFromNumberInTimeFormat(value);
+  }
+  function onPlayerKeyDown(e) {
+    //log.eventParam('button pressed', e.keyCode);
+
+    if (e.keyCode === Btn.backBtnCode) {
+      Player.nextVideoInPlaylist();
+      e.preventDefault();
+    }
+    if (e.keyCode == Btn.zeroBtnCode) {
+      DoublePress.checkDoubleClick(showSelectTimeCodesMode, setPosition);
+    } else setPosition();
+    if (e.keyCode === Btn.numLockZeroBtnCodeForDeveloper) {
+      showSelectTimeCodesMode();
+    }
+    function setPosition() {
+      setVideoPositionByKeyCode(e.keyCode);
+    }
+  }
+  function setVideoPositionByKeyCode(keyCode) {
+    var timeL = timeCodes.find(function (t) {
+      return t.keyCode == keyCode;
+    });
+    if (timeL) {
+      Player.setVideoPositionSec(timeL.timeInSec);
+    }
+  }
+  function showSelectTimeCodesMode() {
+    var itemsAdd = [{
+      title: "В процентах",
+      subscribe: "subscribe",
+      action: setTimeCodesByPercents
+    }, {
+      title: "Через 10 мин",
+      action: setTimeCodesBy10min
+    }, {
+      title: "Загрузить...",
+      action: showSelectTimeCodesRemote
+    }];
+    Msg.showSelectActionsAny('Установить метки:', itemsAdd);
+  }
+  function showSelectTimeCodesRemote() {
+    return _showSelectTimeCodesRemote.apply(this, arguments);
+  }
+  function _showSelectTimeCodesRemote() {
+    _showSelectTimeCodesRemote = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var remTimeCodes;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return Rep.loadTimeCodes();
+          case 2:
+            remTimeCodes = _context.sent;
+            Msg.showSelectActionOne('Тайм коды:', remTimeCodes, setTimeCodesByRemData);
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _showSelectTimeCodesRemote.apply(this, arguments);
+  }
+  var TimeCode = {
+    init: init
   };
 
   /**
@@ -34018,7 +34245,7 @@
     Empty: create$a,
     Arrays: Arrays,
     Noty: Noty,
-    Player: Player,
+    Player: Player$1,
     PlayerVideo: PlayerVideo,
     PlayerInfo: PlayerInfo,
     PlayerPanel: PlayerPanel,
@@ -34234,7 +34461,7 @@
     TimeTable.init();
     Helper.init();
     Tizen.init();
-    Player.init();
+    Player$1.init();
     Iframe.init();
     Parser.init();
     WebOSLauncher.init();
@@ -34456,7 +34683,7 @@
       return window.location.protocol == 'file:' ? 'https://yumata.github.io/lampa/vender/' + lib : './vender/' + lib;
     });
     Utils$2.putScript(video_libs, function () {});
-
+    TimeCode.init();
     /** Сообщаем о готовности */
 
     Lampa.Listener.send('app', {
@@ -34532,7 +34759,7 @@
       '403': 'book'
     };
     Keypad.listener.follow('keydown', function (e) {
-      if (!Player.opened()) {
+      if (!Player$1.opened()) {
         if (color_keys[e.code]) {
           var type = color_keys[e.code];
           Activity$1.push({
@@ -34561,9 +34788,9 @@
       }
     };
     setInterval(function () {
-      if (!Player.opened()) lets_card_update();
+      if (!Player$1.opened()) lets_card_update();
     }, 1000 * 60);
-    Player.listener.follow('destroy', function () {
+    Player$1.listener.follow('destroy', function () {
       setTimeout(lets_card_update, 1000);
     });
     Lampa.Listener.follow('activity', function (e) {
