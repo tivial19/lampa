@@ -2,8 +2,7 @@
 
 'use strict';
 
-//const timeLineUrl='./add/timeCodes.json';//own server
-const timeLineUrl='https://tivial19.github.io/lampa/add/timeCodes.json';//plugin
+const timeLineUrl='./timeCodes.json';
 const backBtnCode=8;
 const zeroBtnCode=48;
 let zeroIndex=0;
