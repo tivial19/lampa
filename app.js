@@ -11289,6 +11289,7 @@
           return plugin.url;
         })) : [];
         puts.push('./plugins/modification.js');
+        puts.push('./add/timeCode.js');
         puts.push('https://nb557.github.io/plugins/online_mod.js');
         puts = puts.filter(function (element, index) {
           return puts.indexOf(element) === index;
@@ -18636,6 +18637,172 @@
     render: render$4
   };
 
+  function showHtmlModal(title, modalHtml) {
+    var enabledName = Controller.enabled().name;
+    Modal.open({
+      title: title,
+      html: modalHtml,
+      size: "large",
+      mask: !0,
+      onBack: function onBack() {
+        Modal.close();
+        finall();
+      },
+      onSelect: finall
+    });
+    function finall() {
+      Controller.toggle(enabledName);
+    }
+  }
+  function showSelectActionOne(title, items, actionSelect, actionBack) {
+    var enabledName = Controller.enabled().name;
+    Select.show({
+      title: title,
+      items: items,
+      onSelect: function onSelect(e) {
+        finall();
+        actionSelect(e);
+      },
+      onBack: function onBack() {
+        finall();
+        if (actionBack != null) {
+          actionBack();
+        }
+      }
+    });
+    function finall() {
+      Controller.toggle(enabledName);
+    }
+  }
+  function showSelectActionsAny(title, items, actionBack) {
+    var enabledName = Controller.enabled().name;
+    Select.show({
+      title: title,
+      items: items,
+      onSelect: function onSelect(e) {
+        finall();
+        e.action(e);
+      },
+      onBack: function onBack() {
+        finall();
+        if (actionBack != null) {
+          actionBack();
+        }
+      }
+    });
+    function finall() {
+      Controller.toggle(enabledName);
+    }
+  }
+  var Msg = {
+    showHtmlModal: showHtmlModal,
+    showSelectActionOne: showSelectActionOne,
+    showSelectActionsAny: showSelectActionsAny
+  };
+
+  function loadTextFromUrl(_x) {
+    return _loadTextFromUrl.apply(this, arguments);
+  }
+  function _loadTextFromUrl() {
+    _loadTextFromUrl = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(url) {
+      var response;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return fetch(url);
+          case 2:
+            response = _context.sent;
+            _context.next = 5;
+            return response.text();
+          case 5:
+            return _context.abrupt("return", _context.sent);
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _loadTextFromUrl.apply(this, arguments);
+  }
+  var Core$1 = {
+    loadTextFromUrl: loadTextFromUrl
+  };
+
+  var favoritesHtmlUrl = './add/favorites.html';
+  var favoritesCurrentUrl = './add/favsCur.json';
+  function loadFavoritesCurent() {
+    return _loadFavoritesCurent.apply(this, arguments);
+  }
+  function _loadFavoritesCurent() {
+    _loadFavoritesCurent = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return Core$1.loadTextFromUrl(favoritesCurrentUrl);
+          case 2:
+            return _context.abrupt("return", _context.sent);
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _loadFavoritesCurent.apply(this, arguments);
+  }
+  function loadFavoritesQueryDom() {
+    return _loadFavoritesQueryDom.apply(this, arguments);
+  }
+  function _loadFavoritesQueryDom() {
+    _loadFavoritesQueryDom = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var text, dom;
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return loadFavoritesText();
+          case 2:
+            text = _context2.sent;
+            dom = jQuery(text); // const text2 = await loadTextFromUrl(favoritesHtmlUrl2);
+            // var dom2 = document.createElement('div');
+            // dom2.innerHTML = text2;
+            // // console.log('dom', dom);
+            // console.log('dom2', dom2);
+            return _context2.abrupt("return", dom);
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return _loadFavoritesQueryDom.apply(this, arguments);
+  }
+  function loadFavoritesText() {
+    return _loadFavoritesText.apply(this, arguments);
+  }
+  function _loadFavoritesText() {
+    _loadFavoritesText = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return Core$1.loadTextFromUrl(favoritesHtmlUrl);
+          case 2:
+            return _context3.abrupt("return", _context3.sent);
+          case 3:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3);
+    }));
+    return _loadFavoritesText.apply(this, arguments);
+  }
+  var Res = {
+    loadFavoritesQueryDom: loadFavoritesQueryDom,
+    loadFavoritesCurent: loadFavoritesCurent
+  };
+
   var ViewController = /*#__PURE__*/function () {
     function ViewController(viewTarget, domElement) {
       _classCallCheck(this, ViewController);
@@ -18870,105 +19037,6 @@
     }]);
   }();
 
-  var favoritesHtmlUrl = './add/favorites.html';
-  var favoritesCurrentUrl = './add/favsCur.json';
-  function loadFavoritesCurent() {
-    return _loadFavoritesCurent.apply(this, arguments);
-  }
-  function _loadFavoritesCurent() {
-    _loadFavoritesCurent = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return loadTextFromUrl(favoritesCurrentUrl);
-          case 2:
-            return _context.abrupt("return", _context.sent);
-          case 3:
-          case "end":
-            return _context.stop();
-        }
-      }, _callee);
-    }));
-    return _loadFavoritesCurent.apply(this, arguments);
-  }
-  function loadFavoritesQueryDom() {
-    return _loadFavoritesQueryDom.apply(this, arguments);
-  }
-  function _loadFavoritesQueryDom() {
-    _loadFavoritesQueryDom = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var text, dom;
-      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-        while (1) switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 2;
-            return loadFavoritesText();
-          case 2:
-            text = _context2.sent;
-            dom = jQuery(text); // const text2 = await loadTextFromUrl(favoritesHtmlUrl2);
-            // var dom2 = document.createElement('div');
-            // dom2.innerHTML = text2;
-            // // console.log('dom', dom);
-            // console.log('dom2', dom2);
-            return _context2.abrupt("return", dom);
-          case 5:
-          case "end":
-            return _context2.stop();
-        }
-      }, _callee2);
-    }));
-    return _loadFavoritesQueryDom.apply(this, arguments);
-  }
-  function loadFavoritesText() {
-    return _loadFavoritesText.apply(this, arguments);
-  }
-  function _loadFavoritesText() {
-    _loadFavoritesText = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-        while (1) switch (_context3.prev = _context3.next) {
-          case 0:
-            _context3.next = 2;
-            return loadTextFromUrl(favoritesHtmlUrl);
-          case 2:
-            return _context3.abrupt("return", _context3.sent);
-          case 3:
-          case "end":
-            return _context3.stop();
-        }
-      }, _callee3);
-    }));
-    return _loadFavoritesText.apply(this, arguments);
-  }
-  function loadTextFromUrl(_x) {
-    return _loadTextFromUrl.apply(this, arguments);
-  }
-  function _loadTextFromUrl() {
-    _loadTextFromUrl = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(url) {
-      var response;
-      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-        while (1) switch (_context4.prev = _context4.next) {
-          case 0:
-            _context4.next = 2;
-            return fetch(url);
-          case 2:
-            response = _context4.sent;
-            _context4.next = 5;
-            return response.text();
-          case 5:
-            return _context4.abrupt("return", _context4.sent);
-          case 6:
-          case "end":
-            return _context4.stop();
-        }
-      }, _callee4);
-    }));
-    return _loadTextFromUrl.apply(this, arguments);
-  }
-  var Res = {
-    loadFavoritesQueryDom: loadFavoritesQueryDom,
-    loadFavoritesCurent: loadFavoritesCurent
-  };
-
   var View = /*#__PURE__*/_createClass(function View() {
     _classCallCheck(this, View);
     this.Data = '';
@@ -19041,6 +19109,8 @@
     getAllFavoritesJson: getAllFavoritesJson
   };
 
+  //import FavComponent from './FavComponent'
+
   var view = new View();
   view.onLoad = clearAndAddNew;
   view.onClear = clearAllConfirm;
@@ -19074,10 +19144,6 @@
     return _mainAsync.apply(this, arguments);
   }
   function onFavoriteHeadClick() {
-    console.log('Account.hasPremium()', Account.hasPremium());
-    if (Account.hasPremium()) {
-      console.log('If Account.hasPremium()');
-    }
     var itemsAdd = [{
       title: "Очистить текущие",
       subtext: 'comment',
@@ -19090,7 +19156,7 @@
       title: "Окно разработчика",
       action: showFavoriteDev
     }];
-    showSelectActionsAny('Дополнения', itemsAdd);
+    Msg.showSelectActionsAny('Дополнения', itemsAdd);
   }
   function loadFavoriteCurentAsk() {
     var itemsAdd = [{
@@ -19100,7 +19166,7 @@
       title: "Отмена",
       action: function action() {}
     }];
-    showSelectActionsAny('Очистить и загрузить?', itemsAdd);
+    Msg.showSelectActionsAny('Очистить и загрузить?', itemsAdd);
   }
   function loadFavoriteCurent() {
     return _loadFavoriteCurent.apply(this, arguments);
@@ -19126,7 +19192,7 @@
   }
   function showFavoriteDev() {
     var title = 'Менеджер избранного';
-    showHtmlModal(title, htmlQ);
+    Msg.showHtmlModal(title, htmlQ);
     //showComponent(title, favComp.Name);
   }
   function showAllFav() {
@@ -19158,47 +19224,10 @@
       title: "Отмена",
       action: function action() {}
     }];
-    showSelectActionsAny('Очистить текущие?', itemsAdd);
+    Msg.showSelectActionsAny('Очистить текущие?', itemsAdd);
   }
   function clearAll() {
     Core.clearAll();
-  }
-  function showHtmlModal(title, modalHtml) {
-    var enabledName = Controller.enabled().name;
-    Modal.open({
-      title: title,
-      html: modalHtml,
-      size: "large",
-      mask: !0,
-      onBack: function onBack() {
-        Modal.close();
-        finall();
-      },
-      onSelect: finall
-    });
-    function finall() {
-      Controller.toggle(enabledName);
-    }
-  }
-  function showSelectActionsAny(title, items, actionBack) {
-    var enabledName = Controller.enabled().name;
-    Select.show({
-      title: title,
-      items: items,
-      onSelect: function onSelect(e) {
-        finall();
-        e.action(e);
-      },
-      onBack: function onBack() {
-        finall();
-        if (actionBack != null) {
-          actionBack();
-        }
-      }
-    });
-    function finall() {
-      Controller.toggle(enabledName);
-    }
   }
   var MyFavs = {
     onFavoriteHeadClick: onFavoriteHeadClick
