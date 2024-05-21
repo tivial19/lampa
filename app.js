@@ -18685,7 +18685,7 @@
       }
     });
   }
-  var appEvents = {
+  var AppEvent = {
     setAppEvents: setAppEvents,
     setAppKeyDown: setAppKeyDown,
     setCardSelect: setCardSelect
@@ -19551,7 +19551,7 @@
   function clearFavoriteInCategory(category) {
     Lampa.Favorite.clear(category);
   }
-  var Favs$1 = {
+  var Fav = {
     categories: categories,
     categoriesArray: categoriesArray,
     clearAll: clearAll,
@@ -19635,7 +19635,7 @@
     showActivity('Избранное', 'bookmarks');
   }
   function showFavHistory() {
-    showFavCategory(Favs$1.categories.History);
+    showFavCategory(Fav.categories.History);
   }
   function showFavCategory(category) {
     showActivityWithType(category.title, 'favorite', category.value);
@@ -19670,117 +19670,6 @@
   }
   var Show = {
     showViewByKeyCode: showViewByKeyCode
-  };
-
-  var _remoteHost = null;
-  function init$o(remoteHost) {
-    _remoteHost = remoteHost;
-  }
-  function loadTextFromUrl(_x) {
-    return _loadTextFromUrl.apply(this, arguments);
-  }
-  function _loadTextFromUrl() {
-    _loadTextFromUrl = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(url) {
-      var urlCorrect, response;
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            urlCorrect = getUrlWithCorrection(url);
-            _context.next = 3;
-            return fetch(urlCorrect);
-          case 3:
-            response = _context.sent;
-            _context.next = 6;
-            return response.text();
-          case 6:
-            return _context.abrupt("return", _context.sent);
-          case 7:
-          case "end":
-            return _context.stop();
-        }
-      }, _callee);
-    }));
-    return _loadTextFromUrl.apply(this, arguments);
-  }
-  function getUrlWithCorrection(url) {
-    //console.log('hostname', window.location.hostname);
-    //console.log('window.location.host', window.location.host);
-    if (_remoteHost == null) {
-      // || window.location.hostname==localHostName){
-      return url;
-    } else {
-      return _remoteHost + url;
-    }
-  }
-  var RepCore = {
-    init: init$o,
-    loadTextFromUrl: loadTextFromUrl
-  };
-
-  var Log = /*#__PURE__*/function () {
-    function Log(author, scriptName) {
-      _classCallCheck(this, Log);
-      this.author = author;
-      this.scriptName = scriptName;
-    }
-    return _createClass(Log, [{
-      key: "event",
-      value: function event(name) {
-        this.eventParam(name, '');
-      }
-    }, {
-      key: "eventParam",
-      value: function eventParam(eventName, param) {
-        console.log(this.author, this.scriptName, eventName, param);
-      }
-    }, {
-      key: "movie",
-      value: function movie(_movie) {
-        this.eventParam('data', _movie.data);
-        this.eventParam('KpId', _movie.kpid);
-        this.eventParam('ImDbId', _movie.imid);
-      }
-    }]);
-  }();
-
-  // import Player from '../../interaction/player'
-  // import PlayerVideo from '../../interaction/player/video'
-  // import PlayerPlaylist from '../../interaction/player/playlist'
-
-  function addEventListenerKeyDown(keyDownAction) {
-    Lampa.Player.listener.follow('ready', onPlayerReady);
-    function onPlayerReady() {
-      document.addEventListener("keydown", keyDownAction);
-      Lampa.Player.listener.follow('destroy', listenDestroy);
-    }
-    function listenDestroy() {
-      document.removeEventListener("keydown", keyDownAction);
-      Lampa.Player.listener.remove('destroy', listenDestroy);
-    }
-  }
-  function addEventListenerLoaded(action) {
-    Lampa.PlayerVideo.listener.follow('loadeddata', action);
-  }
-  function getPositionByPercent(percent) {
-    return getVideoDuration() * percent / 100;
-  }
-  function getVideoDuration() {
-    return Lampa.PlayerVideo.video().duration;
-  }
-  function setVideoPositionSec(seconds) {
-    if (getVideoDuration() > 0) {
-      Lampa.PlayerVideo.to(seconds);
-    }
-  }
-  function nextVideoInPlaylist() {
-    Lampa.PlayerPlaylist.next();
-  }
-  var Player = {
-    addEventListenerKeyDown: addEventListenerKeyDown,
-    addEventListenerLoaded: addEventListenerLoaded,
-    getPositionByPercent: getPositionByPercent,
-    setVideoPositionSec: setVideoPositionSec,
-    nextVideoInPlaylist: nextVideoInPlaylist
   };
 
   // import Controller from '../../interaction/controller'
@@ -19851,218 +19740,75 @@
     showSelectActionInItem: showSelectActionInItem
   };
 
-  var timeCodesUrl = 'add/timeCodes.json';
-  function loadTimeCodes() {
-    return _loadTimeCodes.apply(this, arguments);
+  var Log = /*#__PURE__*/function () {
+    function Log(author, scriptName) {
+      _classCallCheck(this, Log);
+      this.author = author;
+      this.scriptName = scriptName;
+    }
+    return _createClass(Log, [{
+      key: "event",
+      value: function event(name) {
+        this.eventParam(name, '');
+      }
+    }, {
+      key: "eventParam",
+      value: function eventParam(eventName, param) {
+        console.log(this.author, this.scriptName, eventName, param);
+      }
+    }, {
+      key: "movie",
+      value: function movie(_movie) {
+        this.eventParam('data', _movie.data);
+        this.eventParam('KpId', _movie.kpid);
+        this.eventParam('ImDbId', _movie.imid);
+      }
+    }]);
+  }();
+
+  var _remoteHost = null;
+  function init$o(remoteHost) {
+    _remoteHost = remoteHost;
   }
-  function _loadTimeCodes() {
-    _loadTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var newTimeCodesJson;
+  function loadTextFromUrl(_x) {
+    return _loadTextFromUrl.apply(this, arguments);
+  }
+  function _loadTextFromUrl() {
+    _loadTextFromUrl = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(url) {
+      var urlCorrect, response;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            _context.next = 2;
-            return RepCore.loadTextFromUrl(timeCodesUrl);
-          case 2:
-            newTimeCodesJson = _context.sent;
-            return _context.abrupt("return", JSON.parse(newTimeCodesJson));
-          case 4:
+            urlCorrect = getUrlWithCorrection(url);
+            _context.next = 3;
+            return fetch(urlCorrect);
+          case 3:
+            response = _context.sent;
+            _context.next = 6;
+            return response.text();
+          case 6:
+            return _context.abrupt("return", _context.sent);
+          case 7:
           case "end":
             return _context.stop();
         }
       }, _callee);
     }));
-    return _loadTimeCodes.apply(this, arguments);
+    return _loadTextFromUrl.apply(this, arguments);
   }
-  var TimeCodeRep = {
-    loadTimeCodes: loadTimeCodes
-  };
-
-  function getSecondsFromNumberInTimeFormat(number) {
-    var arrayHMS = new Array(3).fill(0);
-    var currN = number;
-    for (var i = 0; i < 3; i++) {
-      var n = Math.trunc(currN / 100);
-      arrayHMS[i] = currN - n * 100;
-      currN = n;
-    }
-    return arrayHMS[0] + arrayHMS[1] * 60 + arrayHMS[2] * 3600;
-  }
-  var Converter = {
-    getSecondsFromNumberInTimeFormat: getSecondsFromNumberInTimeFormat
-  };
-
-  var pauseMs = 700;
-  var zeroIndex = 0;
-  var timerId;
-  function checkDoubleClick(actionDouble, actionNotDouble) {
-    if (zeroIndex == 0) {
-      zeroIndex++;
-      timerId = setTimeout(resetOneClickAfterDelay, pauseMs);
+  function getUrlWithCorrection(url) {
+    //console.log('hostname', window.location.hostname);
+    //console.log('window.location.host', window.location.host);
+    if (_remoteHost == null) {
+      // || window.location.hostname==localHostName){
+      return url;
     } else {
-      if (timerId) {
-        clearTimeout(timerId);
-      }
-      zeroIndex = 0;
-      actionDouble();
-    }
-    function resetOneClickAfterDelay() {
-      zeroIndex = 0;
-      actionNotDouble();
+      return _remoteHost + url;
     }
   }
-  var DoublePress = {
-    checkDoubleClick: checkDoubleClick
-  };
-
-  var timeCodes = [];
-  var log$2;
-  var modes = {
-    persent: {
-      title: 'Проценты',
-      action: setTimeCodesByPercents
-    },
-    min10: {
-      title: '10 минут',
-      action: setTimeCodesBy10min
-    },
-    byId: {
-      title: 'по id',
-      action: setTimeCodesByRemIdData
-    }
-  };
-  var modeByDefault = modes.persent;
-  function init$n(author) {
-    log$2 = new Log(author, 'TimeCode');
-    initTimeCodes();
-    Player.addEventListenerKeyDown(onPlayerKeyDown);
-    Player.addEventListenerLoaded(setTimeCodesByPlayerLoad);
-    log$2.event('init');
-  }
-  function initTimeCodes() {
-    for (var i = 0; i < 10; i++) {
-      timeCodes.push({
-        keyCode: i + Btn.zeroBtnCode
-      });
-    }
-  }
-  function setModeOnPlayerLoad(mode) {
-    modeByDefault = mode;
-  }
-  function setTimeCodesByPlayerLoad() {
-    modeByDefault.action();
-  }
-  function setTimeCodesByPercents() {
-    for (var i = 0; i < timeCodes.length; i++) {
-      timeCodes[i].timeInSec = Player.getPositionByPercent(i * 10);
-    }
-  }
-  function setTimeCodesBy10min() {
-    for (var i = 0; i < timeCodes.length; i++) {
-      timeCodes[i].timeInSec = i * 10 * 60;
-    }
-  }
-  function setTimeCodesByRemIdData() {
-    // const cardId=1234;
-    // const remTimeCodes=rep.load(cardId);
-    //if(remTimeCodes)
-    // setTimeCodesByRemData(remTimeCodes);
-    //else
-    //setTimeCodesByPercents
-  }
-  function setTimeCodesByRemData(timeCode) {
-    for (var i = 0; i < timeCodes.length; i++) {
-      timeCodes[i].timeInSec = getSecondsFromValue(timeCode.timeCodes[i]);
-    }
-  }
-  function getSecondsFromValue(value) {
-    if (value == null || typeof value !== 'number' || !isFinite(value) || isNaN(value) || value == 0) return 0;else return Converter.getSecondsFromNumberInTimeFormat(value);
-  }
-  function onPlayerKeyDown(e) {
-    //log.eventParam('button pressed', e.keyCode);
-
-    if (e.keyCode === Btn.backBtnCode) {
-      Player.nextVideoInPlaylist();
-      e.preventDefault();
-    }
-    if (e.keyCode == Btn.zeroBtnCode) {
-      DoublePress.checkDoubleClick(showSelectTimeCodesMode, setPosition);
-    } else setPosition();
-    if (e.keyCode === Btn.numLockZeroBtnCodeForDeveloper) {
-      showSelectTimeCodesMode();
-    }
-    function setPosition() {
-      setVideoPositionByKeyCode(e.keyCode);
-    }
-  }
-  function setVideoPositionByKeyCode(keyCode) {
-    var timeL = timeCodes.find(function (t) {
-      return t.keyCode == keyCode;
-    });
-    if (timeL) {
-      Player.setVideoPositionSec(timeL.timeInSec);
-    }
-  }
-  function showSelectTimeCodesMode() {
-    var itemsAdd = [{
-      title: "В процентах",
-      subscribe: "subscribe",
-      action: setTimeCodesByPercents
-    }, {
-      title: "Через 10 мин",
-      action: setTimeCodesBy10min
-    }, {
-      title: "Загрузить...",
-      action: showSelectTimeCodesRemote
-    }];
-    Msg.showSelectActionInItem('Установить метки:', itemsAdd);
-  }
-  function showSelectTimeCodesRemote() {
-    return _showSelectTimeCodesRemote.apply(this, arguments);
-  }
-  function _showSelectTimeCodesRemote() {
-    _showSelectTimeCodesRemote = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var remTimeCodes, items;
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return TimeCodeRep.loadTimeCodes();
-          case 2:
-            remTimeCodes = _context.sent;
-            items = getShowItemsFromRepository(remTimeCodes);
-            Msg.showSelectActionOne('Тайм коды:', items, setTimeCodesByRemData);
-          case 5:
-          case "end":
-            return _context.stop();
-        }
-      }, _callee);
-    }));
-    return _showSelectTimeCodesRemote.apply(this, arguments);
-  }
-  function getShowItemsFromRepository(remTimeCodes) {
-    remTimeCodes.forEach(function (code) {
-      if (code.s && code.e) {
-        code.subtitle = "\u0421\u0435\u0437\u043E\u043D ".concat(code.s, " \u044D\u043F\u0438\u0437\u043E\u0434 ").concat(code.e);
-      }
-    });
-    return remTimeCodes;
-  }
-  function selectModeOnPlayerLoad() {
-    var items = ObjectArray.getArrayFromObjectProps(modes);
-    items.forEach(addSubTitle);
-    Msg.showSelectActionOne('Режим при загрузке:', items, setModeOnPlayerLoad);
-    function addSubTitle(mode) {
-      if (mode.title == modeByDefault.title) {
-        mode.subtitle = 'текущий';
-      } else {
-        mode.subtitle = '';
-      }
-    }
-  }
-  var TimeCode = {
-    init: init$n,
-    selectModeOnPlayerLoad: selectModeOnPlayerLoad
+  var RepCore = {
+    init: init$o,
+    loadTextFromUrl: loadTextFromUrl
   };
 
   var favoritesHtmlUrl = 'add/favorites.html';
@@ -20134,7 +19880,7 @@
     }));
     return _loadFavoritesText.apply(this, arguments);
   }
-  var Rep = {
+  var Rep$1 = {
     loadFavoritesQueryDom: loadFavoritesQueryDom,
     loadFavoritesAll: loadFavoritesAll
   };
@@ -20386,7 +20132,7 @@
   view.onLoad = clearAndAddNew;
   view.onClear = clearAllConfirm;
   view.onSave = showAllFav;
-  function init$m() {
+  function init$n() {
     return _init$1.apply(this, arguments);
   }
   function _init$1() {
@@ -20396,7 +20142,7 @@
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return Rep.loadFavoritesQueryDom();
+            return Rep$1.loadFavoritesQueryDom();
           case 2:
             htmlQ = _context.sent;
             viewController = new ViewController(view, htmlQ['0']);
@@ -20410,7 +20156,7 @@
     return _init$1.apply(this, arguments);
   }
   function showAllFav() {
-    view.Data = Favs$1.getFavoritesAllJson();
+    view.Data = Fav.getFavoritesAllJson();
   }
   function clearAndAddNew() {
     //console.log('data', view.Data);
@@ -20420,14 +20166,14 @@
     }
     var isClearAll = confirm('Все закладки будут удалены безвозвратно и добавлены новые. Продолжить?');
     if (isClearAll) {
-      Favs$1.clearFavoriteAndSetFromJson(view.Data);
+      Fav.clearFavoriteAndSetFromJson(view.Data);
     }
   }
   function clearAllConfirm() {
     view.Data = '';
     var isClearAll = confirm('Все закладки будут удалены безвозвратно. Продолжить?');
     if (isClearAll) {
-      Favs$1.clearAll();
+      Fav.clearAll();
     }
   }
   function showFavoriteDev() {
@@ -20436,12 +20182,12 @@
     //showComponent(title, favComp.Name);
   }
   var DevModal = {
-    init: init$m,
+    init: init$n,
     showFavoriteDev: showFavoriteDev
   };
 
-  var log$1;
-  function init$l(_x) {
+  var log$2;
+  function init$m(_x) {
     return _init.apply(this, arguments);
   }
   function _init() {
@@ -20449,9 +20195,9 @@
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            log$1 = new Log(author, 'Favorites');
+            log$2 = new Log(author, 'Favorites');
             DevModal.init();
-            log$1.event('init');
+            log$2.event('init');
           case 3:
           case "end":
             return _context.stop();
@@ -20507,10 +20253,10 @@
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
             _context2.next = 2;
-            return Rep.loadFavoritesAll();
+            return Rep$1.loadFavoritesAll();
           case 2:
             favCurJson = _context2.sent;
-            Favs$1.clearFavoriteAndSetFromJson(favCurJson);
+            Fav.clearFavoriteAndSetFromJson(favCurJson);
           case 4:
           case "end":
             return _context2.stop();
@@ -20522,7 +20268,7 @@
   function clearAllAsk() {
     var itemsAdd = [{
       title: "Да",
-      action: Favs$1.clearAll
+      action: Fav.clearAll
     }, {
       title: "Отмена",
       action: function action() {}
@@ -20530,7 +20276,7 @@
     Msg.showSelectActionInItem('Очистить текущие?', itemsAdd);
   }
   function askCategoryOfFavs(actionSelect) {
-    Msg.showSelectActionOne('Категории:', Favs$1.categoriesArray, actionSelect);
+    Msg.showSelectActionOne('Категории:', Fav.categoriesArray, actionSelect);
   }
   function loadFavoriteCategoryAsk(category) {
     var itemsAdd = [{
@@ -20554,10 +20300,10 @@
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return Rep.loadFavoritesAll();
+            return Rep$1.loadFavoritesAll();
           case 2:
             favCurJson = _context3.sent;
-            Favs$1.addFavsToCategory(favCurJson, category);
+            Fav.addFavsToCategory(favCurJson, category);
           case 4:
           case "end":
             return _context3.stop();
@@ -20570,7 +20316,7 @@
     var itemsAdd = [{
       title: "Да",
       action: function action() {
-        return Favs$1.clearFavoriteInCategory(category.value);
+        return Fav.clearFavoriteInCategory(category.value);
       }
     }, {
       title: "Отмена",
@@ -20579,8 +20325,278 @@
     Msg.showSelectActionInItem("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C ".concat(category.title, "?"), itemsAdd);
   }
   var Favs = {
-    init: init$l,
+    init: init$m,
     showSelectFavsActions: showSelectFavsActions
+  };
+
+  // import Player from '../../interaction/player'
+  // import PlayerVideo from '../../interaction/player/video'
+  // import PlayerPlaylist from '../../interaction/player/playlist'
+
+  function addEventListenerKeyDown(keyDownAction) {
+    Lampa.Player.listener.follow('ready', onPlayerReady);
+    function onPlayerReady() {
+      document.addEventListener("keydown", keyDownAction);
+      Lampa.Player.listener.follow('destroy', listenDestroy);
+    }
+    function listenDestroy() {
+      document.removeEventListener("keydown", keyDownAction);
+      Lampa.Player.listener.remove('destroy', listenDestroy);
+    }
+  }
+  function addEventListenerLoaded(action) {
+    Lampa.PlayerVideo.listener.follow('loadeddata', action);
+  }
+  function getPositionByPercent(percent) {
+    return getVideoDuration() * percent / 100;
+  }
+  function getVideoDuration() {
+    return Lampa.PlayerVideo.video().duration;
+  }
+  function setVideoPositionSec(seconds) {
+    if (getVideoDuration() > 0) {
+      Lampa.PlayerVideo.to(seconds);
+    }
+  }
+  function nextVideoInPlaylist() {
+    Lampa.PlayerPlaylist.next();
+  }
+  var Player = {
+    addEventListenerKeyDown: addEventListenerKeyDown,
+    addEventListenerLoaded: addEventListenerLoaded,
+    getPositionByPercent: getPositionByPercent,
+    setVideoPositionSec: setVideoPositionSec,
+    nextVideoInPlaylist: nextVideoInPlaylist
+  };
+
+  var timeCodesUrl = 'add/timeCodes.json';
+  function loadTimeCodes() {
+    return _loadTimeCodes.apply(this, arguments);
+  }
+  function _loadTimeCodes() {
+    _loadTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var newTimeCodesJson;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return RepCore.loadTextFromUrl(timeCodesUrl);
+          case 2:
+            newTimeCodesJson = _context.sent;
+            return _context.abrupt("return", JSON.parse(newTimeCodesJson));
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _loadTimeCodes.apply(this, arguments);
+  }
+  var Rep = {
+    loadTimeCodes: loadTimeCodes
+  };
+
+  function getSecondsFromNumberInTimeFormat(number) {
+    var arrayHMS = new Array(3).fill(0);
+    var currN = number;
+    for (var i = 0; i < 3; i++) {
+      var n = Math.trunc(currN / 100);
+      arrayHMS[i] = currN - n * 100;
+      currN = n;
+    }
+    return arrayHMS[0] + arrayHMS[1] * 60 + arrayHMS[2] * 3600;
+  }
+  var Converter = {
+    getSecondsFromNumberInTimeFormat: getSecondsFromNumberInTimeFormat
+  };
+
+  var pauseMs = 700;
+  var zeroIndex = 0;
+  var timerId;
+  function checkDoubleClick(actionDouble, actionNotDouble) {
+    if (zeroIndex == 0) {
+      zeroIndex++;
+      timerId = setTimeout(resetOneClickAfterDelay, pauseMs);
+    } else {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+      zeroIndex = 0;
+      actionDouble();
+    }
+    function resetOneClickAfterDelay() {
+      zeroIndex = 0;
+      actionNotDouble();
+    }
+  }
+  var DoublePress = {
+    checkDoubleClick: checkDoubleClick
+  };
+
+  var Movie = /*#__PURE__*/_createClass(function Movie(card) {
+    _classCallCheck(this, Movie);
+    this.cardId = card.id;
+    this.imdbId = card.imdb_id;
+    this.kpId = card.kinopoisk_id;
+    this.title = card.name;
+  });
+
+  var timeCodes = [];
+  var log$1;
+  var _movie;
+  var modes = {
+    persent: {
+      title: 'Проценты',
+      action: setTimeCodesByPercents
+    },
+    min10: {
+      title: '10 минут',
+      action: setTimeCodesBy10min
+    },
+    byId: {
+      title: 'по id',
+      action: setTimeCodesByRemIdData
+    }
+  };
+  var _modeByDefault = modes.persent;
+  function init$l(author) {
+    log$1 = new Log(author, 'TimeCode');
+    initTimeCodes();
+    Player.addEventListenerKeyDown(onPlayerKeyDown);
+    Player.addEventListenerLoaded(setTimeCodesByPlayerLoad);
+    log$1.event('init');
+  }
+  function initTimeCodes() {
+    for (var i = 0; i < 10; i++) {
+      timeCodes.push({
+        keyCode: i + Btn.zeroBtnCode
+      });
+    }
+  }
+  function setCurMovie(card) {
+    _movie = new Movie(card);
+    log$1.eventParam('setCurMovie', _movie);
+  }
+  function setModeOnPlayerLoad(mode) {
+    _modeByDefault = mode;
+    if (_modeByDefault.title == modes.byId.title) ;
+  }
+  function setTimeCodesByPlayerLoad() {
+    _modeByDefault.action();
+  }
+  function setTimeCodesByPercents() {
+    for (var i = 0; i < timeCodes.length; i++) {
+      timeCodes[i].timeInSec = Player.getPositionByPercent(i * 10);
+    }
+  }
+  function setTimeCodesBy10min() {
+    for (var i = 0; i < timeCodes.length; i++) {
+      timeCodes[i].timeInSec = i * 10 * 60;
+    }
+  }
+  function setTimeCodesByRemIdData() {
+
+    // const cardId=_movie.cardId;
+    // const remTimeCodes=rep.load(cardId);
+    //if(remTimeCodes)
+    // setTimeCodesByRemData(remTimeCodes);
+    //else
+    //setTimeCodesByPercents
+  }
+  function setTimeCodesByRemData(timeCode) {
+    for (var i = 0; i < timeCodes.length; i++) {
+      timeCodes[i].timeInSec = getSecondsFromValue(timeCode.timeCodes[i]);
+    }
+  }
+  function getSecondsFromValue(value) {
+    if (value == null || typeof value !== 'number' || !isFinite(value) || isNaN(value) || value == 0) return 0;else return Converter.getSecondsFromNumberInTimeFormat(value);
+  }
+  function onPlayerKeyDown(e) {
+    //log.eventParam('button pressed', e.keyCode);
+
+    if (e.keyCode === Btn.backBtnCode) {
+      Player.nextVideoInPlaylist();
+      e.preventDefault();
+    }
+    if (e.keyCode == Btn.zeroBtnCode) {
+      DoublePress.checkDoubleClick(showSelectTimeCodesMode, setPosition);
+    } else setPosition();
+    if (e.keyCode === Btn.numLockZeroBtnCodeForDeveloper) {
+      showSelectTimeCodesMode();
+    }
+    function setPosition() {
+      setVideoPositionByKeyCode(e.keyCode);
+    }
+  }
+  function setVideoPositionByKeyCode(keyCode) {
+    var timeL = timeCodes.find(function (t) {
+      return t.keyCode == keyCode;
+    });
+    if (timeL) {
+      Player.setVideoPositionSec(timeL.timeInSec);
+    }
+  }
+  function showSelectTimeCodesMode() {
+    var itemsAdd = [{
+      title: "В процентах",
+      subscribe: "subscribe",
+      action: setTimeCodesByPercents
+    }, {
+      title: "Через 10 мин",
+      action: setTimeCodesBy10min
+    }, {
+      title: "Загрузить...",
+      action: showSelectTimeCodesRemote
+    }];
+    Msg.showSelectActionInItem('Установить метки:', itemsAdd);
+  }
+  function showSelectTimeCodesRemote() {
+    return _showSelectTimeCodesRemote.apply(this, arguments);
+  }
+  function _showSelectTimeCodesRemote() {
+    _showSelectTimeCodesRemote = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var remTimeCodes, items;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return Rep.loadTimeCodes();
+          case 2:
+            remTimeCodes = _context.sent;
+            items = getShowItemsFromRepository(remTimeCodes);
+            Msg.showSelectActionOne('Тайм коды:', items, setTimeCodesByRemData);
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _showSelectTimeCodesRemote.apply(this, arguments);
+  }
+  function getShowItemsFromRepository(remTimeCodes) {
+    remTimeCodes.forEach(function (code) {
+      if (code.s && code.e) {
+        code.subtitle = "\u0421\u0435\u0437\u043E\u043D ".concat(code.s, " \u044D\u043F\u0438\u0437\u043E\u0434 ").concat(code.e);
+      }
+    });
+    return remTimeCodes;
+  }
+  function selectModeOnPlayerLoad() {
+    var items = ObjectArray.getArrayFromObjectProps(modes);
+    items.forEach(addSubTitle);
+    Msg.showSelectActionOne('Режим при загрузке:', items, setModeOnPlayerLoad);
+    function addSubTitle(mode) {
+      if (mode.title == _modeByDefault.title) {
+        mode.subtitle = 'текущий';
+      } else {
+        mode.subtitle = '';
+      }
+    }
+  }
+  var TimeCode = {
+    init: init$l,
+    selectModeOnPlayerLoad: selectModeOnPlayerLoad,
+    setCurMovie: setCurMovie
   };
 
   function getESEdition() {
@@ -20623,14 +20639,16 @@
     getVersionWithYear: getVersionWithYear
   };
 
+  //import Test from './test.js'
+
   var author = 'TiViAl';
   var log = new Log(author, 'Main');
   log.event('loaded');
   function init$k() {
     log.event(EsVersion.getVersionWithYear());
-    appEvents.setAppEvents(onAppStart, onAppReady);
-    appEvents.setAppKeyDown(onAppKeyDown);
-    appEvents.setCardSelect(onCardSelect);
+    AppEvent.setAppEvents(onAppStart, onAppReady);
+    AppEvent.setAppKeyDown(onAppKeyDown);
+    AppEvent.setCardSelect(onCardSelect);
     log.event('init');
   }
   function onAppStart() {
@@ -20669,12 +20687,7 @@
     }
   }
   function onCardSelect(card) {
-    log.eventParam('onCardSelect', card);
-    var id = card.id,
-      name = card.name,
-      imdb_id = card.imdb_id,
-      kinopoisk_id = card.kinopoisk_id;
-    console.log('onCardSelect', id, name, imdb_id, kinopoisk_id);
+    TimeCode.setCurMovie(card);
   }
   function onHeadFavClick() {
     Favs.showSelectFavsActions();
