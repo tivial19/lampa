@@ -3412,7 +3412,7 @@
     loader$2,
     orsay_loaded,
     orsay_call = Date.now();
-  function init$G() {
+  function init$K() {
     $('body').append($("<div style=\"position: absolute; left: -1000px; top: -1000px;\">  \n    <object id=\"pluginObjectNNavi\" border=\"0\" classid=\"clsid:SAMSUNG-INFOLINK-NNAVI\" style=\"opacity: 0.0; background-color: #000; width: 1px; height: 1px;\"></object>\n    <object id=\"pluginObjectTVMW\" border=\"0\" classid=\"clsid:SAMSUNG-INFOLINK-TVMW\" style=\"opacity: 0.0; background-color: #000; width: 1px; height: 1px;\"></object>\n    <object id=\"pluginObjectScreen\" border=0 classid=\"clsid:SAMSUNG-INFOLINK-SCREEN\" style=\"opacity: 0.0; background-color: #000; width: 1px; height: 1px;\"></object>\n</div>"));
     Utils$2.putScript(['$MANAGER_WIDGET/Common/API/Widget.js', '$MANAGER_WIDGET/Common/API/TVKeyValue.js', '$MANAGER_WIDGET/Common/API/Plugin.js', '$MANAGER_WIDGET/Common/webapi/1.0/webapis.js', '$MANAGER_WIDGET/Common/IME_XT9/ime.js', '$MANAGER_WIDGET/Common/IME_XT9/inputCommon/ime_input.js'], function () {
       try {
@@ -3495,7 +3495,7 @@
     if (widgetAPI) widgetAPI.sendReturnEvent();
   }
   var Orsay = {
-    init: init$G,
+    init: init$K,
     isNewWidget: isNewWidget,
     getLoaderUrl: getLoaderUrl,
     setLoaderUrl: setLoaderUrl,
@@ -3507,7 +3507,7 @@
   var need_update = false;
   var need_visible = false;
   var canianimate$1 = typeof requestAnimationFrame !== 'undefined';
-  function init$F() {
+  function init$J() {
     $(window).on('resize', function () {
       clearTimeout(timer$8);
       timer$8 = setTimeout(function () {
@@ -3724,7 +3724,7 @@
   var Layer = {
     update: update$b,
     visible: visible,
-    init: init$F
+    init: init$J
   };
 
   function create$q() {
@@ -4056,7 +4056,7 @@
     }
     e.preventDefault();
   }
-  function init$E() {
+  function init$I() {
     window.addEventListener("keydown", function (e) {
       lastdown = keyCode(e);
       if (!timer$7) {
@@ -4097,7 +4097,7 @@
   }
   var Keypad = {
     listener: listener$j,
-    init: init$E,
+    init: init$I,
     enable: enable$1,
     disable: disable
   };
@@ -4105,7 +4105,7 @@
   var keydown_time = 0;
   var move_time = 0;
   var touch = false;
-  function init$D() {
+  function init$H() {
     Keypad.listener.follow('keydown', function () {
       keydown_time = Date.now();
       move_time = 0;
@@ -4175,7 +4175,7 @@
     return Date.now() - keydown_time < 500 ? false : touch || Platform.is('browser') || Platform.tv() || Platform.desktop() || Date.now() - move_time < 500;
   }
   var DeviceInput = {
-    init: init$D,
+    init: init$H,
     canClick: canClick
   };
 
@@ -4342,7 +4342,7 @@
     }
   };
 
-  function init$C() {
+  function init$G() {
     var agent = navigator.userAgent.toLowerCase();
     if (typeof webOS !== 'undefined' && webOS.platform.tv === true) {
       Storage.set('platform', 'webos');
@@ -4477,7 +4477,7 @@
     }
   }
   var Platform = {
-    init: init$C,
+    init: init$G,
     get: get$d,
     any: any,
     is: is,
@@ -4906,7 +4906,7 @@
   var html$h;
   var scroll$2;
   var active$4;
-  function init$B() {
+  function init$F() {
     html$h = Template$1.get('selectbox');
     scroll$2 = new create$q({
       mask: true,
@@ -5004,7 +5004,7 @@
     return html$h;
   }
   var Select = {
-    init: init$B,
+    init: init$F,
     show: show$9,
     hide: hide$2,
     close: close$5,
@@ -5387,7 +5387,7 @@
     };
   }
 
-  function Main$1() {
+  function Main$2() {
     var _this = this;
     var comp;
     var scrl = new create$q({
@@ -5463,13 +5463,13 @@
   /**
    * Запуск
    */
-  function init$A() {
+  function init$E() {
     html$g = Template$1.get('settings');
     body$3 = html$g.find('.settings__body');
     html$g.find('.settings__layer').on('click', function (e) {
       if (DeviceInput.canClick(e.originalEvent)) window.history.back();
     });
-    _main = new Main$1();
+    _main = new Main$2();
     _main.onCreate = create$o;
     _main.create();
     Controller.add('settings', {
@@ -5542,7 +5542,7 @@
   }
   var Settings = {
     listener: listener$i,
-    init: init$A,
+    init: init$E,
     render: render$d,
     update: update$9,
     create: create$o,
@@ -5932,7 +5932,7 @@
     timer: false,
     prev: ''
   };
-  function init$z() {
+  function init$D() {
     Keypad.listener.follow('keydown', function (e) {
       if (!playning()) return;
       PlayerPanel.rewind();
@@ -6083,7 +6083,7 @@
   }
   var PlayerIPTV = {
     listener: listener$h,
-    init: init$z,
+    init: init$D,
     start: start$6,
     playning: playning,
     channel: channel$1,
@@ -6119,7 +6119,7 @@
   var translates = {};
   var last_settings_action;
   var last_panel_focus;
-  function init$y() {
+  function init$C() {
     html$f = Template$1.get('player_panel');
     elems$1 = {
       peding: $('.player-panel__peding', html$f),
@@ -7046,7 +7046,7 @@
     return html$f;
   }
   var PlayerPanel = {
-    init: init$y,
+    init: init$C,
     listener: listener$g,
     render: render$c,
     toggle: toggle$8,
@@ -10867,7 +10867,7 @@
     }]);
   }();
 
-  var Main = /*#__PURE__*/function () {
+  var Main$1 = /*#__PURE__*/function () {
     function Main(params) {
       _classCallCheck(this, Main);
       this.items = [];
@@ -11099,12 +11099,12 @@
 
   var extensions$1;
   var listener$e = start$7();
-  function init$x() {}
+  function init$B() {}
   function show$7() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     if (extensions$1) return;
     var controller = Controller.enabled().name;
-    extensions$1 = new Main(params);
+    extensions$1 = new Main$1(params);
     extensions$1.onBack = function () {
       extensions$1.destroy();
       extensions$1 = null;
@@ -11126,7 +11126,7 @@
     return js ? html : $(html);
   }
   var Extensions = {
-    init: init$x,
+    init: init$B,
     listener: listener$e,
     show: show$7,
     render: render$b
@@ -11140,7 +11140,7 @@
   /**
    * Запуск
    */
-  function init$w() {
+  function init$A() {
     _loaded = Storage.get('plugins', '[]');
     Settings.main().render().find('[data-component="plugins"]').unbind('hover:enter').on('hover:enter', function () {
       Extensions.show();
@@ -11289,7 +11289,8 @@
           return plugin.url;
         })) : [];
         puts.push('./plugins/modification.js');
-        puts.push('https://nb557.github.io/plugins/online_mod.js');
+        //puts.push('https://nb557.github.io/plugins/online_mod.js');
+
         puts = puts.filter(function (element, index) {
           return puts.indexOf(element) === index;
         });
@@ -11347,7 +11348,7 @@
     });
   }
   var Plugins = {
-    init: init$w,
+    init: init$A,
     load: load$2,
     remove: remove$3,
     loaded: function loaded() {
@@ -11399,7 +11400,7 @@
       dataType: 'text'
     });
   };
-  function init$v() {
+  function init$z() {
     if (Storage.get('vpn_checked_ready', 'false') || Storage.get('tmdb_proxy_api', '') || Storage.get('tmdb_proxy_image', '')) return;
     var install = function install(country) {
       console.log('VPN', 'country ' + country);
@@ -11440,7 +11441,7 @@
     Storage.set('vpn_checked_ready', true);
   }
   var VPN = {
-    init: init$v,
+    init: init$z,
     region: region
   };
 
@@ -11470,7 +11471,7 @@
   var hls_parser;
   var click_nums = 0;
   var click_timer;
-  function init$u() {
+  function init$y() {
     html$e = Template$1.get('player_video');
     display = html$e.find('.player-video__display');
     paused = html$e.find('.player-video__paused');
@@ -12502,7 +12503,7 @@
     return html$e;
   }
   var PlayerVideo = {
-    init: init$u,
+    init: init$y,
     listener: listener$d,
     url: url$5,
     render: render$a,
@@ -12813,7 +12814,7 @@
   var network$8 = new create$p();
   var elems;
   var error, stat_timer;
-  function init$t() {
+  function init$x() {
     html$d = Template$1.get('player_info');
     html$d.find('.player-info__body').prepend(HeadBackward('Плеер'));
     elems = {
@@ -12937,7 +12938,7 @@
     return html$d;
   }
   var PlayerInfo = {
-    init: init$t,
+    init: init$x,
     listener: listener$c,
     render: render$9,
     set: set$3,
@@ -14145,7 +14146,7 @@
   /**
    * Запуск
    */
-  function init$s() {
+  function init$w() {
     Storage.listener.follow('change', function (event) {
       if (event.name == 'background' || event.name == 'background_type') resize();
     });
@@ -14357,14 +14358,14 @@
     render: render$8,
     change: change,
     update: resize,
-    init: init$s,
+    init: init$w,
     immediately: immediately,
     theme: theme
   };
 
   var already_requested = false;
   var last_time_requested = 0;
-  function init$r() {
+  function init$v() {
     Params.trigger('parental_control', false);
     Params.select('parental_control_time', {
       'always': '#{settings_parental_control_param_time_always}',
@@ -14520,14 +14521,14 @@
     return Storage.field('parental_control');
   }
   var ParentalControl = {
-    init: init$r,
+    init: init$v,
     query: query,
     enabled: enabled$1,
     install: install$1
   };
 
   var status$1 = false;
-  function init$q() {
+  function init$u() {
     $.ajax({
       url: "./personal.lampa",
       dataType: 'text',
@@ -14540,11 +14541,11 @@
     return status$1;
   }
   var Personal = {
-    init: init$q,
+    init: init$u,
     confirm: confirm$1
   };
 
-  function init$p() {
+  function init$t() {
     console.log("AD preroll init");
   }
   function show$5(data, call) {
@@ -14560,7 +14561,7 @@
     return call();
   }
   var Preroll = {
-    init: init$p,
+    init: init$t,
     show: show$5
   };
 
@@ -14586,7 +14587,7 @@
    * Подписываемся на события
    */
 
-  function init$o() {
+  function init$s() {
     PlayerPanel.init();
     PlayerVideo.init();
     PlayerInfo.init();
@@ -15241,7 +15242,7 @@
     return $('body').find('.player').length ? true : false;
   }
   var Player$1 = {
-    init: init$o,
+    init: init$s,
     listener: listener$9,
     play: play$1,
     playlist: playlist,
@@ -15946,7 +15947,7 @@
   /**
    * Запуск
    */
-  function init$n() {
+  function init$r() {
     data$3 = Storage.cache('recomends_scan', 300, []);
     setInterval(function () {
       var history = Favorite.get({
@@ -16018,7 +16019,7 @@
     return items;
   }
   var Recomends = {
-    init: init$n,
+    init: init$r,
     get: get$9
   };
 
@@ -17153,7 +17154,7 @@
   /**
    * Запуск
    */
-  function init$m() {
+  function init$q() {
     data$2 = Storage.cache('timetable', limit$1, []);
     setInterval(extract, 1000 * 60 * (2));
     setInterval(favorites, 1000 * 60 * 10);
@@ -17376,7 +17377,7 @@
     return cards;
   }
   var TimeTable = {
-    init: init$m,
+    init: init$q,
     get: get$7,
     add: add$8,
     all: all$3,
@@ -18600,7 +18601,7 @@
   var html$9 = $('<div class="processing hide"><div><div class="processing__loader"></div><div class="processing__text"></div></div></div>'),
     text = html$9.find('.processing__text');
   var processing = [];
-  function init$l() {
+  function init$p() {
     update$5();
   }
   function update$5() {
@@ -18631,31 +18632,1182 @@
     return js ? html$9[0] : html$9;
   }
   var Processing = {
-    init: init$l,
+    init: init$p,
     push: push$2,
     render: render$4
   };
 
+  //import Plugins from '../../utils/plugins'
+
+  function addPluginOnline() {
+    addPlugin('nb557', 'online', 'https://nb557.github.io/plugins/online_mod.js');
+  }
+  function addPlugin(author, name, url) {
+    var existPlug = Lampa.Plugins.get().find(function (a) {
+      return a.url == url;
+    });
+    if (!existPlug) {
+      Lampa.Plugins.push({
+        url: url,
+        status: 1,
+        name: name,
+        author: author
+      });
+    }
+  }
+  var Plug = {
+    addPluginOnline: addPluginOnline
+  };
+
+  //import Subscribe from '../../utils/subscribe'
+  //import Player from './interaction/player'
+
+  function setAppEvents(onAppStartAction, onAppReadyAction) {
+    Lampa.Listener.follow('app', function (e) {
+      if (e.type == 'start') {
+        onAppStartAction();
+      } else if (e.type == 'ready') {
+        onAppReadyAction();
+      }
+    });
+  }
+  function setAppKeyDown(onAppKeyDown) {
+    Lampa.Keypad.listener.follow('keydown', function (e) {
+      if (!Lampa.Player.opened()) {
+        onAppKeyDown(e);
+      }
+    });
+  }
+  function setCardSelect(onsetCardSelect) {
+    Lampa.Listener.follow('activity', function (e) {
+      if (e.component == 'full' && e.type == 'start') {
+        onsetCardSelect(e.object.card);
+      }
+    });
+  }
+  var appEvents = {
+    setAppEvents: setAppEvents,
+    setAppKeyDown: setAppKeyDown,
+    setCardSelect: setCardSelect
+  };
+
+  var Btn = {
+    'backBtnCode': 8,
+    'zeroBtnCode': 48,
+    'btn1Code': 49,
+    'btn2Code': 50,
+    'btn3Code': 51,
+    'btn4Code': 52,
+    'btn5Code': 53,
+    'btn6Code': 54,
+    'btn7Code': 55,
+    'btn8Code': 56,
+    'btn9Code': 57,
+    'numLockZeroBtnCodeForDeveloper': 96
+  };
+
+  var data$1 = {};
+  data$1.type = {
+    title: '#{title_type}',
+    items: [{
+      title: '#{menu_movies}',
+      selected: true,
+      cat: 'movie'
+    }, {
+      title: '#{menu_multmovie}',
+      cat: 'multmovie'
+    }, {
+      title: '#{menu_tv}',
+      cat: 'tv'
+    }, {
+      title: '#{menu_multtv}',
+      cat: 'multtv'
+    }, {
+      title: '#{menu_anime}',
+      cat: 'anime'
+    }]
+  };
+  data$1.rating = {
+    title: '#{title_rating}',
+    items: [{
+      title: '#{filter_any}'
+    }, {
+      title: '#{filter_rating_from} 8',
+      start: 8
+    }, {
+      title: '#{filter_rating_from} 6',
+      start: 6
+    }, {
+      title: '#{filter_rating_from} 4',
+      start: 4
+    }, {
+      title: '#{filter_rating_from} 2',
+      start: 2
+    }, {
+      title: '#{filter_rating_from} 1 #{filter_rating_to} 3',
+      voite: '1-3'
+    }, {
+      title: '#{filter_rating_from} 3 #{filter_rating_to} 6',
+      voite: '3-6'
+    }, {
+      title: '#{filter_rating_from} 6 #{filter_rating_to} 8',
+      voite: '6-8'
+    }, {
+      title: '#{filter_rating_from} 8 #{filter_rating_to} 9',
+      voite: '8-9'
+    }]
+  };
+  data$1.pgrating = {
+    title: '#{title_pgrating}',
+    items: [{
+      title: '#{filter_any}'
+    }]
+  };
+  data$1.language = {
+    title: '#{title_language}',
+    items: [{
+      title: '#{filter_lang_ru}',
+      code: 'ru'
+    }, {
+      title: '#{filter_lang_uk}',
+      code: 'uk'
+    }, {
+      title: '#{filter_lang_en}',
+      code: 'en'
+    }, {
+      title: '#{filter_lang_be}',
+      code: 'be'
+    }, {
+      title: '#{filter_lang_zh}',
+      code: 'zh|cn'
+    }, {
+      title: '#{filter_lang_ja}',
+      code: 'ja'
+    }, {
+      title: '#{filter_lang_ko}',
+      code: 'ko'
+    }, {
+      title: '#{filter_lang_af}',
+      code: 'af'
+    }, {
+      title: '#{filter_lang_sq}',
+      code: 'sq'
+    }, {
+      title: '#{filter_lang_ar}',
+      code: 'ar'
+    }, {
+      title: '#{filter_lang_az}',
+      code: 'az'
+    }, {
+      title: '#{filter_lang_hy}',
+      code: 'hy'
+    }, {
+      title: '#{filter_lang_ba}',
+      code: 'ba'
+    }, {
+      title: '#{filter_lang_bg}',
+      code: 'bg'
+    }, {
+      title: '#{filter_lang_bn}',
+      code: 'bn'
+    }, {
+      title: '#{filter_lang_bs}',
+      code: 'bs'
+    }, {
+      title: '#{filter_lang_ca}',
+      code: 'ca'
+    }, {
+      title: '#{filter_lang_ce}',
+      code: 'ce'
+    }, {
+      title: '#{filter_lang_cs}',
+      code: 'cs'
+    }, {
+      title: '#{filter_lang_da}',
+      code: 'da'
+    }, {
+      title: '#{filter_lang_ka}',
+      code: 'ka'
+    }, {
+      title: '#{filter_lang_de}',
+      code: 'de'
+    }, {
+      title: '#{filter_lang_el}',
+      code: 'el'
+    }, {
+      title: '#{filter_lang_es}',
+      code: 'es'
+    }, {
+      title: '#{filter_lang_et}',
+      code: 'et'
+    }, {
+      title: '#{filter_lang_fa}',
+      code: 'fa'
+    }, {
+      title: '#{filter_lang_fi}',
+      code: 'fi'
+    }, {
+      title: '#{filter_lang_fr}',
+      code: 'fr'
+    }, {
+      title: '#{filter_lang_ga}',
+      code: 'ga'
+    }, {
+      title: '#{filter_lang_gl}',
+      code: 'gl'
+    }, {
+      title: '#{filter_lang_gn}',
+      code: 'gn'
+    }, {
+      title: '#{filter_lang_he}',
+      code: 'he'
+    }, {
+      title: '#{filter_lang_hi}',
+      code: 'hi'
+    }, {
+      title: '#{filter_lang_hr}',
+      code: 'hr'
+    }, {
+      title: '#{filter_lang_hu}',
+      code: 'hu'
+    }, {
+      title: '#{filter_lang_id}',
+      code: 'id'
+    }, {
+      title: '#{filter_lang_is}',
+      code: 'is'
+    }, {
+      title: '#{filter_lang_it}',
+      code: 'it'
+    }, {
+      title: '#{filter_lang_kk}',
+      code: 'kk'
+    }, {
+      title: '#{filter_lang_ks}',
+      code: 'ks'
+    }, {
+      title: '#{filter_lang_ku}',
+      code: 'ku'
+    }, {
+      title: '#{filter_lang_ky}',
+      code: 'ky'
+    }, {
+      title: '#{filter_lang_lt}',
+      code: 'lt'
+    }, {
+      title: '#{filter_lang_lv}',
+      code: 'lv'
+    }, {
+      title: '#{filter_lang_mi}',
+      code: 'mi'
+    }, {
+      title: '#{filter_lang_mk}',
+      code: 'mk'
+    }, {
+      title: '#{filter_lang_mn}',
+      code: 'mn'
+    }, {
+      title: '#{filter_lang_mo}',
+      code: 'mo'
+    }, {
+      title: '#{filter_lang_mt}',
+      code: 'mt'
+    }, {
+      title: '#{filter_lang_no}',
+      code: 'no|nb|nn'
+    }, {
+      title: '#{filter_lang_ne}',
+      code: 'ne'
+    }, {
+      title: '#{filter_lang_nl}',
+      code: 'nl'
+    }, {
+      title: '#{filter_lang_pa}',
+      code: 'pa'
+    }, {
+      title: '#{filter_lang_pl}',
+      code: 'pl'
+    }, {
+      title: '#{filter_lang_ps}',
+      code: 'ps'
+    }, {
+      title: '#{filter_lang_pt}',
+      code: 'pt'
+    }, {
+      title: '#{filter_lang_ro}',
+      code: 'ro'
+    }, {
+      title: '#{filter_lang_si}',
+      code: 'si'
+    }, {
+      title: '#{filter_lang_sk}',
+      code: 'sk'
+    }, {
+      title: '#{filter_lang_sl}',
+      code: 'sl'
+    }, {
+      title: '#{filter_lang_sm}',
+      code: 'sm'
+    }, {
+      title: '#{filter_lang_so}',
+      code: 'so'
+    }, {
+      title: '#{filter_lang_sr}',
+      code: 'sr'
+    }, {
+      title: '#{filter_lang_sv}',
+      code: 'sv'
+    }, {
+      title: '#{filter_lang_sw}',
+      code: 'sw'
+    }, {
+      title: '#{filter_lang_ta}',
+      code: 'ta'
+    }, {
+      title: '#{filter_lang_tg}',
+      code: 'tg'
+    }, {
+      title: '#{filter_lang_th}',
+      code: 'th'
+    }, {
+      title: '#{filter_lang_tk}',
+      code: 'tk'
+    }, {
+      title: '#{filter_lang_tr}',
+      code: 'tr'
+    }, {
+      title: '#{filter_lang_tt}',
+      code: 'tt'
+    }, {
+      title: '#{filter_lang_ur}',
+      code: 'ur'
+    }, {
+      title: '#{filter_lang_uz}',
+      code: 'uz'
+    }, {
+      title: '#{filter_lang_vi}',
+      code: 'vi'
+    }, {
+      title: '#{filter_lang_yi}',
+      code: 'yi'
+    }]
+  };
+  data$1.genres_movie = {
+    title: '#{title_genre}',
+    items: [{
+      "id": 28,
+      "title": "#{filter_genre_ac}",
+      checkbox: true
+    }, {
+      "id": 12,
+      "title": "#{filter_genre_ad}",
+      checkbox: true
+    }, {
+      "id": 16,
+      "title": "#{filter_genre_mv}",
+      checkbox: true
+    }, {
+      "id": 35,
+      "title": "#{filter_genre_cm}",
+      checkbox: true
+    }, {
+      "id": 80,
+      "title": "#{filter_genre_cr}",
+      checkbox: true
+    }, {
+      "id": 99,
+      "title": "#{filter_genre_dc}",
+      checkbox: true
+    }, {
+      "id": 18,
+      "title": "#{filter_genre_dr}",
+      checkbox: true
+    }, {
+      "id": 10751,
+      "title": "#{filter_genre_fm}",
+      checkbox: true
+    }, {
+      "id": 14,
+      "title": "#{filter_genre_fe}",
+      checkbox: true
+    }, {
+      "id": 36,
+      "title": "#{filter_genre_hi}",
+      checkbox: true
+    }, {
+      "id": 27,
+      "title": "#{filter_genre_ho}",
+      checkbox: true
+    }, {
+      "id": 10402,
+      "title": "#{filter_genre_mu}",
+      checkbox: true
+    }, {
+      "id": 9648,
+      "title": "#{filter_genre_de}",
+      checkbox: true
+    }, {
+      "id": 10749,
+      "title": "#{filter_genre_md}",
+      checkbox: true
+    }, {
+      "id": 878,
+      "title": "#{filter_genre_fa}",
+      checkbox: true
+    }, {
+      "id": 10770,
+      "title": "#{filter_genre_tv}",
+      checkbox: true
+    }, {
+      "id": 53,
+      "title": "#{filter_genre_tr}",
+      checkbox: true
+    }, {
+      "id": 10752,
+      "title": "#{filter_genre_mi}",
+      checkbox: true
+    }, {
+      "id": 37,
+      "title": "#{filter_genre_ve}",
+      checkbox: true
+    }]
+  };
+  data$1.genres_tv = {
+    title: '#{title_genre}',
+    items: [{
+      "id": 10759,
+      "title": "#{filter_genre_aa}",
+      checkbox: true
+    }, {
+      "id": 16,
+      "title": "#{filter_genre_mv}",
+      checkbox: true
+    }, {
+      "id": 35,
+      "title": "#{filter_genre_cm}",
+      checkbox: true
+    }, {
+      "id": 80,
+      "title": "#{filter_genre_cr}",
+      checkbox: true
+    }, {
+      "id": 99,
+      "title": "#{filter_genre_dc}",
+      checkbox: true
+    }, {
+      "id": 18,
+      "title": "#{filter_genre_dr}",
+      checkbox: true
+    }, {
+      "id": 10751,
+      "title": "#{filter_genre_fm}",
+      checkbox: true
+    }, {
+      "id": 10762,
+      "title": "#{filter_genre_ch}",
+      checkbox: true
+    }, {
+      "id": 9648,
+      "title": "#{filter_genre_de}",
+      checkbox: true
+    }, {
+      "id": 10763,
+      "title": "#{filter_genre_nw}",
+      checkbox: true
+    }, {
+      "id": 10764,
+      "title": "#{filter_genre_rs}",
+      checkbox: true
+    }, {
+      "id": 10765,
+      "title": "#{filter_genre_hf}",
+      checkbox: true
+    }, {
+      "id": 10766,
+      "title": "#{filter_genre_op}",
+      checkbox: true
+    }, {
+      "id": 10767,
+      "title": "#{filter_genre_tc}",
+      checkbox: true
+    }, {
+      "id": 10768,
+      "title": "#{filter_genre_mp}",
+      checkbox: true
+    }, {
+      "id": 37,
+      "title": "#{filter_genre_ve}",
+      checkbox: true
+    }]
+  };
+  data$1.sort = {
+    title: '#{filter_sorted}',
+    items: [{
+      title: '#{filter_any}'
+    }, {
+      title: '#{title_new}',
+      sort: 'now'
+    }, {
+      title: '#{title_now_watch}',
+      sort: 'now_playing'
+    }, {
+      title: '#{title_in_top}',
+      sort: 'top'
+    }, {
+      title: '#{title_ongoing}',
+      sort: 'airing'
+    }]
+  };
+  data$1.quality = {
+    title: '#{player_quality}',
+    items: [{
+      title: '#{filter_any}'
+    }, {
+      title: '#{title_in_high_quality}',
+      uhd: true
+    }]
+  };
+  data$1.year = {
+    title: '#{title_year}',
+    items: [{
+      title: '#{filter_any}',
+      any: true
+    }]
+  };
+  var i = 100,
+    y = new Date().getFullYear();
+  for (var a = 0; a < 5; a++) {
+    data$1.year.items.push({
+      title: y - a
+    });
+  }
+  while (i -= 5) {
+    var end = y - (99 - i);
+    data$1.year.items.push({
+      title: end + 5 + '-' + end
+    });
+  }
+  for (var _a = 18; _a >= 0; _a -= 3) {
+    data$1.pgrating.items.push({
+      title: _a + '+',
+      pg: _a
+    });
+  }
+  for (var _a2 = 15; _a2 >= 0; _a2 -= 3) {
+    data$1.pgrating.items.push({
+      title: '#{filter_rating_from} ' + _a2 + ' #{filter_rating_to} ' + (_a2 + 3),
+      pg: _a2 + '-' + (_a2 + 3)
+    });
+  }
+  data$1.language.items.forEach(function (i) {
+    return i.checkbox = true;
+  });
+  function select$1(where, a) {
+    where.forEach(function (element) {
+      element.selected = false;
+    });
+    a.selected = true;
+  }
+  function selected$1(where) {
+    var title = [];
+    where.items.forEach(function (a) {
+      if (a.selected || a.checked) title.push(a.title);
+    });
+    where.subtitle = title.length ? title.join(', ') : Lang.translate('nochoice');
+  }
+  function main$2() {
+    for (var i in data$1) selected$1(data$1[i]);
+    var cat = data$1.type.items.find(function (s) {
+      return s.selected;
+    }).cat;
+    var type = cat.indexOf('movie') >= 0 ? 'movie' : 'tv';
+    var items = [{
+      title: Lang.translate('search_start'),
+      search: true
+    }, data$1.type, data$1.rating, data$1['genres_' + type], data$1.language, data$1.year];
+    if (Storage.field('source') == 'cub') items.push(data$1.pgrating, data$1.sort, data$1.quality);
+    items.forEach(function (itm) {
+      itm.title = Lang.translate(itm.title);
+      if (itm.subtitle) itm.subtitle = Lang.translate(itm.subtitle);
+      if (itm.items) {
+        itm.items.forEach(function (inr) {
+          inr.title = Lang.translate(inr.title);
+        });
+      }
+    });
+    console.log('Lampa content_filter Show items', items);
+    Select.show({
+      title: Lang.translate('title_filter'),
+      items: items,
+      onBack: function onBack() {
+        Controller.toggle('content');
+      },
+      onSelect: function onSelect(a) {
+        if (a.search) search$3();else submenu(a);
+      }
+    });
+  }
+  function queryForTMDB() {
+    var query = [];
+    var cat = data$1.type.items.find(function (s) {
+      return s.selected;
+    }).cat;
+    var type = cat.indexOf('movie') >= 0 ? 'movie' : 'tv';
+    var genres = [];
+    var languages = [];
+    data$1.rating.items.forEach(function (a) {
+      if (a.selected && (a.voite || a.start)) {
+        if (a.start) {
+          query.push('vote_average.gte=' + a.start);
+        } else {
+          query.push('vote_average.gte=' + a.voite.split('-')[0]);
+          query.push('vote_average.lte=' + a.voite.split('-')[1]);
+        }
+      }
+    });
+    data$1.language.items.forEach(function (a) {
+      if (a.checked) languages.push(a.code);
+    });
+    data$1.year.items.forEach(function (a) {
+      if (a.selected && !a.any) {
+        var need = type == 'movie' ? 'primary_release_date' : 'first_air_date';
+        if (a.title.indexOf('-') >= 0) {
+          query.push(need + '.lte=' + a.title.split('-')[0] + '-12-31');
+          query.push(need + '.gte=' + a.title.split('-')[1] + '-01-01');
+        } else {
+          query.push((type == 'movie' ? 'primary_release_year' : 'first_air_date_year') + '=' + a.title);
+        }
+      }
+    });
+    data$1['genres_' + type].items.forEach(function (a) {
+      if (a.checked) genres.push(a.id);
+    });
+    if (cat == 'multmovie' || cat == 'multtv' && genres.indexOf(16) == -1) genres.push(16);
+    if (cat == 'movie' || cat == 'tv') query.push('without_genres=16');
+    if (genres.length) {
+      query.push('with_genres=' + genres.join(','));
+    }
+    if (cat == 'anime' && languages.indexOf('ja') == -1) languages.push('ja');
+    if (languages.length) {
+      query.push('with_original_language=' + languages.join('|'));
+    }
+    return 'discover/' + type + '?' + query.join('&');
+  }
+  function queryForCUB() {
+    var query = [];
+    var cat = data$1.type.items.find(function (s) {
+      return s.selected;
+    }).cat;
+    var type = cat.indexOf('movie') >= 0 ? 'movie' : 'tv';
+    var genres = [];
+    var sort = data$1.sort.items.find(function (s) {
+      return s.selected && s.sort;
+    });
+    var quality = data$1.quality.items.find(function (s) {
+      return s.selected && s.uhd;
+    });
+    var languages = [];
+    data$1.rating.items.forEach(function (a) {
+      if (a.selected && (a.voite || a.start)) {
+        if (a.start) {
+          query.push('vote=' + a.start);
+        } else {
+          query.push('vote=' + a.voite.split('-')[0] + '-' + a.voite.split('-')[1]);
+        }
+      }
+    });
+    data$1.language.items.forEach(function (a) {
+      if (a.checked) languages.push(a.code);
+    });
+    data$1.year.items.forEach(function (a) {
+      if (a.selected && !a.any) {
+        if (a.title.indexOf('-') >= 0) {
+          query.push('airdate=' + a.title.split('-')[1] + '-' + a.title.split('-')[0]);
+        } else {
+          query.push('airdate=' + a.title);
+        }
+      }
+    });
+    data$1.pgrating.items.forEach(function (a) {
+      if (a.selected) {
+        if (a.title.indexOf('-') >= 0) {
+          query.push('pgrating=' + a.pg.split('-')[0] + '-' + a.pg.split('-')[1]);
+        } else {
+          query.push('pgrating=' + a.pg);
+        }
+      }
+    });
+    data$1['genres_' + type].items.forEach(function (a) {
+      if (a.checked) genres.push(a.id);
+    });
+    if (cat == 'multmovie' || cat == 'multtv' && genres.indexOf(16) == -1) genres.push(16);
+    if (cat == 'movie' || cat == 'tv') query.push('without_genres=16');
+    if (genres.length) {
+      query.push('genre=' + genres.join(','));
+    }
+    if (cat == 'anime') type = 'anime';
+    if (languages.length) {
+      query.push('language=' + languages.join(','));
+    }
+    if (sort) query.push('sort=' + sort.sort);
+    if (quality) query.push('uhd=true');
+    return '?cat=' + type + '&' + query.join('&');
+  }
+  function search$3() {
+    Controller.toggle('content');
+    var source = Storage.field('source');
+    var query = source == 'cub' ? queryForCUB() : queryForTMDB();
+    var activity = {
+      url: query,
+      title: Lang.translate('title_filter'),
+      component: 'category_full',
+      source: source == 'cub' ? 'cub' : 'tmdb',
+      card_type: true,
+      page: 1
+    };
+    var object = Activity$1.active();
+    if (object.component == 'category_full' && (object.url.indexOf('discover') == 0 || object.url.indexOf('?cat=') == 0)) Activity$1.replace(activity, true);else Activity$1.push(activity);
+  }
+  function submenu(item) {
+    Select.show({
+      title: item.title,
+      items: item.items,
+      onBack: main$2,
+      onSelect: function onSelect(a) {
+        select$1(item.items, a);
+        main$2();
+      }
+    });
+  }
+  function show$4() {
+    main$2();
+  }
+  var Filter = {
+    show: show$4
+  };
+
+  var isPlug = false;
+  function initPlug() {
+    isPlug = true;
+  }
+  function filterShow() {
+    if (isPlug) {
+      console.log('Stub filterShow');
+    } else {
+      Filter.show();
+    }
+  }
+  var Stub = {
+    initPlug: initPlug,
+    filterShow: filterShow
+  };
+
+  // async function importDynamic() {
+  //     //const Filter = await import(`../../interaction/${importFilterName}`);
+  //     //const Filter = await import('../../interaction/content_filter.js');+++++++++
+  //     //const Filter = await import('./lampa_content_filter');++++++++++++++++++++++
+  //     //const Filter = await import(`${importFilterPath}`);
+  //     // console.log('Filter default', Filter.default);
+  //     // _filterShow = Filter.default.filterShow;
+  // }
+
+  function getArrayFromObjectProps(objectArray) {
+    return Object.keys(objectArray).map(function (prop) {
+      return objectArray[prop];
+    });
+  }
+  var ObjectArray = {
+    getArrayFromObjectProps: getArrayFromObjectProps
+  };
+
+  var categories = {
+    Look: {
+      title: 'Смотрю',
+      value: 'look'
+    },
+    Scheduled: {
+      title: 'Запланировано',
+      value: 'scheduled'
+    },
+    Wath: {
+      title: 'Позже',
+      value: 'wath'
+    },
+    Viewed: {
+      title: 'Просмотренно',
+      value: 'viewed'
+    },
+    Continued: {
+      title: 'Продолжение следует',
+      value: 'continued'
+    },
+    Thrown: {
+      title: 'Брошено',
+      value: 'thrown'
+    },
+    Book: {
+      title: 'Закладки',
+      value: 'book'
+    },
+    Like: {
+      title: 'Нравится',
+      value: 'like'
+    },
+    History: {
+      title: 'История',
+      value: 'history'
+    }
+  };
+  var categoriesArray = ObjectArray.getArrayFromObjectProps(categories);
+  var categoriesValues = categoriesArray.map(function (c) {
+    return c.value;
+  });
+  function addFavsToCategory(favAllJson, category) {
+    var favsLookNew = convertFavoriteJsonToData(favAllJson)[category];
+    var favsLookCur = getFavoritesLook();
+    var _iterator = _createForOfIteratorHelper(favsLookNew),
+      _step;
+    try {
+      var _loop = function _loop() {
+        var card = _step.value;
+        var cur = favsLookCur.find(function (f) {
+          return f.id == card.id;
+        });
+        if (cur == null) {
+          Lampa.Favorite.add(category, card, false);
+        }
+      };
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        _loop();
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+  }
+  function getFavoritesAllJson() {
+    var data = getFavoritesAll();
+    return JSON.stringify(data);
+  }
+  function getFavoritesLook() {
+    return getFavoritesAll()[categories.Look.value];
+  }
+  function getFavoritesAll() {
+    return Lampa.Favorite.all();
+  }
+  function clearFavoriteAndSetFromJson(json) {
+    var data = convertFavoriteJsonToData(json);
+    clearAll();
+    setDataToFavorite(data);
+  }
+  function convertFavoriteJsonToData(json) {
+    return JSON.parse(json);
+  }
+  function setDataToFavorite(data) {
+    var _iterator2 = _createForOfIteratorHelper(categoriesValues),
+      _step2;
+    try {
+      for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+        var category = _step2.value;
+        var _iterator3 = _createForOfIteratorHelper(data[category]),
+          _step3;
+        try {
+          for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+            var card = _step3.value;
+            Lampa.Favorite.add(category, card, false);
+          }
+        } catch (err) {
+          _iterator3.e(err);
+        } finally {
+          _iterator3.f();
+        }
+      }
+    } catch (err) {
+      _iterator2.e(err);
+    } finally {
+      _iterator2.f();
+    }
+  }
+  function clearAll() {
+    var _iterator4 = _createForOfIteratorHelper(categoriesValues),
+      _step4;
+    try {
+      for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+        var category = _step4.value;
+        clearFavoriteInCategory(category);
+      }
+    } catch (err) {
+      _iterator4.e(err);
+    } finally {
+      _iterator4.f();
+    }
+  }
+
+  // function clearLook(){
+  //     clearFavoriteInCategory(categories.Look.value);
+  // }
+
+  function clearFavoriteInCategory(category) {
+    Lampa.Favorite.clear(category);
+  }
+  var Favs$1 = {
+    categories: categories,
+    categoriesArray: categoriesArray,
+    clearAll: clearAll,
+    clearFavoriteAndSetFromJson: clearFavoriteAndSetFromJson,
+    getFavoritesAllJson: getFavoritesAllJson,
+    addFavsToCategory: addFavsToCategory,
+    clearFavoriteInCategory: clearFavoriteInCategory
+  };
+
+  // function loadFavoriteFromLocalStorageClearAndSet(localStorageKey) {
+  //     const json = loadFavoriteFromLocalStorageJson(localStorageKey);
+  //     clearFavoriteAndSetFromJson(json);
+  // }
+
+  // function loadFavoriteFromLocalStorageJson(localStorageKey) {
+  //     return localStorage.getItem(localStorageKey);
+  // }
+
+  // function saveFavoriteToLocalStorage(localStorageKey) {
+  //     localStorage.setItem(localStorageKey, getFavoritesAllJson());
+  // }
+
+  var ActivityParam = /*#__PURE__*/function () {
+    function ActivityParam(title, component) {
+      _classCallCheck(this, ActivityParam);
+      this.title = title;
+      this.component = component;
+      this.type;
+      this.source;
+      this.url = '';
+    }
+    return _createClass(ActivityParam, [{
+      key: "setType",
+      value: function setType(type) {
+        this.type = type;
+        return this;
+      }
+    }, {
+      key: "setSource",
+      value: function setSource(source) {
+        this.source = source;
+        return this;
+      }
+    }, {
+      key: "setUrl",
+      value: function setUrl(url) {
+        this.url = url;
+        return this;
+      }
+    }]);
+  }();
+
+  function showViewByKeyCode(code) {
+    if (code == Btn.btn1Code) {
+      showMain();
+    } else if (code == Btn.btn2Code) {
+      showMovie();
+    } else if (code == Btn.btn3Code) {
+      showSerial();
+    } else if (code == Btn.btn4Code) {
+      showFilter();
+    } else if (code == Btn.btn5Code) {
+      showFavorites();
+    } else if (code == Btn.btn6Code) {
+      showFavHistory();
+    }
+  }
+  function showFilter() {
+    Stub.filterShow();
+  }
+  function showMain() {
+    showActivityWithSource('Главная', 'main');
+  }
+  function showMovie() {
+    showActivityWithSource('Фильмы', 'category', 'movie');
+  }
+  function showSerial() {
+    showActivityWithSource('Сериалы', 'category', 'tv');
+  }
+  function showFavorites() {
+    showActivity('Избранное', 'bookmarks');
+  }
+  function showFavHistory() {
+    showFavCategory(Favs$1.categories.History);
+  }
+  function showFavCategory(category) {
+    showActivityWithType(category.title, 'favorite', category.value);
+  }
+  function showActivity(title, component) {
+    showActivityCore(new ActivityParam(title, component));
+  }
+  function showActivityWithType(title, component, type) {
+    showActivityCore(new ActivityParam(title, component).setType(type));
+  }
+  function showActivityWithSource(title, component, url) {
+    showActivityCore(getActivityParamWithSource(title, component, url));
+  }
+  function getActivityParamWithSource(title, component, url) {
+    var source = Lampa.Storage.field('source');
+    var titleWithSource = "".concat(title, " - ").concat(source);
+    var ap = new ActivityParam(titleWithSource, component).setSource(source);
+    if (url) {
+      ap.setUrl(url);
+    }
+    return ap;
+  }
+  function showActivityCore(activityParam) {
+    Lampa.Activity.push({
+      url: activityParam.url,
+      title: activityParam.title,
+      component: activityParam.component,
+      type: activityParam.type,
+      page: 1,
+      source: activityParam.source
+    });
+  }
+  var Show = {
+    showViewByKeyCode: showViewByKeyCode
+  };
+
+  var _remoteHost = null;
+  function init$o(remoteHost) {
+    _remoteHost = remoteHost;
+  }
+  function loadTextFromUrl(_x) {
+    return _loadTextFromUrl.apply(this, arguments);
+  }
+  function _loadTextFromUrl() {
+    _loadTextFromUrl = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(url) {
+      var urlCorrect, response;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            urlCorrect = getUrlWithCorrection(url);
+            _context.next = 3;
+            return fetch(urlCorrect);
+          case 3:
+            response = _context.sent;
+            _context.next = 6;
+            return response.text();
+          case 6:
+            return _context.abrupt("return", _context.sent);
+          case 7:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _loadTextFromUrl.apply(this, arguments);
+  }
+  function getUrlWithCorrection(url) {
+    //console.log('hostname', window.location.hostname);
+    //console.log('window.location.host', window.location.host);
+    if (_remoteHost == null) {
+      // || window.location.hostname==localHostName){
+      return url;
+    } else {
+      return _remoteHost + url;
+    }
+  }
+  var RepCore = {
+    init: init$o,
+    loadTextFromUrl: loadTextFromUrl
+  };
+
+  var Log = /*#__PURE__*/function () {
+    function Log(author, scriptName) {
+      _classCallCheck(this, Log);
+      this.author = author;
+      this.scriptName = scriptName;
+    }
+    return _createClass(Log, [{
+      key: "event",
+      value: function event(name) {
+        this.eventParam(name, '');
+      }
+    }, {
+      key: "eventParam",
+      value: function eventParam(eventName, param) {
+        console.log(this.author, this.scriptName, eventName, param);
+      }
+    }, {
+      key: "movie",
+      value: function movie(_movie) {
+        this.eventParam('data', _movie.data);
+        this.eventParam('KpId', _movie.kpid);
+        this.eventParam('ImDbId', _movie.imid);
+      }
+    }]);
+  }();
+
+  // import Player from '../../interaction/player'
+  // import PlayerVideo from '../../interaction/player/video'
+  // import PlayerPlaylist from '../../interaction/player/playlist'
+
+  function addEventListenerKeyDown(keyDownAction) {
+    Lampa.Player.listener.follow('ready', onPlayerReady);
+    function onPlayerReady() {
+      document.addEventListener("keydown", keyDownAction);
+      Lampa.Player.listener.follow('destroy', listenDestroy);
+    }
+    function listenDestroy() {
+      document.removeEventListener("keydown", keyDownAction);
+      Lampa.Player.listener.remove('destroy', listenDestroy);
+    }
+  }
+  function addEventListenerLoaded(action) {
+    Lampa.PlayerVideo.listener.follow('loadeddata', action);
+  }
+  function getPositionByPercent(percent) {
+    return getVideoDuration() * percent / 100;
+  }
+  function getVideoDuration() {
+    return Lampa.PlayerVideo.video().duration;
+  }
+  function setVideoPositionSec(seconds) {
+    if (getVideoDuration() > 0) {
+      Lampa.PlayerVideo.to(seconds);
+    }
+  }
+  function nextVideoInPlaylist() {
+    Lampa.PlayerPlaylist.next();
+  }
+  var Player = {
+    addEventListenerKeyDown: addEventListenerKeyDown,
+    addEventListenerLoaded: addEventListenerLoaded,
+    getPositionByPercent: getPositionByPercent,
+    setVideoPositionSec: setVideoPositionSec,
+    nextVideoInPlaylist: nextVideoInPlaylist
+  };
+
+  // import Controller from '../../interaction/controller'
+  // import Modal from '../../interaction/modal'
+  // import Activity from '../../interaction/activity'
+  // import Select from '../../interaction/select'
+
   function showHtmlModal(title, modalHtml) {
-    var enabledName = Controller.enabled().name;
-    Modal.open({
+    var enabledName = Lampa.Controller.enabled().name;
+    Lampa.Modal.open({
       title: title,
       html: modalHtml,
       size: "large",
       mask: !0,
       onBack: function onBack() {
-        Modal.close();
+        Lampa.Modal.close();
         finall();
       },
       onSelect: finall
     });
     function finall() {
-      Controller.toggle(enabledName);
+      Lampa.Controller.toggle(enabledName);
     }
   }
   function showSelectActionOne(title, items, actionSelect, actionBack) {
-    var enabledName = Controller.enabled().name;
-    Select.show({
+    var enabledName = Lampa.Controller.enabled().name;
+    Lampa.Select.show({
       title: title,
       items: items,
       onSelect: function onSelect(e) {
@@ -18670,12 +19822,12 @@
       }
     });
     function finall() {
-      Controller.toggle(enabledName);
+      Lampa.Controller.toggle(enabledName);
     }
   }
-  function showSelectActionsAny(title, items, actionBack) {
-    var enabledName = Controller.enabled().name;
-    Select.show({
+  function showSelectActionInItem(title, items, actionBack) {
+    var enabledName = Lampa.Controller.enabled().name;
+    Lampa.Select.show({
       title: title,
       items: items,
       onSelect: function onSelect(e) {
@@ -18690,56 +19842,241 @@
       }
     });
     function finall() {
-      Controller.toggle(enabledName);
+      Lampa.Controller.toggle(enabledName);
     }
   }
   var Msg = {
     showHtmlModal: showHtmlModal,
     showSelectActionOne: showSelectActionOne,
-    showSelectActionsAny: showSelectActionsAny
+    showSelectActionInItem: showSelectActionInItem
   };
 
-  function loadTextFromUrl(_x) {
-    return _loadTextFromUrl.apply(this, arguments);
+  var timeCodesUrl = 'add/timeCodes.json';
+  function loadTimeCodes() {
+    return _loadTimeCodes.apply(this, arguments);
   }
-  function _loadTextFromUrl() {
-    _loadTextFromUrl = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(url) {
-      var response;
+  function _loadTimeCodes() {
+    _loadTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var newTimeCodesJson;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return fetch(url);
+            return RepCore.loadTextFromUrl(timeCodesUrl);
           case 2:
-            response = _context.sent;
-            _context.next = 5;
-            return response.text();
-          case 5:
-            return _context.abrupt("return", _context.sent);
-          case 6:
+            newTimeCodesJson = _context.sent;
+            return _context.abrupt("return", JSON.parse(newTimeCodesJson));
+          case 4:
           case "end":
             return _context.stop();
         }
       }, _callee);
     }));
-    return _loadTextFromUrl.apply(this, arguments);
+    return _loadTimeCodes.apply(this, arguments);
   }
-  var Core = {
-    loadTextFromUrl: loadTextFromUrl
+  var TimeCodeRep = {
+    loadTimeCodes: loadTimeCodes
   };
 
-  var favoritesHtmlUrl = './add/favorites.html';
-  var favoritesCurrentUrl = './add/favsCur.json';
-  function loadFavoritesCurent() {
-    return _loadFavoritesCurent.apply(this, arguments);
+  function getSecondsFromNumberInTimeFormat(number) {
+    var arrayHMS = new Array(3).fill(0);
+    var currN = number;
+    for (var i = 0; i < 3; i++) {
+      var n = Math.trunc(currN / 100);
+      arrayHMS[i] = currN - n * 100;
+      currN = n;
+    }
+    return arrayHMS[0] + arrayHMS[1] * 60 + arrayHMS[2] * 3600;
   }
-  function _loadFavoritesCurent() {
-    _loadFavoritesCurent = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+  var Converter = {
+    getSecondsFromNumberInTimeFormat: getSecondsFromNumberInTimeFormat
+  };
+
+  var pauseMs = 700;
+  var zeroIndex = 0;
+  var timerId;
+  function checkDoubleClick(actionDouble, actionNotDouble) {
+    if (zeroIndex == 0) {
+      zeroIndex++;
+      timerId = setTimeout(resetOneClickAfterDelay, pauseMs);
+    } else {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+      zeroIndex = 0;
+      actionDouble();
+    }
+    function resetOneClickAfterDelay() {
+      zeroIndex = 0;
+      actionNotDouble();
+    }
+  }
+  var DoublePress = {
+    checkDoubleClick: checkDoubleClick
+  };
+
+  var timeCodes = [];
+  var log$2;
+  var modes = {
+    persent: {
+      title: 'Проценты',
+      action: setTimeCodesByPercents
+    },
+    min10: {
+      title: '10 минут',
+      action: setTimeCodesBy10min
+    },
+    byId: {
+      title: 'по id',
+      action: setTimeCodesByRemIdData
+    }
+  };
+  var modeByDefault = modes.persent;
+  function init$n(author) {
+    log$2 = new Log(author, 'TimeCode');
+    initTimeCodes();
+    Player.addEventListenerKeyDown(onPlayerKeyDown);
+    Player.addEventListenerLoaded(setTimeCodesByPlayerLoad);
+    log$2.event('init');
+  }
+  function initTimeCodes() {
+    for (var i = 0; i < 10; i++) {
+      timeCodes.push({
+        keyCode: i + Btn.zeroBtnCode
+      });
+    }
+  }
+  function setModeOnPlayerLoad(mode) {
+    modeByDefault = mode;
+  }
+  function setTimeCodesByPlayerLoad() {
+    modeByDefault.action();
+  }
+  function setTimeCodesByPercents() {
+    for (var i = 0; i < timeCodes.length; i++) {
+      timeCodes[i].timeInSec = Player.getPositionByPercent(i * 10);
+    }
+  }
+  function setTimeCodesBy10min() {
+    for (var i = 0; i < timeCodes.length; i++) {
+      timeCodes[i].timeInSec = i * 10 * 60;
+    }
+  }
+  function setTimeCodesByRemIdData() {
+    // const cardId=1234;
+    // const remTimeCodes=rep.load(cardId);
+    //if(remTimeCodes)
+    // setTimeCodesByRemData(remTimeCodes);
+    //else
+    //setTimeCodesByPercents
+  }
+  function setTimeCodesByRemData(timeCode) {
+    for (var i = 0; i < timeCodes.length; i++) {
+      timeCodes[i].timeInSec = getSecondsFromValue(timeCode.timeCodes[i]);
+    }
+  }
+  function getSecondsFromValue(value) {
+    if (value == null || typeof value !== 'number' || !isFinite(value) || isNaN(value) || value == 0) return 0;else return Converter.getSecondsFromNumberInTimeFormat(value);
+  }
+  function onPlayerKeyDown(e) {
+    //log.eventParam('button pressed', e.keyCode);
+
+    if (e.keyCode === Btn.backBtnCode) {
+      Player.nextVideoInPlaylist();
+      e.preventDefault();
+    }
+    if (e.keyCode == Btn.zeroBtnCode) {
+      DoublePress.checkDoubleClick(showSelectTimeCodesMode, setPosition);
+    } else setPosition();
+    if (e.keyCode === Btn.numLockZeroBtnCodeForDeveloper) {
+      showSelectTimeCodesMode();
+    }
+    function setPosition() {
+      setVideoPositionByKeyCode(e.keyCode);
+    }
+  }
+  function setVideoPositionByKeyCode(keyCode) {
+    var timeL = timeCodes.find(function (t) {
+      return t.keyCode == keyCode;
+    });
+    if (timeL) {
+      Player.setVideoPositionSec(timeL.timeInSec);
+    }
+  }
+  function showSelectTimeCodesMode() {
+    var itemsAdd = [{
+      title: "В процентах",
+      subscribe: "subscribe",
+      action: setTimeCodesByPercents
+    }, {
+      title: "Через 10 мин",
+      action: setTimeCodesBy10min
+    }, {
+      title: "Загрузить...",
+      action: showSelectTimeCodesRemote
+    }];
+    Msg.showSelectActionInItem('Установить метки:', itemsAdd);
+  }
+  function showSelectTimeCodesRemote() {
+    return _showSelectTimeCodesRemote.apply(this, arguments);
+  }
+  function _showSelectTimeCodesRemote() {
+    _showSelectTimeCodesRemote = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var remTimeCodes, items;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return Core.loadTextFromUrl(favoritesCurrentUrl);
+            return TimeCodeRep.loadTimeCodes();
+          case 2:
+            remTimeCodes = _context.sent;
+            items = getShowItemsFromRepository(remTimeCodes);
+            Msg.showSelectActionOne('Тайм коды:', items, setTimeCodesByRemData);
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _showSelectTimeCodesRemote.apply(this, arguments);
+  }
+  function getShowItemsFromRepository(remTimeCodes) {
+    remTimeCodes.forEach(function (code) {
+      if (code.s && code.e) {
+        code.subtitle = "\u0421\u0435\u0437\u043E\u043D ".concat(code.s, " \u044D\u043F\u0438\u0437\u043E\u0434 ").concat(code.e);
+      }
+    });
+    return remTimeCodes;
+  }
+  function selectModeOnPlayerLoad() {
+    var items = ObjectArray.getArrayFromObjectProps(modes);
+    items.forEach(addSubTitle);
+    Msg.showSelectActionOne('Режим при загрузке:', items, setModeOnPlayerLoad);
+    function addSubTitle(mode) {
+      if (mode.title == modeByDefault.title) {
+        mode.subtitle = 'текущий';
+      } else {
+        mode.subtitle = '';
+      }
+    }
+  }
+  var TimeCode = {
+    init: init$n,
+    selectModeOnPlayerLoad: selectModeOnPlayerLoad
+  };
+
+  var favoritesHtmlUrl = 'add/favorites.html';
+  var favoritesCurrentUrl = 'add/favsAll.json';
+  function loadFavoritesAll() {
+    return _loadFavoritesAll.apply(this, arguments);
+  }
+  function _loadFavoritesAll() {
+    _loadFavoritesAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return RepCore.loadTextFromUrl(favoritesCurrentUrl);
           case 2:
             return _context.abrupt("return", _context.sent);
           case 3:
@@ -18748,7 +20085,7 @@
         }
       }, _callee);
     }));
-    return _loadFavoritesCurent.apply(this, arguments);
+    return _loadFavoritesAll.apply(this, arguments);
   }
   function loadFavoritesQueryDom() {
     return _loadFavoritesQueryDom.apply(this, arguments);
@@ -18786,7 +20123,7 @@
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return Core.loadTextFromUrl(favoritesHtmlUrl);
+            return RepCore.loadTextFromUrl(favoritesHtmlUrl);
           case 2:
             return _context3.abrupt("return", _context3.sent);
           case 3:
@@ -18797,9 +20134,9 @@
     }));
     return _loadFavoritesText.apply(this, arguments);
   }
-  var Rep$1 = {
+  var Rep = {
     loadFavoritesQueryDom: loadFavoritesQueryDom,
-    loadFavoritesCurent: loadFavoritesCurent
+    loadFavoritesAll: loadFavoritesAll
   };
 
   var ViewController = /*#__PURE__*/function () {
@@ -19044,198 +20381,313 @@
     this.onClear = null;
   });
 
-  var categories = ['like', 'wath', 'book', 'history', 'look', 'viewed', 'scheduled', 'continued', 'thrown'];
-  function getAllFavoritesJson() {
-    var data = getAllFavoritesData();
-    return JSON.stringify(data);
-  }
-  function getAllFavoritesData() {
-    return Lampa.Favorite.all();
-  }
-  function clearFavoriteAndSetFromJson(json) {
-    var data = convertFavoriteJsonToData(json);
-    clearAll$1();
-    setDataToFavorite(data);
-  }
-  function convertFavoriteJsonToData(json) {
-    return JSON.parse(json);
-  }
-  function setDataToFavorite(data) {
-    var _iterator = _createForOfIteratorHelper(categories),
-      _step;
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var category = _step.value;
-        var _iterator2 = _createForOfIteratorHelper(data[category]),
-          _step2;
-        try {
-          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-            var card = _step2.value;
-            Favorite.add(category, card, false);
-          }
-        } catch (err) {
-          _iterator2.e(err);
-        } finally {
-          _iterator2.f();
-        }
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
-  }
-  function clearAll$1() {
-    var _iterator3 = _createForOfIteratorHelper(categories),
-      _step3;
-    try {
-      for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-        var category = _step3.value;
-        clearFavoriteInCategory(category);
-      }
-    } catch (err) {
-      _iterator3.e(err);
-    } finally {
-      _iterator3.f();
-    }
-  }
-  function clearFavoriteInCategory(category) {
-    Favorite.clear(category);
-  }
-  var Fav = {
-    clearAll: clearAll$1,
-    clearFavoriteAndSetFromJson: clearFavoriteAndSetFromJson,
-    getAllFavoritesJson: getAllFavoritesJson
-  };
-
-  //import FavComponent from './FavComponent'
-
+  var htmlQ;
   var view = new View();
   view.onLoad = clearAndAddNew;
   view.onClear = clearAllConfirm;
   view.onSave = showAllFav;
-  var htmlQ;
-  //let favComp;
-  mainAsync();
-  function mainAsync() {
-    return _mainAsync.apply(this, arguments);
+  function init$m() {
+    return _init$1.apply(this, arguments);
   }
-  function _mainAsync() {
-    _mainAsync = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+  function _init$1() {
+    _init$1 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var viewController;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return Rep$1.loadFavoritesQueryDom();
+            return Rep.loadFavoritesQueryDom();
           case 2:
             htmlQ = _context.sent;
             viewController = new ViewController(view, htmlQ['0']);
             view = viewController.getView();
-            // favComp = new FavComponent('favs', htmlQ);
-            // Component.add(favComp.Name, favComp);
           case 5:
           case "end":
             return _context.stop();
         }
       }, _callee);
     }));
-    return _mainAsync.apply(this, arguments);
-  }
-  function onFavoriteHeadClick() {
-    var itemsAdd = [{
-      title: "Очистить текущие",
-      subtext: 'comment',
-      action: clearAllAsk
-    }, {
-      title: "Загрузить текущие",
-      comment: 'comment',
-      action: loadFavoriteCurentAsk
-    }, {
-      title: "Окно разработчика",
-      action: showFavoriteDev
-    }];
-    Msg.showSelectActionsAny('Дополнения', itemsAdd);
-  }
-  function loadFavoriteCurentAsk() {
-    var itemsAdd = [{
-      title: "Да",
-      action: loadFavoriteCurent
-    }, {
-      title: "Отмена",
-      action: function action() {}
-    }];
-    Msg.showSelectActionsAny('Очистить и загрузить?', itemsAdd);
-  }
-  function loadFavoriteCurent() {
-    return _loadFavoriteCurent.apply(this, arguments);
-  }
-  function _loadFavoriteCurent() {
-    _loadFavoriteCurent = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var favCurJson;
-      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-        while (1) switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 2;
-            return Rep$1.loadFavoritesCurent();
-          case 2:
-            favCurJson = _context2.sent;
-            Fav.clearFavoriteAndSetFromJson(favCurJson);
-          case 4:
-          case "end":
-            return _context2.stop();
-        }
-      }, _callee2);
-    }));
-    return _loadFavoriteCurent.apply(this, arguments);
-  }
-  function showFavoriteDev() {
-    var title = 'Менеджер избранного';
-    Msg.showHtmlModal(title, htmlQ);
-    //showComponent(title, favComp.Name);
+    return _init$1.apply(this, arguments);
   }
   function showAllFav() {
-    view.Data = Fav.getAllFavoritesJson();
+    view.Data = Favs$1.getFavoritesAllJson();
   }
   function clearAndAddNew() {
-    console.log('data', view.Data);
+    //console.log('data', view.Data);
     if (!view.Data) {
       alert('Данных для загрузки нет!');
       return;
     }
     var isClearAll = confirm('Все закладки будут удалены безвозвратно и добавлены новые. Продолжить?');
     if (isClearAll) {
-      Fav.clearFavoriteAndSetFromJson(view.Data);
+      Favs$1.clearFavoriteAndSetFromJson(view.Data);
     }
   }
   function clearAllConfirm() {
     view.Data = '';
     var isClearAll = confirm('Все закладки будут удалены безвозвратно. Продолжить?');
     if (isClearAll) {
-      clearAll();
+      Favs$1.clearAll();
     }
   }
-  function clearAllAsk() {
+  function showFavoriteDev() {
+    var title = 'Менеджер избранного';
+    Msg.showHtmlModal(title, htmlQ);
+    //showComponent(title, favComp.Name);
+  }
+  var DevModal = {
+    init: init$m,
+    showFavoriteDev: showFavoriteDev
+  };
+
+  var log$1;
+  function init$l(_x) {
+    return _init.apply(this, arguments);
+  }
+  function _init() {
+    _init = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(author) {
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            log$1 = new Log(author, 'Favorites');
+            DevModal.init();
+            log$1.event('init');
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _init.apply(this, arguments);
+  }
+  function showSelectFavsActions() {
+    var itemsAdd = [{
+      title: "Загрузить категорию",
+      comment: 'comment',
+      action: function action() {
+        return askCategoryOfFavs(loadFavoriteCategoryAsk);
+      }
+    }, {
+      title: "Очистить категорию",
+      subtext: 'comment',
+      action: function action() {
+        return askCategoryOfFavs(clearCategoryAsk);
+      }
+    }, {
+      title: "Загрузить все",
+      comment: 'comment',
+      action: loadFavoriteAllAsk
+    }, {
+      title: "Очистить все",
+      subtext: 'comment',
+      action: clearAllAsk
+    }, {
+      title: "Окно разработчика",
+      action: DevModal.showFavoriteDev
+    }];
+    Msg.showSelectActionInItem('Дополнения', itemsAdd);
+  }
+  function loadFavoriteAllAsk() {
     var itemsAdd = [{
       title: "Да",
-      action: clearAll
+      action: loadFavoriteAll
     }, {
       title: "Отмена",
       action: function action() {}
     }];
-    Msg.showSelectActionsAny('Очистить текущие?', itemsAdd);
+    Msg.showSelectActionInItem('Очистить и загрузить все?', itemsAdd);
   }
-  function clearAll() {
-    Fav.clearAll();
+  function loadFavoriteAll() {
+    return _loadFavoriteAll.apply(this, arguments);
   }
-  var MyFavs = {
-    onFavoriteHeadClick: onFavoriteHeadClick
+  function _loadFavoriteAll() {
+    _loadFavoriteAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var favCurJson;
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return Rep.loadFavoritesAll();
+          case 2:
+            favCurJson = _context2.sent;
+            Favs$1.clearFavoriteAndSetFromJson(favCurJson);
+          case 4:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return _loadFavoriteAll.apply(this, arguments);
+  }
+  function clearAllAsk() {
+    var itemsAdd = [{
+      title: "Да",
+      action: Favs$1.clearAll
+    }, {
+      title: "Отмена",
+      action: function action() {}
+    }];
+    Msg.showSelectActionInItem('Очистить текущие?', itemsAdd);
+  }
+  function askCategoryOfFavs(actionSelect) {
+    Msg.showSelectActionOne('Категории:', Favs$1.categoriesArray, actionSelect);
+  }
+  function loadFavoriteCategoryAsk(category) {
+    var itemsAdd = [{
+      title: "Да",
+      action: function action() {
+        return loadFavoriteCategory(category.value);
+      }
+    }, {
+      title: "Отмена",
+      action: function action() {}
+    }];
+    Msg.showSelectActionInItem("\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C ".concat(category.title, "?"), itemsAdd);
+  }
+  function loadFavoriteCategory(_x2) {
+    return _loadFavoriteCategory.apply(this, arguments);
+  }
+  function _loadFavoriteCategory() {
+    _loadFavoriteCategory = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(category) {
+      var favCurJson;
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return Rep.loadFavoritesAll();
+          case 2:
+            favCurJson = _context3.sent;
+            Favs$1.addFavsToCategory(favCurJson, category);
+          case 4:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3);
+    }));
+    return _loadFavoriteCategory.apply(this, arguments);
+  }
+  function clearCategoryAsk(category) {
+    var itemsAdd = [{
+      title: "Да",
+      action: function action() {
+        return Favs$1.clearFavoriteInCategory(category.value);
+      }
+    }, {
+      title: "Отмена",
+      action: function action() {}
+    }];
+    Msg.showSelectActionInItem("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C ".concat(category.title, "?"), itemsAdd);
+  }
+  var Favs = {
+    init: init$l,
+    showSelectFavsActions: showSelectFavsActions
+  };
+
+  function getESEdition() {
+    var array = [];
+    switch (true) {
+      case !Array.isArray:
+        return 3;
+      case !window.Promise:
+        return 5;
+      case !array.includes:
+        return 6;
+      case !''.padStart:
+        return 7;
+      case !Promise.prototype["finally"]:
+        return 8;
+      case !window.BigInt:
+        return 9;
+      case !Promise.allSettled:
+        return 10;
+      case !''.replaceAll:
+        return 11;
+      case !array.at:
+        return 12;
+      default:
+        return 13;
+    }
+  }
+  function getESYear(edition) {
+    return {
+      3: 1999,
+      5: 2009
+    }[edition] || 2009 + edition; // nullish coalescing (??) is not allowed
+  }
+  function getVersionWithYear() {
+    var edition = getESEdition();
+    var year = getESYear(edition);
+    return 'Edition: ' + edition + ' | Year: ' + year;
+  }
+  var EsVersion = {
+    getVersionWithYear: getVersionWithYear
+  };
+
+  var author = 'TiViAl';
+  var log = new Log(author, 'Main');
+  log.event('loaded');
+  function init$k() {
+    log.event(EsVersion.getVersionWithYear());
+    appEvents.setAppEvents(onAppStart, onAppReady);
+    appEvents.setAppKeyDown(onAppKeyDown);
+    appEvents.setCardSelect(onCardSelect);
+    log.event('init');
+  }
+  function onAppStart() {
+    log.event('onAppStart');
+  }
+  function onAppReady() {
+    return _onAppReady.apply(this, arguments);
+  }
+  function _onAppReady() {
+    _onAppReady = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            log.event('onAppReady');
+            Plug.addPluginOnline();
+            TimeCode.init(author);
+            _context.next = 5;
+            return Favs.init(author);
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _onAppReady.apply(this, arguments);
+  }
+  function onAppKeyDown(e) {
+    //log.eventParam('onAppKeyDown', e.code);
+
+    if (e.code == Btn.zeroBtnCode) {
+      Favs.showSelectFavsActions();
+    } else if (e.code == Btn.btn7Code) ; else if (e.code == Btn.btn8Code) ; else if (e.code == Btn.btn9Code) {
+      TimeCode.selectModeOnPlayerLoad();
+    } else {
+      Show.showViewByKeyCode(e.code);
+    }
+  }
+  function onCardSelect(card) {
+    log.eventParam('onCardSelect', card);
+    var id = card.id,
+      name = card.name,
+      imdb_id = card.imdb_id,
+      kinopoisk_id = card.kinopoisk_id;
+    console.log('onCardSelect', id, name, imdb_id, kinopoisk_id);
+  }
+  function onHeadFavClick() {
+    Favs.showSelectFavsActions();
+  }
+  var Main = {
+    init: init$k,
+    onHeadFavClick: onHeadFavClick
   };
 
   var html$8;
   var last$2;
   var activi = false;
-  function init$k() {
+  function init$j() {
     html$8 = Template$1.get('head');
     html$8.find('.head__actions').prepend(Processing.render());
     Utils$2.time(html$8);
@@ -19273,7 +20725,7 @@
         });
       });
     }
-    html$8.find('.open--premium').toggleClass('hide', window.lampa_settings.white_use ? true : !Lang.selected(['ru', 'uk', 'be'])).on('hover:enter', MyFavs.onFavoriteHeadClick);
+    html$8.find('.open--premium').toggleClass('hide', window.lampa_settings.white_use ? true : !Lang.selected(['ru', 'uk', 'be'])).on('hover:enter', Main.onHeadFavClick);
     //{
     //     Modal.open({
     //         title: '',
@@ -19341,7 +20793,7 @@
   var Head = {
     render: render$3,
     title: title,
-    init: init$k
+    init: init$j
   };
 
   var body$2;
@@ -19358,7 +20810,7 @@
   /**
    * Запуск
    */
-  function init$j() {
+  function init$i() {
     if (!window.lampa_settings.account_use) return;
     Settings.listener.follow('open', function (e) {
       body$2 = null;
@@ -20139,7 +21591,7 @@
   }
   var Account = {
     listener: listener$5,
-    init: init$j,
+    init: init$i,
     working: working,
     canSync: canSync,
     get: get$6,
@@ -20173,12 +21625,12 @@
     writable: false
   });
 
-  var data$1 = {};
+  var data = {};
   var listener$4 = start$7();
   var category$2 = ['like', 'wath', 'book', 'history', 'look', 'viewed', 'scheduled', 'continued', 'thrown'];
   var marks = ['look', 'viewed', 'scheduled', 'continued', 'thrown'];
   function save$2() {
-    Storage.set('favorite', data$1);
+    Storage.set('favorite', data);
   }
 
   /**
@@ -20188,18 +21640,18 @@
    */
   function add$7(where, card, limit) {
     read$1();
-    var find = data$1[where].find(function (id) {
+    var find = data[where].find(function (id) {
       return id == card.id;
     });
     if (!find) {
-      Arrays.insert(data$1[where], 0, card.id);
+      Arrays.insert(data[where], 0, card.id);
       listener$4.send('add', {
         where: where,
         card: card
       });
-      if (!search$3(card.id)) data$1.card.push(card);
+      if (!search$2(card.id)) data.card.push(card);
       if (limit) {
-        var excess = data$1[where].slice(limit);
+        var excess = data[where].slice(limit);
         for (var i = excess.length - 1; i >= 0; i--) {
           remove$1(where, {
             id: excess[i]
@@ -20208,8 +21660,8 @@
       }
       save$2();
     } else {
-      Arrays.remove(data$1[where], card.id);
-      Arrays.insert(data$1[where], 0, card.id);
+      Arrays.remove(data[where], card.id);
+      Arrays.insert(data[where], 0, card.id);
       save$2();
       listener$4.send('added', {
         where: where,
@@ -20225,16 +21677,16 @@
    */
   function remove$1(where, card) {
     read$1();
-    Arrays.remove(data$1[where], card.id);
+    Arrays.remove(data[where], card.id);
     listener$4.send('remove', {
       where: where,
       card: card,
       method: 'id'
     });
-    for (var i = data$1.card.length - 1; i >= 0; i--) {
-      var element = data$1.card[i];
+    for (var i = data.card.length - 1; i >= 0; i--) {
+      var element = data.card[i];
       if (!check(element).any) {
-        Arrays.remove(data$1.card, element);
+        Arrays.remove(data.card, element);
         listener$4.send('remove', {
           where: where,
           card: element,
@@ -20250,10 +21702,10 @@
    * @param {Int} id 
    * @returns Object
    */
-  function search$3(id) {
+  function search$2(id) {
     var found;
-    for (var index = 0; index < data$1.card.length; index++) {
-      var element = data$1.card[index];
+    for (var index = 0; index < data.card.length; index++) {
+      var element = data.card[index];
       if (element.id == id) {
         found = element;
         break;
@@ -20292,7 +21744,7 @@
       any: false
     };
     category$2.forEach(function (a) {
-      result[a] = data$1[a].find(function (id) {
+      result[a] = data[a].find(function (id) {
         return id == card.id;
       });
       if (result[a]) result.any = true;
@@ -20348,10 +21800,10 @@
     } else {
       read$1();
       var result = [];
-      var ids = data$1[params.type];
+      var ids = data[params.type];
       ids.forEach(function (id) {
-        for (var i = 0; i < data$1.card.length; i++) {
-          var card = data$1.card[i];
+        for (var i = 0; i < data.card.length; i++) {
+          var card = data.card[i];
           if (card.id == id) result.push(card);
         }
       });
@@ -20370,8 +21822,8 @@
       Account.clear(where);
     } else {
       if (card) remove$1(where, card);else {
-        for (var i = data$1[where].length - 1; i >= 0; i--) {
-          var _card = search$3(data$1[where][i]);
+        for (var i = data[where].length - 1; i >= 0; i--) {
+          var _card = search$2(data[where][i]);
           if (_card) remove$1(where, _card);
         }
       }
@@ -20382,14 +21834,14 @@
    * Считать последние данные
    */
   function read$1() {
-    data$1 = Storage.get('favorite', '{}');
+    data = Storage.get('favorite', '{}');
     var empty = {
       card: []
     };
     category$2.forEach(function (a) {
       empty[a] = [];
     });
-    Arrays.extend(data$1, empty);
+    Arrays.extend(data, empty);
   }
 
   /**
@@ -20402,8 +21854,8 @@
     category$2.forEach(function (a) {
       empty[a] = [];
     });
-    Arrays.extend(data$1, empty);
-    return data$1;
+    Arrays.extend(data, empty);
+    return data;
   }
   function all$1() {
     var result = {};
@@ -20428,7 +21880,7 @@
   /**
    * Запуск
    */
-  function init$i() {
+  function init$h() {
     read$1();
   }
   var Favorite = {
@@ -20438,7 +21890,7 @@
     remove: remove$1,
     toggle: toggle$3,
     get: get$5,
-    init: init$i,
+    init: init$h,
     clear: clear$6,
     continues: continues,
     full: full$2,
@@ -20498,7 +21950,7 @@
     var u = url$1(params.url, params);
     network$5.silent(u, oncomplite, onerror);
   }
-  function main$2() {
+  function main$1() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var oncomplite = arguments.length > 1 ? arguments[1] : undefined;
     var onerror = arguments.length > 2 ? arguments[2] : undefined;
@@ -20835,7 +22287,7 @@
     });
     oncomplite(menu);
   }
-  function search$2() {
+  function search$1() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var oncomplite = arguments.length > 1 ? arguments[1] : undefined;
     var status = new status$2(3);
@@ -20865,7 +22317,7 @@
   function discovery() {
     return {
       title: 'CUB',
-      search: search$2,
+      search: search$1,
       params: {
         align_left: true,
         object: {
@@ -20898,7 +22350,7 @@
     network$5.clear();
   }
   var CUB = {
-    main: main$2,
+    main: main$1,
     menu: menu$1,
     full: full$1,
     list: list$2,
@@ -20961,7 +22413,7 @@
    * @param {function} oncomplite 
    * @param {function} onerror 
    */
-  function main$1() {
+  function main() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var oncomplite = arguments.length > 1 ? arguments[1] : undefined;
     var onerror = arguments.length > 2 ? arguments[2] : undefined;
@@ -20999,7 +22451,7 @@
    * @param {{query:string}} params 
    * @param {function} oncomplite
    */
-  function search$1() {
+  function search() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var oncomplite = arguments.length > 1 ? arguments[1] : undefined;
     TMDB.search(params, function (json) {
@@ -21218,13 +22670,13 @@
     network$4.clear();
   }
   var Api = {
-    main: main$1,
+    main: main,
     img: TMDB.img,
     full: full,
     list: list$1,
     genres: genres,
     category: category,
-    search: search$1,
+    search: search,
     clear: clear$4,
     company: company,
     person: person,
@@ -23447,7 +24899,7 @@
     time;
   var memorys = {};
   var remember = 1000 * 60 * 60 * 14;
-  function show$4(name, text, elem) {
+  function show$3(name, text, elem) {
     if (!Storage.field('helper')) return;
     var help = memorys[name];
     if (!help) {
@@ -23478,7 +24930,7 @@
       }
     }
   }
-  function init$h() {
+  function init$g() {
     memorys = Storage.cache('helper', 300, {});
     Settings.listener.follow('open', function (e) {
       if (e.name == 'more') {
@@ -23492,8 +24944,8 @@
     $('body').append(html$6);
   }
   var Helper = {
-    show: show$4,
-    init: init$h
+    show: show$3,
+    init: init$g
   };
 
   var SERVER = {};
@@ -23577,7 +25029,7 @@
       Torserver.files(SERVER.hash, function (json) {
         if (json.file_stats) {
           clearInterval(timers.files);
-          show$3(json.file_stats);
+          show$2(json.file_stats);
         }
       });
       if (repeat >= 45) {
@@ -23601,7 +25053,7 @@
       }
     });
   }
-  function show$3(files) {
+  function show$2(files) {
     files.sort(function (a, b) {
       var an = a.path.replace(/\d+/g, function (m) {
         return m.length > 3 ? m : ('000' + m).substr(-4);
@@ -23938,7 +25390,7 @@
 
   var url;
   var network$3 = new create$p();
-  function init$g() {
+  function init$f() {
     var source = {
       title: Lang.translate('title_parser'),
       search: function search(params, oncomplite) {
@@ -24236,7 +25688,7 @@
     network$3.clear();
   }
   var Parser = {
-    init: init$g,
+    init: init$f,
     get: get$3,
     torlook: torlook,
     jackett: jackett,
@@ -26724,7 +28176,7 @@
   /**
    * Запуск
    */
-  function init$f() {
+  function init$e() {
     content = Template$1.js('activitys');
     slides = content.querySelector('.activitys__slides');
     maxsave = Storage.get('pages_save_total', 5);
@@ -27027,7 +28479,7 @@
     push$1(clear ? replace : object);
   }
   var Activity$1 = {
-    init: init$f,
+    init: init$e,
     listener: listener$3,
     push: push$1,
     back: back$3,
@@ -27900,76 +29352,76 @@
   /**
    * Запуск
    */
-  function init$e() {
+  function init$d() {
     if (Platform.is('tizen')) {
-      select$1('player', {
+      select('player', {
         'inner': '#{settings_param_player_inner}',
         'tizen': 'Tizen'
       }, 'tizen');
-      select$1('player_iptv', {
+      select('player_iptv', {
         'inner': '#{settings_param_player_inner}',
         'tizen': 'Tizen'
       }, 'tizen');
-      select$1('player_torrent', {
+      select('player_torrent', {
         'inner': '#{settings_param_player_inner}',
         'tizen': 'Tizen'
       }, 'tizen');
     }
     if (Platform.is('orsay')) {
-      select$1('player', {
+      select('player', {
         'inner': '#{settings_param_player_inner}',
         'orsay': 'Orsay'
       }, 'orsay');
-      select$1('player_iptv', {
+      select('player_iptv', {
         'inner': '#{settings_param_player_inner}',
         'orsay': 'Orsay'
       }, 'orsay');
-      select$1('player_torrent', {
+      select('player_torrent', {
         'inner': '#{settings_param_player_inner}',
         'orsay': 'Orsay'
       }, 'orsay');
     } else if (Platform.is('webos')) {
-      select$1('player', {
+      select('player', {
         'inner': '#{settings_param_player_inner}',
         'webos': 'WebOS'
       }, 'inner');
-      select$1('player_iptv', {
+      select('player_iptv', {
         'inner': '#{settings_param_player_inner}',
         'webos': 'WebOS'
       }, 'inner');
-      select$1('player_torrent', {
+      select('player_torrent', {
         'inner': '#{settings_param_player_inner}',
         'webos': 'WebOS'
       }, 'inner');
     } else if (Platform.is('android')) {
-      select$1('player', {
+      select('player', {
         'inner': '#{settings_param_player_inner}',
         'android': 'Android'
       }, 'android');
-      select$1('player_iptv', {
+      select('player_iptv', {
         'inner': '#{settings_param_player_inner}',
         'android': 'Android'
       }, 'android');
-      select$1('player_torrent', {
+      select('player_torrent', {
         'inner': '#{settings_param_player_inner}',
         'android': 'Android'
       }, 'android');
       trigger('internal_torrclient', false);
     } else if (Platform.desktop()) {
-      select$1('player', {
+      select('player', {
         'inner': '#{settings_param_player_inner}',
         'other': '#{settings_param_player_outside}'
       }, 'inner');
-      select$1('player_iptv', {
+      select('player_iptv', {
         'inner': '#{settings_param_player_inner}',
         'other': '#{settings_param_player_outside}'
       }, 'inner');
-      select$1('player_torrent', {
+      select('player_torrent', {
         'inner': '#{settings_param_player_inner}',
         'other': '#{settings_param_player_outside}'
       }, 'inner');
     } else if (Platform.is('apple')) {
-      select$1('player', {
+      select('player', {
         'inner': '#{settings_param_player_inner}',
         'ios': 'iOS',
         'vlc': 'VLC',
@@ -27977,7 +29429,7 @@
         'infuse': 'Infuse',
         'svplayer': 'SVPlayer'
       }, 'inner');
-      select$1('player_iptv', {
+      select('player_iptv', {
         'inner': '#{settings_param_player_inner}',
         'ios': 'iOS',
         'vlc': 'VLC',
@@ -27985,7 +29437,7 @@
         'infuse': 'Infuse',
         'svplayer': 'SVPlayer'
       }, 'inner');
-      select$1('player_torrent', {
+      select('player_torrent', {
         'inner': '#{settings_param_player_inner}',
         'ios': 'iOS',
         'vlc': 'VLC',
@@ -27994,21 +29446,21 @@
         'svplayer': 'SVPlayer'
       }, 'inner');
     } else if (Platform.is('apple_tv')) {
-      select$1('player', {
+      select('player', {
         'inner': '#{settings_param_player_inner}',
         'vlc': 'VLC',
         'infuse': 'Infuse',
         'svplayer': 'SVPlayer',
         'tvos': 'tvOS'
       }, 'inner');
-      select$1('player_iptv', {
+      select('player_iptv', {
         'inner': '#{settings_param_player_inner}',
         'vlc': 'VLC',
         'infuse': 'Infuse',
         'svplayer': 'SVPlayer',
         'tvos': 'tvOS'
       }, 'inner');
-      select$1('player_torrent', {
+      select('player_torrent', {
         'inner': '#{settings_param_player_inner}',
         'vlc': 'VLC',
         'infuse': 'Infuse',
@@ -28023,8 +29475,8 @@
       'cub': 'CUB',
       'aerial': 'Aerial'
     };
-    select$1('screensaver_type', screensaver_types, 'chrome');
-    select$1('keyboard_type', {
+    select('screensaver_type', screensaver_types, 'chrome');
+    select('keyboard_type', {
       'lampa': '#{settings_param_keyboard_lampa}',
       'integrate': '#{settings_param_keyboard_system}'
     }, Platform.screen('mobile') || Platform.is('apple_tv') ? 'integrate' : 'lampa');
@@ -28043,13 +29495,13 @@
       'lg_df_year': langname + ' + #{settings_param_torrent_lang_orig} + #{torrent_parser_year}'
     };
     if (Arrays.getKeys(selector).indexOf(Storage.get('parse_lang', 'df')) == -1) Storage.set('parse_lang', 'df');
-    select$1('parse_lang', selector, 'df');
-    select$1('tmdb_lang', Lang.codes(), 'ru');
+    select('parse_lang', selector, 'df');
+    select('tmdb_lang', Lang.codes(), 'ru');
     var agent = navigator.userAgent.toLowerCase();
     var versi = agent.match(/chrome\/(\d+)/);
     versi = versi ? parseInt(versi[1]) : 60;
     versi = isNaN(versi) ? 60 : versi;
-    select$1('protocol', {
+    select('protocol', {
       'http': '#{settings_param_no}',
       'https': '#{settings_param_yes}'
     }, versi >= 60 ? 'https' : 'http');
@@ -28074,7 +29526,7 @@
    * @param {{key:string}} select_data - значение
    * @param {string} select_default_value - значение по дефолту
    */
-  function select$1(name, select_data, select_default_value) {
+  function select(name, select_data, select_default_value) {
     values[name] = select_data;
     defaults[name] = select_default_value;
   }
@@ -28233,73 +29685,73 @@
   /**
        * Добовляем селекторы
        */
-  select$1('interface_size', {
+  select('interface_size', {
     'small': '#{settings_param_interface_size_small}',
     'normal': '#{settings_param_interface_size_normal}',
     'bigger': '#{settings_param_interface_size_bigger}'
   }, 'normal');
-  select$1('poster_size', {
+  select('poster_size', {
     'w200': '#{settings_param_poster_quality_low}',
     'w300': '#{settings_param_poster_quality_average}',
     'w500': '#{settings_param_poster_quality_high}'
   }, 'w200');
-  select$1('parser_torrent_type', {
+  select('parser_torrent_type', {
     'jackett': 'Jackett',
     'prowlarr': 'Prowlarr'
   }, 'jackett');
-  select$1('jackett_interview', {
+  select('jackett_interview', {
     'all': '#{settings_param_jackett_interview_all}',
     'healthy': '#{settings_param_jackett_interview_healthy}'
   }, 'all');
-  select$1('torlook_parse_type', {
+  select('torlook_parse_type', {
     'native': '#{settings_param_parse_directly}',
     'site': '#{settings_param_parse_api}'
   }, 'native');
-  select$1('background_type', {
+  select('background_type', {
     'complex': '#{settings_param_background_complex}',
     'simple': '#{settings_param_background_simple}',
     'poster': '#{settings_param_background_image}'
   }, 'simple');
-  select$1('pages_save_total', {
+  select('pages_save_total', {
     '1': '1',
     '2': '2',
     '3': '3',
     '4': '4',
     '5': '5'
   }, '5');
-  select$1('player', {
+  select('player', {
     'inner': '#{settings_param_player_inner}'
   }, 'inner');
-  select$1('player_iptv', {
+  select('player_iptv', {
     'inner': '#{settings_param_player_inner}'
   }, 'inner');
-  select$1('player_torrent', {
+  select('player_torrent', {
     'inner': '#{settings_param_player_inner}'
   }, 'inner');
-  select$1('torrserver_use_link', {
+  select('torrserver_use_link', {
     'one': '#{settings_param_link_use_one}',
     'two': '#{settings_param_link_use_two}'
   }, 'one');
-  select$1('subtitles_size', {
+  select('subtitles_size', {
     'small': '#{settings_param_subtitles_size_small}',
     'normal': '#{settings_param_subtitles_size_normal}',
     'large': '#{settings_param_subtitles_size_bigger}'
   }, 'normal');
-  select$1('screensaver_time', {
+  select('screensaver_time', {
     '1': '1',
     '2': '2',
     '5': '5',
     '10': '10'
   }, '5');
-  select$1('parse_lang', {
+  select('parse_lang', {
     'df': '#{settings_param_torrent_lang_orig}'
   }, 'df');
-  select$1('parse_timeout', {
+  select('parse_timeout', {
     '15': '15',
     '30': '30',
     '60': '60'
   }, '15');
-  select$1('player_rewind', {
+  select('player_rewind', {
     '5': '5',
     '10': '10',
     '15': '15',
@@ -28308,56 +29760,56 @@
     '50': '50',
     '100': '100'
   }, '20');
-  select$1('player_timecode', {
+  select('player_timecode', {
     'again': '#{settings_param_player_timecode_again}',
     'continue': '#{settings_param_player_timecode_continue}',
     'ask': '#{settings_param_player_timecode_ask}'
   }, 'continue');
-  select$1('player_scale_method', {
+  select('player_scale_method', {
     'transform': 'Transform',
     'calculate': '#{settings_param_player_scale_method}'
   }, 'transform');
-  select$1('player_hls_method', {
+  select('player_hls_method', {
     'application': '#{settings_param_player_hls_app}',
     'hlsjs': '#{settings_param_player_hls_js}'
   }, 'application');
-  select$1('source', {
+  select('source', {
     'tmdb': 'TMDB',
     'cub': 'CUB'
   }, 'tmdb');
-  select$1('start_page', {
+  select('start_page', {
     'main': '#{title_main}',
     'favorite@bookmarks': '#{settings_input_links}',
     'favorite@history': '#{title_history}',
     'mytorrents': '#{title_mytorrents}',
     'last': '#{title_last}'
   }, 'main');
-  select$1('scroll_type', {
+  select('scroll_type', {
     'css': 'CSS',
     'js': 'Javascript'
   }, 'css');
-  select$1('card_views_type', {
+  select('card_views_type', {
     'preload': '#{settings_param_card_view_load}',
     'view': '#{settings_param_card_view_all}'
   }, 'preload');
-  select$1('navigation_type', {
+  select('navigation_type', {
     'controll': '#{settings_param_navigation_remote}',
     'mouse': '#{settings_param_navigation_mouse}'
   }, 'controll');
-  select$1('keyboard_type', {
+  select('keyboard_type', {
     'lampa': '#{settings_param_keyboard_lampa}',
     'integrate': '#{settings_param_keyboard_system}'
   }, 'lampa');
-  select$1('card_interfice_type', {
+  select('card_interfice_type', {
     'old': '#{settings_param_card_interface_old}',
     'new': '#{settings_param_card_interface_new}'
   }, 'new');
-  select$1('glass_opacity', {
+  select('glass_opacity', {
     'easy': '#{settings_param_glass_easy}',
     'medium': '#{settings_param_glass_medium}',
     'blacked': '#{settings_param_glass_blacked}'
   }, 'easy');
-  select$1('time_offset', {
+  select('time_offset', {
     'n-10': '-10',
     'n-9': '-9',
     'n-8': '-8',
@@ -28380,14 +29832,14 @@
     'n9': '9',
     'n10': '10'
   }, 'n0');
-  select$1('video_quality_default', {
+  select('video_quality_default', {
     '480': '480p',
     '720': '720p',
     '1080': '1080p',
     '1440': '1440p',
     '2160': '2160p'
   }, '1080');
-  select$1('player_launch_trailers', {
+  select('player_launch_trailers', {
     'inner': '#{settings_param_player_inner}',
     'youtube': 'YouTube'
   }, 'inner');
@@ -28430,30 +29882,30 @@
   /**
    * Добовляем поля
    */
-  select$1('jackett_url', '', '');
-  select$1('jackett_key', '', '');
-  select$1('prowlarr_url', '', '');
-  select$1('prowlarr_key', '', '');
-  select$1('torrserver_url', '', '');
-  select$1('torrserver_url_two', '', '');
-  select$1('torrserver_login', '', '');
-  select$1('torrserver_password', '', '');
-  select$1('parser_website_url', '', '');
-  select$1('torlook_site', '', 'w41.torlook.info');
-  select$1('cloud_token', '', '');
-  select$1('account_email', '', '');
-  select$1('account_password', '', '');
-  select$1('device_name', '', 'Lampa');
-  select$1('player_nw_path', '', 'C:/Program Files/VideoLAN/VLC/vlc.exe');
-  select$1('tmdb_proxy_api', '', '');
-  select$1('tmdb_proxy_image', '', '');
+  select('jackett_url', '', '');
+  select('jackett_key', '', '');
+  select('prowlarr_url', '', '');
+  select('prowlarr_key', '', '');
+  select('torrserver_url', '', '');
+  select('torrserver_url_two', '', '');
+  select('torrserver_login', '', '');
+  select('torrserver_password', '', '');
+  select('parser_website_url', '', '');
+  select('torlook_site', '', 'w41.torlook.info');
+  select('cloud_token', '', '');
+  select('account_email', '', '');
+  select('account_password', '', '');
+  select('device_name', '', 'Lampa');
+  select('player_nw_path', '', 'C:/Program Files/VideoLAN/VLC/vlc.exe');
+  select('tmdb_proxy_api', '', '');
+  select('tmdb_proxy_image', '', '');
   var Params = {
     listener: listener$1,
-    init: init$e,
+    init: init$d,
     bind: bind,
     update: update$2,
     field: field$1,
-    select: select$1,
+    select: select,
     trigger: trigger,
     values: values,
     defaults: defaults
@@ -28812,7 +30264,7 @@
   var listener = start$7();
   var readed$1 = {};
   var workers = {};
-  function init$d() {
+  function init$c() {
     sync('online_view', 'array_string');
     sync('torrents_view', 'array_string');
     sync('search_history', 'array_string');
@@ -28940,7 +30392,7 @@
   }
   var Storage = {
     listener: listener,
-    init: init$d,
+    init: init$c,
     get: get,
     set: set,
     field: field,
@@ -31202,7 +32654,7 @@
   function codes() {
     return Arrays.clone(keys);
   }
-  function selected$1(check_codes) {
+  function selected(check_codes) {
     return check_codes.indexOf(Storage.get('language', 'ru')) >= 0 ? true : false;
   }
   var Lang = {
@@ -31211,686 +32663,7 @@
     codes: codes,
     addCodes: addCodes,
     AddTranslation: AddTranslation,
-    selected: selected$1
-  };
-
-  var data = {};
-  data.type = {
-    title: '#{title_type}',
-    items: [{
-      title: '#{menu_movies}',
-      selected: true,
-      cat: 'movie'
-    }, {
-      title: '#{menu_multmovie}',
-      cat: 'multmovie'
-    }, {
-      title: '#{menu_tv}',
-      cat: 'tv'
-    }, {
-      title: '#{menu_multtv}',
-      cat: 'multtv'
-    }, {
-      title: '#{menu_anime}',
-      cat: 'anime'
-    }]
-  };
-  data.rating = {
-    title: '#{title_rating}',
-    items: [{
-      title: '#{filter_any}'
-    }, {
-      title: '#{filter_rating_from} 8',
-      start: 8
-    }, {
-      title: '#{filter_rating_from} 6',
-      start: 6
-    }, {
-      title: '#{filter_rating_from} 4',
-      start: 4
-    }, {
-      title: '#{filter_rating_from} 2',
-      start: 2
-    }, {
-      title: '#{filter_rating_from} 1 #{filter_rating_to} 3',
-      voite: '1-3'
-    }, {
-      title: '#{filter_rating_from} 3 #{filter_rating_to} 6',
-      voite: '3-6'
-    }, {
-      title: '#{filter_rating_from} 6 #{filter_rating_to} 8',
-      voite: '6-8'
-    }, {
-      title: '#{filter_rating_from} 8 #{filter_rating_to} 9',
-      voite: '8-9'
-    }]
-  };
-  data.pgrating = {
-    title: '#{title_pgrating}',
-    items: [{
-      title: '#{filter_any}'
-    }]
-  };
-  data.language = {
-    title: '#{title_language}',
-    items: [{
-      title: '#{filter_lang_ru}',
-      code: 'ru'
-    }, {
-      title: '#{filter_lang_uk}',
-      code: 'uk'
-    }, {
-      title: '#{filter_lang_en}',
-      code: 'en'
-    }, {
-      title: '#{filter_lang_be}',
-      code: 'be'
-    }, {
-      title: '#{filter_lang_zh}',
-      code: 'zh|cn'
-    }, {
-      title: '#{filter_lang_ja}',
-      code: 'ja'
-    }, {
-      title: '#{filter_lang_ko}',
-      code: 'ko'
-    }, {
-      title: '#{filter_lang_af}',
-      code: 'af'
-    }, {
-      title: '#{filter_lang_sq}',
-      code: 'sq'
-    }, {
-      title: '#{filter_lang_ar}',
-      code: 'ar'
-    }, {
-      title: '#{filter_lang_az}',
-      code: 'az'
-    }, {
-      title: '#{filter_lang_hy}',
-      code: 'hy'
-    }, {
-      title: '#{filter_lang_ba}',
-      code: 'ba'
-    }, {
-      title: '#{filter_lang_bg}',
-      code: 'bg'
-    }, {
-      title: '#{filter_lang_bn}',
-      code: 'bn'
-    }, {
-      title: '#{filter_lang_bs}',
-      code: 'bs'
-    }, {
-      title: '#{filter_lang_ca}',
-      code: 'ca'
-    }, {
-      title: '#{filter_lang_ce}',
-      code: 'ce'
-    }, {
-      title: '#{filter_lang_cs}',
-      code: 'cs'
-    }, {
-      title: '#{filter_lang_da}',
-      code: 'da'
-    }, {
-      title: '#{filter_lang_ka}',
-      code: 'ka'
-    }, {
-      title: '#{filter_lang_de}',
-      code: 'de'
-    }, {
-      title: '#{filter_lang_el}',
-      code: 'el'
-    }, {
-      title: '#{filter_lang_es}',
-      code: 'es'
-    }, {
-      title: '#{filter_lang_et}',
-      code: 'et'
-    }, {
-      title: '#{filter_lang_fa}',
-      code: 'fa'
-    }, {
-      title: '#{filter_lang_fi}',
-      code: 'fi'
-    }, {
-      title: '#{filter_lang_fr}',
-      code: 'fr'
-    }, {
-      title: '#{filter_lang_ga}',
-      code: 'ga'
-    }, {
-      title: '#{filter_lang_gl}',
-      code: 'gl'
-    }, {
-      title: '#{filter_lang_gn}',
-      code: 'gn'
-    }, {
-      title: '#{filter_lang_he}',
-      code: 'he'
-    }, {
-      title: '#{filter_lang_hi}',
-      code: 'hi'
-    }, {
-      title: '#{filter_lang_hr}',
-      code: 'hr'
-    }, {
-      title: '#{filter_lang_hu}',
-      code: 'hu'
-    }, {
-      title: '#{filter_lang_id}',
-      code: 'id'
-    }, {
-      title: '#{filter_lang_is}',
-      code: 'is'
-    }, {
-      title: '#{filter_lang_it}',
-      code: 'it'
-    }, {
-      title: '#{filter_lang_kk}',
-      code: 'kk'
-    }, {
-      title: '#{filter_lang_ks}',
-      code: 'ks'
-    }, {
-      title: '#{filter_lang_ku}',
-      code: 'ku'
-    }, {
-      title: '#{filter_lang_ky}',
-      code: 'ky'
-    }, {
-      title: '#{filter_lang_lt}',
-      code: 'lt'
-    }, {
-      title: '#{filter_lang_lv}',
-      code: 'lv'
-    }, {
-      title: '#{filter_lang_mi}',
-      code: 'mi'
-    }, {
-      title: '#{filter_lang_mk}',
-      code: 'mk'
-    }, {
-      title: '#{filter_lang_mn}',
-      code: 'mn'
-    }, {
-      title: '#{filter_lang_mo}',
-      code: 'mo'
-    }, {
-      title: '#{filter_lang_mt}',
-      code: 'mt'
-    }, {
-      title: '#{filter_lang_no}',
-      code: 'no|nb|nn'
-    }, {
-      title: '#{filter_lang_ne}',
-      code: 'ne'
-    }, {
-      title: '#{filter_lang_nl}',
-      code: 'nl'
-    }, {
-      title: '#{filter_lang_pa}',
-      code: 'pa'
-    }, {
-      title: '#{filter_lang_pl}',
-      code: 'pl'
-    }, {
-      title: '#{filter_lang_ps}',
-      code: 'ps'
-    }, {
-      title: '#{filter_lang_pt}',
-      code: 'pt'
-    }, {
-      title: '#{filter_lang_ro}',
-      code: 'ro'
-    }, {
-      title: '#{filter_lang_si}',
-      code: 'si'
-    }, {
-      title: '#{filter_lang_sk}',
-      code: 'sk'
-    }, {
-      title: '#{filter_lang_sl}',
-      code: 'sl'
-    }, {
-      title: '#{filter_lang_sm}',
-      code: 'sm'
-    }, {
-      title: '#{filter_lang_so}',
-      code: 'so'
-    }, {
-      title: '#{filter_lang_sr}',
-      code: 'sr'
-    }, {
-      title: '#{filter_lang_sv}',
-      code: 'sv'
-    }, {
-      title: '#{filter_lang_sw}',
-      code: 'sw'
-    }, {
-      title: '#{filter_lang_ta}',
-      code: 'ta'
-    }, {
-      title: '#{filter_lang_tg}',
-      code: 'tg'
-    }, {
-      title: '#{filter_lang_th}',
-      code: 'th'
-    }, {
-      title: '#{filter_lang_tk}',
-      code: 'tk'
-    }, {
-      title: '#{filter_lang_tr}',
-      code: 'tr'
-    }, {
-      title: '#{filter_lang_tt}',
-      code: 'tt'
-    }, {
-      title: '#{filter_lang_ur}',
-      code: 'ur'
-    }, {
-      title: '#{filter_lang_uz}',
-      code: 'uz'
-    }, {
-      title: '#{filter_lang_vi}',
-      code: 'vi'
-    }, {
-      title: '#{filter_lang_yi}',
-      code: 'yi'
-    }]
-  };
-  data.genres_movie = {
-    title: '#{title_genre}',
-    items: [{
-      "id": 28,
-      "title": "#{filter_genre_ac}",
-      checkbox: true
-    }, {
-      "id": 12,
-      "title": "#{filter_genre_ad}",
-      checkbox: true
-    }, {
-      "id": 16,
-      "title": "#{filter_genre_mv}",
-      checkbox: true
-    }, {
-      "id": 35,
-      "title": "#{filter_genre_cm}",
-      checkbox: true
-    }, {
-      "id": 80,
-      "title": "#{filter_genre_cr}",
-      checkbox: true
-    }, {
-      "id": 99,
-      "title": "#{filter_genre_dc}",
-      checkbox: true
-    }, {
-      "id": 18,
-      "title": "#{filter_genre_dr}",
-      checkbox: true
-    }, {
-      "id": 10751,
-      "title": "#{filter_genre_fm}",
-      checkbox: true
-    }, {
-      "id": 14,
-      "title": "#{filter_genre_fe}",
-      checkbox: true
-    }, {
-      "id": 36,
-      "title": "#{filter_genre_hi}",
-      checkbox: true
-    }, {
-      "id": 27,
-      "title": "#{filter_genre_ho}",
-      checkbox: true
-    }, {
-      "id": 10402,
-      "title": "#{filter_genre_mu}",
-      checkbox: true
-    }, {
-      "id": 9648,
-      "title": "#{filter_genre_de}",
-      checkbox: true
-    }, {
-      "id": 10749,
-      "title": "#{filter_genre_md}",
-      checkbox: true
-    }, {
-      "id": 878,
-      "title": "#{filter_genre_fa}",
-      checkbox: true
-    }, {
-      "id": 10770,
-      "title": "#{filter_genre_tv}",
-      checkbox: true
-    }, {
-      "id": 53,
-      "title": "#{filter_genre_tr}",
-      checkbox: true
-    }, {
-      "id": 10752,
-      "title": "#{filter_genre_mi}",
-      checkbox: true
-    }, {
-      "id": 37,
-      "title": "#{filter_genre_ve}",
-      checkbox: true
-    }]
-  };
-  data.genres_tv = {
-    title: '#{title_genre}',
-    items: [{
-      "id": 10759,
-      "title": "#{filter_genre_aa}",
-      checkbox: true
-    }, {
-      "id": 16,
-      "title": "#{filter_genre_mv}",
-      checkbox: true
-    }, {
-      "id": 35,
-      "title": "#{filter_genre_cm}",
-      checkbox: true
-    }, {
-      "id": 80,
-      "title": "#{filter_genre_cr}",
-      checkbox: true
-    }, {
-      "id": 99,
-      "title": "#{filter_genre_dc}",
-      checkbox: true
-    }, {
-      "id": 18,
-      "title": "#{filter_genre_dr}",
-      checkbox: true
-    }, {
-      "id": 10751,
-      "title": "#{filter_genre_fm}",
-      checkbox: true
-    }, {
-      "id": 10762,
-      "title": "#{filter_genre_ch}",
-      checkbox: true
-    }, {
-      "id": 9648,
-      "title": "#{filter_genre_de}",
-      checkbox: true
-    }, {
-      "id": 10763,
-      "title": "#{filter_genre_nw}",
-      checkbox: true
-    }, {
-      "id": 10764,
-      "title": "#{filter_genre_rs}",
-      checkbox: true
-    }, {
-      "id": 10765,
-      "title": "#{filter_genre_hf}",
-      checkbox: true
-    }, {
-      "id": 10766,
-      "title": "#{filter_genre_op}",
-      checkbox: true
-    }, {
-      "id": 10767,
-      "title": "#{filter_genre_tc}",
-      checkbox: true
-    }, {
-      "id": 10768,
-      "title": "#{filter_genre_mp}",
-      checkbox: true
-    }, {
-      "id": 37,
-      "title": "#{filter_genre_ve}",
-      checkbox: true
-    }]
-  };
-  data.sort = {
-    title: '#{filter_sorted}',
-    items: [{
-      title: '#{filter_any}'
-    }, {
-      title: '#{title_new}',
-      sort: 'now'
-    }, {
-      title: '#{title_now_watch}',
-      sort: 'now_playing'
-    }, {
-      title: '#{title_in_top}',
-      sort: 'top'
-    }, {
-      title: '#{title_ongoing}',
-      sort: 'airing'
-    }]
-  };
-  data.quality = {
-    title: '#{player_quality}',
-    items: [{
-      title: '#{filter_any}'
-    }, {
-      title: '#{title_in_high_quality}',
-      uhd: true
-    }]
-  };
-  data.year = {
-    title: '#{title_year}',
-    items: [{
-      title: '#{filter_any}',
-      any: true
-    }]
-  };
-  var i = 100,
-    y = new Date().getFullYear();
-  for (var a = 0; a < 5; a++) {
-    data.year.items.push({
-      title: y - a
-    });
-  }
-  while (i -= 5) {
-    var end = y - (99 - i);
-    data.year.items.push({
-      title: end + 5 + '-' + end
-    });
-  }
-  for (var _a = 18; _a >= 0; _a -= 3) {
-    data.pgrating.items.push({
-      title: _a + '+',
-      pg: _a
-    });
-  }
-  for (var _a2 = 15; _a2 >= 0; _a2 -= 3) {
-    data.pgrating.items.push({
-      title: '#{filter_rating_from} ' + _a2 + ' #{filter_rating_to} ' + (_a2 + 3),
-      pg: _a2 + '-' + (_a2 + 3)
-    });
-  }
-  data.language.items.forEach(function (i) {
-    return i.checkbox = true;
-  });
-  function select(where, a) {
-    where.forEach(function (element) {
-      element.selected = false;
-    });
-    a.selected = true;
-  }
-  function selected(where) {
-    var title = [];
-    where.items.forEach(function (a) {
-      if (a.selected || a.checked) title.push(a.title);
-    });
-    where.subtitle = title.length ? title.join(', ') : Lang.translate('nochoice');
-  }
-  function main() {
-    for (var i in data) selected(data[i]);
-    var cat = data.type.items.find(function (s) {
-      return s.selected;
-    }).cat;
-    var type = cat.indexOf('movie') >= 0 ? 'movie' : 'tv';
-    var items = [{
-      title: Lang.translate('search_start'),
-      search: true
-    }, data.type, data.rating, data['genres_' + type], data.language, data.year];
-    if (Storage.field('source') == 'cub') items.push(data.pgrating, data.sort, data.quality);
-    items.forEach(function (itm) {
-      itm.title = Lang.translate(itm.title);
-      if (itm.subtitle) itm.subtitle = Lang.translate(itm.subtitle);
-      if (itm.items) {
-        itm.items.forEach(function (inr) {
-          inr.title = Lang.translate(inr.title);
-        });
-      }
-    });
-    Select.show({
-      title: Lang.translate('title_filter'),
-      items: items,
-      onBack: function onBack() {
-        Controller.toggle('content');
-      },
-      onSelect: function onSelect(a) {
-        if (a.search) search();else submenu(a);
-      }
-    });
-  }
-  function queryForTMDB() {
-    var query = [];
-    var cat = data.type.items.find(function (s) {
-      return s.selected;
-    }).cat;
-    var type = cat.indexOf('movie') >= 0 ? 'movie' : 'tv';
-    var genres = [];
-    var languages = [];
-    data.rating.items.forEach(function (a) {
-      if (a.selected && (a.voite || a.start)) {
-        if (a.start) {
-          query.push('vote_average.gte=' + a.start);
-        } else {
-          query.push('vote_average.gte=' + a.voite.split('-')[0]);
-          query.push('vote_average.lte=' + a.voite.split('-')[1]);
-        }
-      }
-    });
-    data.language.items.forEach(function (a) {
-      if (a.checked) languages.push(a.code);
-    });
-    data.year.items.forEach(function (a) {
-      if (a.selected && !a.any) {
-        var need = type == 'movie' ? 'primary_release_date' : 'first_air_date';
-        if (a.title.indexOf('-') >= 0) {
-          query.push(need + '.lte=' + a.title.split('-')[0] + '-12-31');
-          query.push(need + '.gte=' + a.title.split('-')[1] + '-01-01');
-        } else {
-          query.push((type == 'movie' ? 'primary_release_year' : 'first_air_date_year') + '=' + a.title);
-        }
-      }
-    });
-    data['genres_' + type].items.forEach(function (a) {
-      if (a.checked) genres.push(a.id);
-    });
-    if (cat == 'multmovie' || cat == 'multtv' && genres.indexOf(16) == -1) genres.push(16);
-    if (cat == 'movie' || cat == 'tv') query.push('without_genres=16');
-    if (genres.length) {
-      query.push('with_genres=' + genres.join(','));
-    }
-    if (cat == 'anime' && languages.indexOf('ja') == -1) languages.push('ja');
-    if (languages.length) {
-      query.push('with_original_language=' + languages.join('|'));
-    }
-    return 'discover/' + type + '?' + query.join('&');
-  }
-  function queryForCUB() {
-    var query = [];
-    var cat = data.type.items.find(function (s) {
-      return s.selected;
-    }).cat;
-    var type = cat.indexOf('movie') >= 0 ? 'movie' : 'tv';
-    var genres = [];
-    var sort = data.sort.items.find(function (s) {
-      return s.selected && s.sort;
-    });
-    var quality = data.quality.items.find(function (s) {
-      return s.selected && s.uhd;
-    });
-    var languages = [];
-    data.rating.items.forEach(function (a) {
-      if (a.selected && (a.voite || a.start)) {
-        if (a.start) {
-          query.push('vote=' + a.start);
-        } else {
-          query.push('vote=' + a.voite.split('-')[0] + '-' + a.voite.split('-')[1]);
-        }
-      }
-    });
-    data.language.items.forEach(function (a) {
-      if (a.checked) languages.push(a.code);
-    });
-    data.year.items.forEach(function (a) {
-      if (a.selected && !a.any) {
-        if (a.title.indexOf('-') >= 0) {
-          query.push('airdate=' + a.title.split('-')[1] + '-' + a.title.split('-')[0]);
-        } else {
-          query.push('airdate=' + a.title);
-        }
-      }
-    });
-    data.pgrating.items.forEach(function (a) {
-      if (a.selected) {
-        if (a.title.indexOf('-') >= 0) {
-          query.push('pgrating=' + a.pg.split('-')[0] + '-' + a.pg.split('-')[1]);
-        } else {
-          query.push('pgrating=' + a.pg);
-        }
-      }
-    });
-    data['genres_' + type].items.forEach(function (a) {
-      if (a.checked) genres.push(a.id);
-    });
-    if (cat == 'multmovie' || cat == 'multtv' && genres.indexOf(16) == -1) genres.push(16);
-    if (cat == 'movie' || cat == 'tv') query.push('without_genres=16');
-    if (genres.length) {
-      query.push('genre=' + genres.join(','));
-    }
-    if (cat == 'anime') type = 'anime';
-    if (languages.length) {
-      query.push('language=' + languages.join(','));
-    }
-    if (sort) query.push('sort=' + sort.sort);
-    if (quality) query.push('uhd=true');
-    return '?cat=' + type + '&' + query.join('&');
-  }
-  function search() {
-    Controller.toggle('content');
-    var source = Storage.field('source');
-    var query = source == 'cub' ? queryForCUB() : queryForTMDB();
-    var activity = {
-      url: query,
-      title: Lang.translate('title_filter'),
-      component: 'category_full',
-      source: source == 'cub' ? 'cub' : 'tmdb',
-      card_type: true,
-      page: 1
-    };
-    var object = Activity$1.active();
-    if (object.component == 'category_full' && (object.url.indexOf('discover') == 0 || object.url.indexOf('?cat=') == 0)) Activity$1.replace(activity, true);else Activity$1.push(activity);
-  }
-  function submenu(item) {
-    Select.show({
-      title: item.title,
-      items: item.items,
-      onBack: main,
-      onSelect: function onSelect(a) {
-        select(item.items, a);
-        main();
-      }
-    });
-  }
-  function show$2() {
-    main();
-  }
-  var Filter = {
-    show: show$2
+    selected: selected
   };
 
   var html$4;
@@ -31900,7 +32673,7 @@
   var sort_item;
   var sort_timer;
   var visible_timer;
-  function init$c() {
+  function init$b() {
     html$4 = Template$1.get('menu');
     scroll = new create$q({
       mask: true,
@@ -32112,6 +32885,7 @@
       var type = $(e.target).data('type');
       if (action == 'catalog') catalog();
       if (action == 'movie' || action == 'tv' || action == 'anime') {
+        console.log("Lampa menu action == ".concat(action));
         Activity$1.push({
           url: action,
           title: (action == 'movie' ? Lang.translate('menu_movies') : action == 'anime' ? Lang.translate('menu_anime') : Lang.translate('menu_tv')) + ' - ' + Storage.field('source').toUpperCase(),
@@ -32156,6 +32930,7 @@
         });
       }
       if (action == 'favorite') {
+        console.log("Lampa menu action == favorite component=".concat(type == 'history' ? 'favorite' : 'bookmarks', " type=").concat(type));
         Activity$1.push({
           url: '',
           title: Lang.translate(type == 'book' ? 'settings_input_links' : 'title_history'),
@@ -32246,7 +33021,7 @@
   }
   var Menu = {
     render: render$1,
-    init: init$c,
+    init: init$b,
     ready: ready
   };
 
@@ -32267,7 +33042,7 @@
 
   var html$3;
   var object;
-  function init$b() {
+  function init$a() {
     html$3 = Template$1.get('iframe');
   }
   function show$1() {
@@ -32296,7 +33071,7 @@
     return html$3;
   }
   var Iframe = {
-    init: init$b,
+    init: init$a,
     show: show$1,
     close: close$1,
     render: render
@@ -32308,7 +33083,7 @@
   var scroll_tabs;
   var scroll_body;
   var last_tab;
-  function init$a() {
+  function init$9() {
     Keypad.listener.follow('keydown', function (e) {
       if (e.code == 38 || e.code == 29460) {
         var enable = Controller.enabled();
@@ -32492,7 +33267,7 @@
     });
   }
   var Console = {
-    init: init$a
+    init: init$9
   };
 
   function create$1() {
@@ -32542,7 +33317,7 @@
   /**
    * Запуск
    */
-  function init$9() {
+  function init$8() {
     if (Storage.field('cloud_use')) status(1);
     Settings.listener.follow('open', function (e) {
       body = null;
@@ -32748,7 +33523,7 @@
     }
   }
   var Cloud = {
-    init: init$9
+    init: init$8
   };
 
   function create() {
@@ -32811,7 +33586,7 @@
   /**
    * Запуск
    */
-  function init$8() {
+  function init$7() {
     if (typeof tizen !== 'undefined') {
       setInterval(lauchPick, 1000 * 60 * 10);
       lauchPick();
@@ -32943,7 +33718,7 @@
     }
   }
   var Tizen = {
-    init: init$8
+    init: init$7
   };
 
   function component(object) {
@@ -33150,7 +33925,7 @@
     open: open$1
   };
 
-  function init$7() {
+  function init$6() {
     if (!Platform.is('webos')) return;
     var field = $("<div class=\"settings-folder selector\" data-component=\"webos_launcher\">\n        <div class=\"settings-folder__icon\">\n            <svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 32 32\" xml:space=\"preserve\">\n                <g transform=\"matrix(1.06,0,0,1.06,-0.9600000000000009,-0.9600000000000009)\">\n                    <path d=\"m26.59 31h-21.18c-2.431 0-4.41-1.979-4.41-4.41v-21.18c0-2.431 1.979-4.41 4.41-4.41h21.18c2.431 0 4.41 1.979 4.41 4.41v21.18c0 2.431-1.979 4.41-4.41 4.41zm-21.18-28c-1.329 0-2.41 1.081-2.41 2.41v21.18c0 1.329 1.081 2.41 2.41 2.41h21.18c1.329 0 2.41-1.081 2.41-2.41v-21.18c0-1.329-1.081-2.41-2.41-2.41z\" fill=\"#fff\"></path>\n                    <path d=\"m21.129 24h-10.258c-1.583 0-2.871-1.288-2.871-2.871v-6.167c0-.925.449-1.798 1.202-2.336l5.129-3.664c.998-.712 2.339-.712 3.337 0l5.129 3.665c.754.537 1.203 1.41 1.203 2.335v6.167c0 1.583-1.288 2.871-2.871 2.871zm-5.635-13.41-5.129 3.664c-.229.163-.365.428-.365.708v6.167c0 .48.391.871.871.871h10.259c.479 0 .87-.391.87-.871v-6.167c0-.281-.136-.545-.364-.708l-5.129-3.665c-.303-.215-.71-.215-1.013.001z\" fill=\"#fff\"></path>\n                </g>\n            </svg>\n        </div>\n        <div class=\"settings-folder__name\">".concat(Lang.translate('settings_webos_launcher'), "</div>\n    </div>"));
     Settings.main().render().find('[data-component="more"]').after(field);
@@ -33199,7 +33974,7 @@
     });
   }
   var WebOSLauncher = {
-    init: init$7
+    init: init$6
   };
 
   function open(callSelected) {
@@ -33378,7 +34153,7 @@
   }();
 
   var network;
-  function init$6() {
+  function init$5() {
     network = new create$p();
     Socket.listener.follow('message', function (e) {
       if (e.method == 'premiere') update(e.data);
@@ -33445,7 +34220,7 @@
     });
   }
   var Premiere = {
-    init: init$6
+    init: init$5
   };
 
   var BotClass = /*#__PURE__*/function () {
@@ -33518,7 +34293,7 @@
     }]);
   }();
 
-  function init$5() {
+  function init$4() {
     if (Account.logged() && Lang.selected(['ru', 'uk', 'be', 'bg'])) {
       var user = Storage.get('account_user', '{}');
       if (user.premium && !Account.hasPremium()) setTimeout(push, 5000);
@@ -33550,10 +34325,10 @@
     Notice$1.pushNotice('lampa', notice, function () {}, function (er) {});
   }
   var Extend = {
-    init: init$5
+    init: init$4
   };
 
-  function init$4() {
+  function init$3() {
     Lang.add({
       ad_notice_tv_text_1: {
         ru: 'Будьте в курсе новых серий - получайте уведомления о переводах на свой смартфон!',
@@ -33633,10 +34408,10 @@
     Preroll.init();
   }
   var AdManager = {
-    init: init$4
+    init: init$3
   };
 
-  function init$3() {
+  function init$2() {
     if (Platform.screen('mobile')) {
       var bar = Template$1.get('navigation_bar', {});
       bar.find('.navigation-bar__item').on('click', function () {
@@ -33658,7 +34433,7 @@
     }
   }
   var NavigationBar = {
-    init: init$3
+    init: init$2
   };
 
   function Endless(onRender) {
@@ -33761,7 +34536,7 @@
       }
     });
   }
-  function init$2() {
+  function init$1() {
     if (window.lampa_settings.demo) {
       Lampa.Listener.follow('app', function (e) {
         if (e.type == 'ready') hide();
@@ -33769,7 +34544,7 @@
     }
   }
   var Demo = {
-    init: init$2
+    init: init$1
   };
 
   var html$1;
@@ -33778,7 +34553,7 @@
   var controll;
   var active = {};
   var graph = [];
-  function init$1() {
+  function init() {
     Settings.listener.follow('open', function (e) {
       if (e.name == 'server') {
         var btn = $("<div class=\"settings-param selector\" data-type=\"button\">\n                <div class=\"settings-param__name\">".concat(Lang.translate('speedtest_button'), "</div>\n            </div>"));
@@ -33951,237 +34726,9 @@
     active = {};
   }
   var Speedtest = {
-    init: init$1,
+    init: init,
     close: close,
     start: start
-  };
-
-  var Log = /*#__PURE__*/function () {
-    function Log(autor, scriptName) {
-      _classCallCheck(this, Log);
-      this.autor = autor;
-      this.scriptName = scriptName;
-    }
-    return _createClass(Log, [{
-      key: "event",
-      value: function event(name) {
-        this.eventParam(name, '');
-      }
-    }, {
-      key: "eventParam",
-      value: function eventParam(eventName, param) {
-        console.log(this.autor, this.scriptName, eventName, param);
-      }
-    }, {
-      key: "movie",
-      value: function movie(_movie) {
-        this.eventParam('data', _movie.data);
-        this.eventParam('KpId', _movie.kpid);
-        this.eventParam('ImDbId', _movie.imid);
-      }
-    }]);
-  }();
-
-  var Btn = {
-    'backBtnCode': 8,
-    'zeroBtnCode': 48,
-    'numLockZeroBtnCodeForDeveloper': 96
-  };
-
-  function addEventListenerKeyDown(keyDownAction) {
-    Player$1.listener.follow('ready', onPlayerReady);
-    function onPlayerReady() {
-      document.addEventListener("keydown", keyDownAction);
-      Player$1.listener.follow('destroy', listenDestroy);
-    }
-    function listenDestroy() {
-      document.removeEventListener("keydown", keyDownAction);
-      Player$1.listener.remove('destroy', listenDestroy);
-    }
-  }
-  function addEventListenerLoaded(action) {
-    PlayerVideo.listener.follow('loadeddata', action);
-  }
-  function getPositionByPercent(percent) {
-    return getVideoDuration() * percent / 100;
-  }
-  function getVideoDuration() {
-    return PlayerVideo.video().duration;
-  }
-  function setVideoPositionSec(seconds) {
-    PlayerVideo.to(seconds);
-  }
-  function nextVideoInPlaylist() {
-    PlayerPlaylist.next();
-  }
-  var Player = {
-    addEventListenerKeyDown: addEventListenerKeyDown,
-    addEventListenerLoaded: addEventListenerLoaded,
-    getPositionByPercent: getPositionByPercent,
-    setVideoPositionSec: setVideoPositionSec,
-    nextVideoInPlaylist: nextVideoInPlaylist
-  };
-
-  var pauseMs = 500;
-  var zeroIndex = 0;
-  var timerId;
-  function checkDoubleClick(actionDouble, actionNotDouble) {
-    if (zeroIndex == 0) {
-      zeroIndex++;
-      timerId = setTimeout(resetOneClickAfterDelay, pauseMs);
-    } else {
-      if (timerId) {
-        clearTimeout(timerId);
-      }
-      zeroIndex = 0;
-      actionDouble();
-    }
-    function resetOneClickAfterDelay() {
-      zeroIndex = 0;
-      actionNotDouble();
-    }
-  }
-  var DoublePress = {
-    checkDoubleClick: checkDoubleClick
-  };
-
-  var timeCodesUrl = './add/timeCodes.json';
-  function loadTimeCodes() {
-    return _loadTimeCodes.apply(this, arguments);
-  }
-  function _loadTimeCodes() {
-    _loadTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var newTimeCodesJson;
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return Core.loadTextFromUrl(timeCodesUrl);
-          case 2:
-            newTimeCodesJson = _context.sent;
-            return _context.abrupt("return", JSON.parse(newTimeCodesJson));
-          case 4:
-          case "end":
-            return _context.stop();
-        }
-      }, _callee);
-    }));
-    return _loadTimeCodes.apply(this, arguments);
-  }
-  var Rep = {
-    loadTimeCodes: loadTimeCodes
-  };
-
-  function getSecondsFromNumberInTimeFormat(number) {
-    var arrayHMS = new Array(3).fill(0);
-    var currN = number;
-    for (var i = 0; i < 3; i++) {
-      var n = Math.trunc(currN / 100);
-      arrayHMS[i] = currN - n * 100;
-      currN = n;
-    }
-    return arrayHMS[0] + arrayHMS[1] * 60 + arrayHMS[2] * 3600;
-  }
-  var Converter = {
-    getSecondsFromNumberInTimeFormat: getSecondsFromNumberInTimeFormat
-  };
-
-  var timeCodes = [];
-  var log = new Log('TiViAl', 'TimeCode');
-  function init() {
-    initTimeCodes();
-    Player.addEventListenerKeyDown(onPlayerKeyDown);
-    Player.addEventListenerLoaded(setTimeCodesByPercents);
-    log.event('init');
-  }
-  function initTimeCodes() {
-    for (var i = 0; i < 10; i++) {
-      timeCodes.push({
-        keyCode: i + Btn.zeroBtnCode
-      });
-    }
-  }
-  function setTimeCodesByPercents() {
-    for (var i = 0; i < timeCodes.length; i++) {
-      timeCodes[i].timeInSec = Player.getPositionByPercent(i * 10);
-    }
-  }
-  function setTimeCodesBy10min() {
-    for (var i = 0; i < timeCodes.length; i++) {
-      timeCodes[i].timeInSec = i * 10 * 60;
-    }
-  }
-  function setTimeCodesByRemData(timeCode) {
-    for (var i = 0; i < timeCodes.length; i++) {
-      timeCodes[i].timeInSec = getSecondsFromValue(timeCode.timeCodes[i]);
-    }
-  }
-  function getSecondsFromValue(value) {
-    if (value == null || typeof value !== 'number' || !isFinite(value) || isNaN(value) || value == 0) return 0;else return Converter.getSecondsFromNumberInTimeFormat(value);
-  }
-  function onPlayerKeyDown(e) {
-    //log.eventParam('button pressed', e.keyCode);
-
-    if (e.keyCode === Btn.backBtnCode) {
-      Player.nextVideoInPlaylist();
-      e.preventDefault();
-    }
-    if (e.keyCode == Btn.zeroBtnCode) {
-      DoublePress.checkDoubleClick(showSelectTimeCodesMode, setPosition);
-    } else setPosition();
-    if (e.keyCode === Btn.numLockZeroBtnCodeForDeveloper) {
-      showSelectTimeCodesMode();
-    }
-    function setPosition() {
-      setVideoPositionByKeyCode(e.keyCode);
-    }
-  }
-  function setVideoPositionByKeyCode(keyCode) {
-    var timeL = timeCodes.find(function (t) {
-      return t.keyCode == keyCode;
-    });
-    if (timeL) {
-      Player.setVideoPositionSec(timeL.timeInSec);
-    }
-  }
-  function showSelectTimeCodesMode() {
-    var itemsAdd = [{
-      title: "В процентах",
-      subscribe: "subscribe",
-      action: setTimeCodesByPercents
-    }, {
-      title: "Через 10 мин",
-      action: setTimeCodesBy10min
-    }, {
-      title: "Загрузить...",
-      action: showSelectTimeCodesRemote
-    }];
-    Msg.showSelectActionsAny('Установить метки:', itemsAdd);
-  }
-  function showSelectTimeCodesRemote() {
-    return _showSelectTimeCodesRemote.apply(this, arguments);
-  }
-  function _showSelectTimeCodesRemote() {
-    _showSelectTimeCodesRemote = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var remTimeCodes;
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return Rep.loadTimeCodes();
-          case 2:
-            remTimeCodes = _context.sent;
-            Msg.showSelectActionOne('Тайм коды:', remTimeCodes, setTimeCodesByRemData);
-          case 4:
-          case "end":
-            return _context.stop();
-        }
-      }, _callee);
-    }));
-    return _showSelectTimeCodesRemote.apply(this, arguments);
-  }
-  var TimeCode = {
-    init: init
   };
 
   /**
@@ -34436,6 +34983,7 @@
 
     /** Стартуем */
 
+    Main.init();
     Lampa.Listener.send('app', {
       type: 'start'
     });
@@ -34683,7 +35231,6 @@
       return window.location.protocol == 'file:' ? 'https://yumata.github.io/lampa/vender/' + lib : './vender/' + lib;
     });
     Utils$2.putScript(video_libs, function () {});
-    TimeCode.init();
     /** Сообщаем о готовности */
 
     Lampa.Listener.send('app', {
