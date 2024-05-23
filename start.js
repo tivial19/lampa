@@ -1,1 +1,1 @@
-(()=>{"use strict";const r=function(){var r=function(){var r=[];switch(!0){case!Array.isArray:return 3;case!window.Promise:return 5;case!r.includes:return 6;case!"".padStart:return 7;case!Promise.prototype.finally:return 8;case!window.BigInt:return 9;case!Promise.allSettled:return 10;case!"".replaceAll:return 11;case!r.at:return 12;default:return 13}}(),e=function(r){return{3:1999,5:2009}[r]||2009+r}(r);return"Edition: "+r+" | Year: "+e};console.log("TiViAl",r())})();
+console.log("TiViAl","ES.getVersionWithYear()");
