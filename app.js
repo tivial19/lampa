@@ -20939,12 +20939,12 @@
     }, {
       title: "Открыть кинопоиск",
       action: function action() {
-        return openUrl(movie.urlKpId, '_self');
+        return openUrl(movie.urlKpId, '_blank');
       }
     }, {
       title: "Открыть imdb",
       action: function action() {
-        return openUrl(movie.urlImdbId, '_parent');
+        return openUrl(movie.urlImdbId, '_top');
       }
     }];
     Msg.showSelectActionInItem('Кино', itemsAdd);
