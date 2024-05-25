@@ -3412,7 +3412,7 @@
     loader$2,
     orsay_loaded,
     orsay_call = Date.now();
-  function init$K() {
+  function init$L() {
     $('body').append($("<div style=\"position: absolute; left: -1000px; top: -1000px;\">  \n    <object id=\"pluginObjectNNavi\" border=\"0\" classid=\"clsid:SAMSUNG-INFOLINK-NNAVI\" style=\"opacity: 0.0; background-color: #000; width: 1px; height: 1px;\"></object>\n    <object id=\"pluginObjectTVMW\" border=\"0\" classid=\"clsid:SAMSUNG-INFOLINK-TVMW\" style=\"opacity: 0.0; background-color: #000; width: 1px; height: 1px;\"></object>\n    <object id=\"pluginObjectScreen\" border=0 classid=\"clsid:SAMSUNG-INFOLINK-SCREEN\" style=\"opacity: 0.0; background-color: #000; width: 1px; height: 1px;\"></object>\n</div>"));
     Utils$2.putScript(['$MANAGER_WIDGET/Common/API/Widget.js', '$MANAGER_WIDGET/Common/API/TVKeyValue.js', '$MANAGER_WIDGET/Common/API/Plugin.js', '$MANAGER_WIDGET/Common/webapi/1.0/webapis.js', '$MANAGER_WIDGET/Common/IME_XT9/ime.js', '$MANAGER_WIDGET/Common/IME_XT9/inputCommon/ime_input.js'], function () {
       try {
@@ -3495,7 +3495,7 @@
     if (widgetAPI) widgetAPI.sendReturnEvent();
   }
   var Orsay = {
-    init: init$K,
+    init: init$L,
     isNewWidget: isNewWidget,
     getLoaderUrl: getLoaderUrl,
     setLoaderUrl: setLoaderUrl,
@@ -3507,7 +3507,7 @@
   var need_update = false;
   var need_visible = false;
   var canianimate$1 = typeof requestAnimationFrame !== 'undefined';
-  function init$J() {
+  function init$K() {
     $(window).on('resize', function () {
       clearTimeout(timer$8);
       timer$8 = setTimeout(function () {
@@ -3724,7 +3724,7 @@
   var Layer = {
     update: update$b,
     visible: visible,
-    init: init$J
+    init: init$K
   };
 
   function create$q() {
@@ -4056,7 +4056,7 @@
     }
     e.preventDefault();
   }
-  function init$I() {
+  function init$J() {
     window.addEventListener("keydown", function (e) {
       lastdown = keyCode(e);
       if (!timer$7) {
@@ -4097,7 +4097,7 @@
   }
   var Keypad = {
     listener: listener$j,
-    init: init$I,
+    init: init$J,
     enable: enable$1,
     disable: disable
   };
@@ -4105,7 +4105,7 @@
   var keydown_time = 0;
   var move_time = 0;
   var touch = false;
-  function init$H() {
+  function init$I() {
     Keypad.listener.follow('keydown', function () {
       keydown_time = Date.now();
       move_time = 0;
@@ -4175,7 +4175,7 @@
     return Date.now() - keydown_time < 500 ? false : touch || Platform.is('browser') || Platform.tv() || Platform.desktop() || Date.now() - move_time < 500;
   }
   var DeviceInput = {
-    init: init$H,
+    init: init$I,
     canClick: canClick
   };
 
@@ -4342,7 +4342,7 @@
     }
   };
 
-  function init$G() {
+  function init$H() {
     var agent = navigator.userAgent.toLowerCase();
     if (typeof webOS !== 'undefined' && webOS.platform.tv === true) {
       Storage.set('platform', 'webos');
@@ -4477,7 +4477,7 @@
     }
   }
   var Platform = {
-    init: init$G,
+    init: init$H,
     get: get$d,
     any: any,
     is: is,
@@ -4906,7 +4906,7 @@
   var html$h;
   var scroll$2;
   var active$4;
-  function init$F() {
+  function init$G() {
     html$h = Template$1.get('selectbox');
     scroll$2 = new create$q({
       mask: true,
@@ -5004,7 +5004,7 @@
     return html$h;
   }
   var Select = {
-    init: init$F,
+    init: init$G,
     show: show$9,
     hide: hide$2,
     close: close$5,
@@ -5463,7 +5463,7 @@
   /**
    * Запуск
    */
-  function init$E() {
+  function init$F() {
     html$g = Template$1.get('settings');
     body$3 = html$g.find('.settings__body');
     html$g.find('.settings__layer').on('click', function (e) {
@@ -5542,7 +5542,7 @@
   }
   var Settings = {
     listener: listener$i,
-    init: init$E,
+    init: init$F,
     render: render$d,
     update: update$9,
     create: create$o,
@@ -5932,7 +5932,7 @@
     timer: false,
     prev: ''
   };
-  function init$D() {
+  function init$E() {
     Keypad.listener.follow('keydown', function (e) {
       if (!playning()) return;
       PlayerPanel.rewind();
@@ -6083,7 +6083,7 @@
   }
   var PlayerIPTV = {
     listener: listener$h,
-    init: init$D,
+    init: init$E,
     start: start$6,
     playning: playning,
     channel: channel$1,
@@ -6119,7 +6119,7 @@
   var translates = {};
   var last_settings_action;
   var last_panel_focus;
-  function init$C() {
+  function init$D() {
     html$f = Template$1.get('player_panel');
     elems$1 = {
       peding: $('.player-panel__peding', html$f),
@@ -7046,7 +7046,7 @@
     return html$f;
   }
   var PlayerPanel = {
-    init: init$C,
+    init: init$D,
     listener: listener$g,
     render: render$c,
     toggle: toggle$8,
@@ -11099,7 +11099,7 @@
 
   var extensions$1;
   var listener$e = start$7();
-  function init$B() {}
+  function init$C() {}
   function show$7() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     if (extensions$1) return;
@@ -11126,7 +11126,7 @@
     return js ? html : $(html);
   }
   var Extensions = {
-    init: init$B,
+    init: init$C,
     listener: listener$e,
     show: show$7,
     render: render$b
@@ -11140,7 +11140,7 @@
   /**
    * Запуск
    */
-  function init$A() {
+  function init$B() {
     _loaded = Storage.get('plugins', '[]');
     Settings.main().render().find('[data-component="plugins"]').unbind('hover:enter').on('hover:enter', function () {
       Extensions.show();
@@ -11348,7 +11348,7 @@
     });
   }
   var Plugins = {
-    init: init$A,
+    init: init$B,
     load: load$2,
     remove: remove$3,
     loaded: function loaded() {
@@ -11400,7 +11400,7 @@
       dataType: 'text'
     });
   };
-  function init$z() {
+  function init$A() {
     if (Storage.get('vpn_checked_ready', 'false') || Storage.get('tmdb_proxy_api', '') || Storage.get('tmdb_proxy_image', '')) return;
     var install = function install(country) {
       console.log('VPN', 'country ' + country);
@@ -11441,7 +11441,7 @@
     Storage.set('vpn_checked_ready', true);
   }
   var VPN = {
-    init: init$z,
+    init: init$A,
     region: region
   };
 
@@ -11471,7 +11471,7 @@
   var hls_parser;
   var click_nums = 0;
   var click_timer;
-  function init$y() {
+  function init$z() {
     html$e = Template$1.get('player_video');
     display = html$e.find('.player-video__display');
     paused = html$e.find('.player-video__paused');
@@ -12503,7 +12503,7 @@
     return html$e;
   }
   var PlayerVideo = {
-    init: init$y,
+    init: init$z,
     listener: listener$d,
     url: url$5,
     render: render$a,
@@ -12814,7 +12814,7 @@
   var network$8 = new create$p();
   var elems;
   var error, stat_timer;
-  function init$x() {
+  function init$y() {
     html$d = Template$1.get('player_info');
     html$d.find('.player-info__body').prepend(HeadBackward('Плеер'));
     elems = {
@@ -12938,7 +12938,7 @@
     return html$d;
   }
   var PlayerInfo = {
-    init: init$x,
+    init: init$y,
     listener: listener$c,
     render: render$9,
     set: set$3,
@@ -14146,7 +14146,7 @@
   /**
    * Запуск
    */
-  function init$w() {
+  function init$x() {
     Storage.listener.follow('change', function (event) {
       if (event.name == 'background' || event.name == 'background_type') resize();
     });
@@ -14358,14 +14358,14 @@
     render: render$8,
     change: change,
     update: resize,
-    init: init$w,
+    init: init$x,
     immediately: immediately,
     theme: theme
   };
 
   var already_requested = false;
   var last_time_requested = 0;
-  function init$v() {
+  function init$w() {
     Params.trigger('parental_control', false);
     Params.select('parental_control_time', {
       'always': '#{settings_parental_control_param_time_always}',
@@ -14521,14 +14521,14 @@
     return Storage.field('parental_control');
   }
   var ParentalControl = {
-    init: init$v,
+    init: init$w,
     query: query,
     enabled: enabled$1,
     install: install$1
   };
 
   var status$1 = false;
-  function init$u() {
+  function init$v() {
     $.ajax({
       url: "./personal.lampa",
       dataType: 'text',
@@ -14541,11 +14541,11 @@
     return status$1;
   }
   var Personal = {
-    init: init$u,
+    init: init$v,
     confirm: confirm$1
   };
 
-  function init$t() {
+  function init$u() {
     console.log("AD preroll init");
   }
   function show$5(data, call) {
@@ -14561,7 +14561,7 @@
     return call();
   }
   var Preroll = {
-    init: init$t,
+    init: init$u,
     show: show$5
   };
 
@@ -14587,7 +14587,7 @@
    * Подписываемся на события
    */
 
-  function init$s() {
+  function init$t() {
     PlayerPanel.init();
     PlayerVideo.init();
     PlayerInfo.init();
@@ -15242,7 +15242,7 @@
     return $('body').find('.player').length ? true : false;
   }
   var Player$1 = {
-    init: init$s,
+    init: init$t,
     listener: listener$9,
     play: play$1,
     playlist: playlist,
@@ -15947,7 +15947,7 @@
   /**
    * Запуск
    */
-  function init$r() {
+  function init$s() {
     data$3 = Storage.cache('recomends_scan', 300, []);
     setInterval(function () {
       var history = Favorite.get({
@@ -16019,7 +16019,7 @@
     return items;
   }
   var Recomends = {
-    init: init$r,
+    init: init$s,
     get: get$9
   };
 
@@ -17154,7 +17154,7 @@
   /**
    * Запуск
    */
-  function init$q() {
+  function init$r() {
     data$2 = Storage.cache('timetable', limit$1, []);
     setInterval(extract, 1000 * 60 * (2));
     setInterval(favorites, 1000 * 60 * 10);
@@ -17377,7 +17377,7 @@
     return cards;
   }
   var TimeTable = {
-    init: init$q,
+    init: init$r,
     get: get$7,
     add: add$8,
     all: all$3,
@@ -18601,7 +18601,7 @@
   var html$9 = $('<div class="processing hide"><div><div class="processing__loader"></div><div class="processing__text"></div></div></div>'),
     text = html$9.find('.processing__text');
   var processing = [];
-  function init$p() {
+  function init$q() {
     update$5();
   }
   function update$5() {
@@ -18632,7 +18632,7 @@
     return js ? html$9[0] : html$9;
   }
   var Processing = {
-    init: init$p,
+    init: init$q,
     push: push$2,
     render: render$4
   };
@@ -19650,9 +19650,9 @@
     }]);
   }();
 
-  function showConsole() {
-    Lampa.Controller.toggle('console');
-  }
+  var Show = {
+    showViewByKeyCode: showViewByKeyCode
+  };
   function showViewByKeyCode(code) {
     if (code == Btn.btn1Code) {
       showMain();
@@ -19666,7 +19666,12 @@
       showFavorites();
     } else if (code == Btn.btn6Code) {
       showFavHistory();
+    } else if (code == Btn.btn9Code) {
+      showConsole();
     }
+  }
+  function showConsole() {
+    Lampa.Controller.toggle('console');
   }
   function showFilter() {
     Stub.filterShow();
@@ -19717,10 +19722,6 @@
       source: activityParam.source
     });
   }
-  var Show = {
-    showConsole: showConsole,
-    showViewByKeyCode: showViewByKeyCode
-  };
 
   var Local = {
     getKey: getKey,
@@ -19737,16 +19738,50 @@
     return Object.entries(localStorage);
   }
 
-  var System = {
-    isAndroid: isAndroid,
-    isWindows: isWindows
+  var systemInfo = {
+    userAgent: null,
+    platform: null,
+    system: null,
+    device: null,
+    deviceName: null,
+    isAndroid: null,
+    isWindow: null
   };
-  function isAndroid() {
-    return navigator.userAgent.toLowerCase().includes('android');
-    //navigator.userAgent.match(/Android/i);
+  var System = {
+    init: init$p,
+    systemInfo: systemInfo
+  };
+  function init$p() {
+    console.log(systemInfo);
+    systemInfo.userAgent = navigator.userAgent;
+    var userAgentLowCase = systemInfo.userAgent.toLowerCase();
+    systemInfo.isAndroid = userAgentLowCase.includes('android'); //navigator.userAgent.match(/Android/i);
+    systemInfo.isWindow = userAgentLowCase.includes('windows');
+    var sysInfo = getSystemInfoFromText(systemInfo.userAgent);
+    console.log(sysInfo);
+    if (sysInfo != null && Array.isArray(sysInfo) && sysInfo.length > 2) {
+      systemInfo.platform = sysInfo[0];
+      systemInfo.system = sysInfo[1];
+      systemInfo.device = sysInfo[2];
+      systemInfo.deviceName = getDeviceNameFromDevice(systemInfo.device);
+    }
+    console.log(systemInfo);
   }
-  function isWindows() {
-    return navigator.userAgent.toLowerCase().includes('windows');
+  function getSystemInfoFromText(text) {
+    var indexStart = text.indexOf('(');
+    var indexEnd = text.indexOf(')');
+    if (indexStart > 0 && indexEnd > indexStart) {
+      var info = text.substring(indexStart + 1, indexEnd);
+      var infoArray = info.split('; ');
+      return infoArray;
+    }
+    return null;
+  }
+  function getDeviceNameFromDevice(device) {
+    var indexSpace = device.indexOf(" ");
+    if (indexSpace > 0) {
+      return device.substring(0, indexSpace);
+    } else return device;
   }
 
   var Opt = {
@@ -19810,10 +19845,7 @@
     } finally {
       _iterator.f();
     }
-    Local.setKeyValue(deviceNameKey, getDeviceName());
-  }
-  function getDeviceName() {
-    if (System.isAndroid()) return 'Android';else if (System.isWindows()) return 'PC';else return 'unkwon';
+    Local.setKeyValue(deviceNameKey, System.getDeviceName());
   }
   function isFirstLoadSetFirst() {
     var isFirst = Local.getKey(firstLoadKey) != firstLoadKey;
@@ -20847,7 +20879,9 @@
   log.event('loaded');
   function init$k() {
     log.event(EsVersion.getVersionWithYear());
-    log.event(navigator.userAgent);
+    System.init();
+    log.event(System.systemInfo.userAgent);
+    log.eventParam('DiviceName:', System.systemInfo.deviceName);
     AppEvent.setAppEvents(onAppStart, onAppReady);
     AppEvent.setAppKeyDown(onAppKeyDown);
     AppEvent.setCardSelect(onCardSelect);
@@ -20883,11 +20917,9 @@
     //log.eventParam('onAppKeyDown', e.code);
 
     if (e.code == Btn.zeroBtnCode) {
-      Favs.showSelectFavsActions();
-    } else if (e.code == Btn.btn7Code) ; else if (e.code == Btn.btn8Code) {
       TimeCode.selectTimeCodesMode();
-    } else if (e.code == Btn.btn9Code) {
-      Show.showConsole();
+    } else if (e.code == Btn.btn7Code) ; else if (e.code == Btn.btn8Code) {
+      Favs.showSelectFavsActions();
     } else {
       Show.showViewByKeyCode(e.code);
     }
