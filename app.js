@@ -3172,8 +3172,8 @@
     return title.replace(/[^a-zа-я0-9\s]/gi, '');
   }
   function cardImgBackground(card_data) {
-    if (Storage.field('background')) {
-      if (Storage.field('background_type') == 'poster' && window.innerWidth > 790) {
+    if (Storage$1.field('background')) {
+      if (Storage$1.field('background_type') == 'poster' && window.innerWidth > 790) {
         return card_data.backdrop_path ? Api.img(card_data.backdrop_path, 'w1280') : card_data.background_image ? card_data.background_image : '';
       }
       return card_data.poster_path || card_data.profile_path ? Api.img(card_data.poster_path || card_data.profile_path) : card_data.poster || card_data.img || '';
@@ -3182,8 +3182,8 @@
   }
   function cardImgBackgroundBlur(card_data) {
     var uri = card_data.poster_path || card_data.profile_path ? Api.img(card_data.poster_path || card_data.profile_path, 'w200') : card_data.poster || card_data.img || '';
-    var pos = window.innerWidth > 400 && Storage.field('background_type') == 'poster';
-    if (Storage.field('background')) {
+    var pos = window.innerWidth > 400 && Storage$1.field('background_type') == 'poster';
+    if (Storage$1.field('background')) {
       if (card_data.backdrop_path) uri = Api.img(card_data.backdrop_path, pos ? 'w1280' : 'w200');else if (card_data.background_image && pos) uri = card_data.background_image;
     }
     return uri;
@@ -3302,7 +3302,7 @@
     return days <= 0 ? 0 : days;
   }
   function decodePG(pg) {
-    var lang = Storage.field('language');
+    var lang = Storage$1.field('language');
     var keys = {
       'G': '3+',
       'PG': '6+',
@@ -3518,7 +3518,7 @@
       }, 100);
     });
     var follow = ['animation', 'mask', 'card_interfice_poster', 'glass_style', 'black_style', 'glass_opacity', 'card_interfice_cover'];
-    Storage.listener.follow('change', function (event) {
+    Storage$1.listener.follow('change', function (event) {
       if (event.name == 'interface_size') {
         size$1();
         update$b();
@@ -3550,7 +3550,7 @@
     });
   }
   function size$1() {
-    var sl = Storage.field('interface_size');
+    var sl = Storage$1.field('interface_size');
     var sz = {
       normal: 1,
       small: 0.9,
@@ -3626,7 +3626,7 @@
     var active = Lampa.Activity.active();
     var where = render ? render : active && active.activity ? active.activity.render() : false;
     var area = 1.5;
-    var hide = Storage.field('hide_outside_the_screen');
+    var hide = Storage$1.field('hide_outside_the_screen');
     var v_w = window.innerWidth * area;
     var v_h = window.innerHeight * area;
     var m_w = window.innerWidth - v_w;
@@ -3693,14 +3693,14 @@
     }
   }
   function toggleClasses() {
-    $('body').toggleClass('no--animation', !Storage.field('animation'));
-    $('body').toggleClass('no--mask', !Storage.field('mask'));
-    $('body').toggleClass('no--poster', !Storage.field('card_interfice_poster'));
-    $('body').toggleClass('glass--style', Storage.field('glass_style'));
-    $('body').toggleClass('black--style', Storage.field('black_style'));
-    $('body').toggleClass('card--no-cover', !Storage.field('card_interfice_cover'));
+    $('body').toggleClass('no--animation', !Storage$1.field('animation'));
+    $('body').toggleClass('no--mask', !Storage$1.field('mask'));
+    $('body').toggleClass('no--poster', !Storage$1.field('card_interfice_poster'));
+    $('body').toggleClass('glass--style', Storage$1.field('glass_style'));
+    $('body').toggleClass('black--style', Storage$1.field('black_style'));
+    $('body').toggleClass('card--no-cover', !Storage$1.field('card_interfice_cover'));
     $('body').removeClass('glass--style-opacity--easy glass--style-opacity--medium glass--style-opacity--blacked');
-    if (Storage.field('glass_style')) $('body').addClass('glass--style-opacity--' + Storage.field('glass_opacity'));
+    if (Storage$1.field('glass_style')) $('body').addClass('glass--style-opacity--' + Storage$1.field('glass_opacity'));
   }
   function visible(where) {
     requestFrame$1();
@@ -3751,7 +3751,7 @@
       var parent = $(e.target).parents('.scroll');
       var inner = onTheRightSide(e, true);
       if (!params.horizontal && $(html).is(parent[0])) inner = true;
-      if (Storage.field('navigation_type') == 'mouse' && Date.now() - scroll_time > 200 && inner) {
+      if (Storage$1.field('navigation_type') == 'mouse' && Date.now() - scroll_time > 200 && inner) {
         scroll_time = Date.now();
         if (e.wheelDelta / 120 > 0) {
           if (_this.onWheel) _this.onWheel(-scroll_step);else _this.wheel(-scroll_step);
@@ -3803,7 +3803,7 @@
       } else {
         if (scroll_transition == false) {
           scroll_transition = scrl;
-          if (caianimate && Storage.field('animation')) {
+          if (caianimate && Storage$1.field('animation')) {
             var cannow = Date.now() - frame_time > 500;
             if (cannow) animate();else requestAnimationFrame(animate);
           } else animate();
@@ -3814,7 +3814,7 @@
     function animate() {
       body.style['-webkit-transform'] = 'translate3d(' + Math.round(params.horizontal ? scroll_transition : 0) + 'px, ' + Math.round(params.horizontal ? 0 : scroll_transition) + 'px, 0px)';
       scroll_transition = false;
-      if (!Storage.field('animation') || Date.now() - call_update_time < 300) scrollEnded();
+      if (!Storage$1.field('animation') || Date.now() - call_update_time < 300) scrollEnded();
       frame_time = Date.now();
     }
     function startScroll(scrl) {
@@ -4140,29 +4140,29 @@
     var show_touch, show_mouse, show_remote;
     $(document).on('touchstart', function (e) {
       if ($('.modal').length || show_touch) return;
-      if (!Storage.get('is_true_mobile', 'false') && Platform.screen('tv')) {
+      if (!Storage$1.get('is_true_mobile', 'false') && Platform.screen('tv')) {
         show_touch = true;
         showModal$1(Lang.translate('input_detection_touch'), function () {
-          Storage.set('is_true_mobile', 'true');
+          Storage$1.set('is_true_mobile', 'true');
           window.location.reload();
         });
       }
     }).on('click', function (e) {
       if ($('.modal').length || show_mouse || !canClick(e.originalEvent)) return;
-      if (Storage.field('navigation_type') !== 'mouse' && Platform.screen('tv')) {
+      if (Storage$1.field('navigation_type') !== 'mouse' && Platform.screen('tv')) {
         show_mouse = true;
         showModal$1(Lang.translate('input_detection_mouse'), function () {
-          Storage.set('navigation_type', 'mouse');
+          Storage$1.set('navigation_type', 'mouse');
           window.location.reload();
         });
       }
     });
     Keypad.listener.follow('keydown', function () {
       if ($('.modal').length || show_remote || document.activeElement.tagName == 'INPUT') return;
-      if (Storage.get('is_true_mobile', 'false')) {
+      if (Storage$1.get('is_true_mobile', 'false')) {
         show_remote = true;
         showModal$1(Lang.translate('input_detection_remote'), function () {
-          Storage.set('is_true_mobile', 'false');
+          Storage$1.set('is_true_mobile', 'false');
           window.location.reload();
         });
       }
@@ -4345,12 +4345,12 @@
   function init$G() {
     var agent = navigator.userAgent.toLowerCase();
     if (typeof webOS !== 'undefined' && webOS.platform.tv === true) {
-      Storage.set('platform', 'webos');
+      Storage$1.set('platform', 'webos');
       webOS.deviceInfo(function (e) {
         webOS.sdk_version = parseFloat(e.sdkVersion);
       });
     } else if (typeof webapis !== 'undefined' && typeof tizen !== 'undefined') {
-      Storage.set('platform', 'tizen');
+      Storage$1.set('platform', 'tizen');
       tizen.tvinputdevice.registerKey("MediaPlayPause");
       tizen.tvinputdevice.registerKey("MediaPlay");
       tizen.tvinputdevice.registerKey("MediaStop");
@@ -4360,30 +4360,30 @@
       tizen.tvinputdevice.registerKey("ChannelUp");
       tizen.tvinputdevice.registerKey("ChannelDown");
     } else if (agent.indexOf("lampa_client") > -1) {
-      Storage.set('platform', 'android');
+      Storage$1.set('platform', 'android');
     } else if (agent.indexOf("whaletv") > -1 || agent.indexOf("philips") > -1 || agent.indexOf("nettv") > -1) {
-      Storage.set('platform', 'philips');
+      Storage$1.set('platform', 'philips');
     } else if (agent.indexOf("ipad") > -1 && window.innerWidth == 1920 && window.innerHeight == 1080) {
-      Storage.set('platform', 'apple_tv');
+      Storage$1.set('platform', 'apple_tv');
     } else if (agent.indexOf("iphone") > -1 || agent.indexOf("mac os") > -1 && Utils$2.isTouchDevice() || agent.indexOf("macintosh") > -1 && Utils$2.isTouchDevice()) {
-      Storage.set('platform', 'apple');
+      Storage$1.set('platform', 'apple');
     } else if (typeof nw !== 'undefined') {
-      Storage.set('platform', 'nw');
+      Storage$1.set('platform', 'nw');
     } else if (agent.indexOf("electron") > -1) {
-      Storage.set('platform', 'electron');
+      Storage$1.set('platform', 'electron');
     } else if (agent.indexOf("netcast") > -1) {
-      Storage.set('platform', 'netcast');
+      Storage$1.set('platform', 'netcast');
     } else if (agent.indexOf("version/5.1.7 safari/534.57.2") > -1) {
-      Storage.set('platform', 'orsay');
+      Storage$1.set('platform', 'orsay');
     } else if (agent.indexOf("windows nt") > -1 || agent.indexOf("macintosh") > -1 && !Utils$2.isTouchDevice()) {
-      Storage.set('platform', 'browser');
+      Storage$1.set('platform', 'browser');
     } else if (agent.indexOf("maple") > -1) {
-      Storage.set('platform', 'orsay');
+      Storage$1.set('platform', 'orsay');
       Orsay.init();
     } else {
-      Storage.set('platform', '');
+      Storage$1.set('platform', '');
     }
-    Storage.set('native', Storage.get('platform') ? true : false);
+    Storage$1.set('native', Storage$1.get('platform') ? true : false);
   }
 
   /**
@@ -4391,7 +4391,7 @@
    * @returns String
    */
   function get$d() {
-    return Storage.get('platform', '');
+    return Storage$1.get('platform', '');
   }
 
   /**
@@ -4439,11 +4439,11 @@
   }
   function screen(need) {
     if (need == 'light') {
-      return Storage.field('light_version') && screen('tv');
+      return Storage$1.field('light_version') && screen('tv');
     }
     var is_tv = true;
     if (!tv()) {
-      if (Storage.get('is_true_mobile', 'false')) is_tv = false;else if (Boolean(Storage.get('platform', '') == 'apple')) is_tv = false;else if (Boolean(navigator.userAgent.toLowerCase().match(/iphone|ipad/i))) is_tv = false;else if (Utils$2.isTouchDevice()) {
+      if (Storage$1.get('is_true_mobile', 'false')) is_tv = false;else if (Boolean(Storage$1.get('platform', '') == 'apple')) is_tv = false;else if (Boolean(navigator.userAgent.toLowerCase().match(/iphone|ipad/i))) is_tv = false;else if (Utils$2.isTouchDevice()) {
         if (!Boolean(navigator.userAgent.toLowerCase().match(/(large screen)|googletv|mibox|mitv|smarttv|google tv/i))) {
           var ratio = window.devicePixelRatio || 1;
           var width = window.innerWidth * ratio;
@@ -4766,10 +4766,10 @@
         },
         error: error,
         beforeSend: function beforeSend(xhr) {
-          var use = Storage.field('torrserver_auth');
-          var srv = Storage.get(Storage.field('torrserver_use_link') == 'two' ? 'torrserver_url_two' : 'torrserver_url');
+          var use = Storage$1.field('torrserver_auth');
+          var srv = Storage$1.get(Storage$1.field('torrserver_use_link') == 'two' ? 'torrserver_url_two' : 'torrserver_url');
           if (use && srv && params.url.indexOf(srv) >= 0) {
-            var authorization = "Basic " + Base64.encode(Storage.get('torrserver_login') + ':' + Storage.get('torrserver_password'));
+            var authorization = "Basic " + Base64.encode(Storage$1.get('torrserver_login') + ':' + Storage$1.get('torrserver_password'));
             console.log('Request', 'authorization:', authorization);
             xhr.setRequestHeader("Authorization", authorization);
           }
@@ -5282,11 +5282,11 @@
           onSelect: function onSelect(a) {
             Controller.toggle(controller);
             if (a.calculate) {
-              Storage.getsize(function (size) {
+              Storage$1.getsize(function (size) {
                 status.text(Lang.translate('title_left') + ' - ' + Lampa.Utils.bytesToSize(size));
               });
             } else {
-              Storage.clear(a.full);
+              Storage$1.clear(a.full);
               Cache.clearAll();
             }
           },
@@ -6240,7 +6240,7 @@
       });
     });
     if (!html$f.find('.player-panel__volume').hasClass('hide')) {
-      html$f.find('.player-panel__volume-range').val(Storage.get('player_volume', '1')).on('input', function () {
+      html$f.find('.player-panel__volume-range').val(Storage$1.get('player_volume', '1')).on('input', function () {
         listener$g.send('change_volume', {
           volume: $(this).val()
         });
@@ -6504,10 +6504,10 @@
     }, 10);
   }
   function settings() {
-    var speed = Storage.get('player_speed', 'default');
+    var speed = Storage$1.get('player_speed', 'default');
     var items = [{
       title: Lang.translate('player_video_size'),
-      subtitle: Lang.translate('player_size_' + Storage.get('player_size', 'default') + '_title'),
+      subtitle: Lang.translate('player_size_' + Storage$1.get('player_size', 'default') + '_title'),
       method: 'size'
     }, {
       title: Lang.translate('player_video_speed'),
@@ -6518,19 +6518,19 @@
       subtitle: Lang.translate('player_share_descr'),
       method: 'share'
     }];
-    if (Storage.field('player_normalization')) {
+    if (Storage$1.field('player_normalization')) {
       items.push({
         title: Lang.translate('player_normalization'),
         separator: true
       });
       items.push({
         title: Lang.translate('player_normalization_power_title'),
-        subtitle: Lang.translate('player_normalization_step_' + Storage.get('player_normalization_power', 'hight')),
+        subtitle: Lang.translate('player_normalization_step_' + Storage$1.get('player_normalization_power', 'hight')),
         method: 'normalization_power'
       });
       items.push({
         title: Lang.translate('player_normalization_smooth_title'),
-        subtitle: Lang.translate('player_normalization_step_' + Storage.get('player_normalization_smooth', 'medium')),
+        subtitle: Lang.translate('player_normalization_step_' + Storage$1.get('player_normalization_smooth', 'medium')),
         method: 'normalization_smooth'
       });
     }
@@ -6560,7 +6560,7 @@
     });
   }
   function selectNormalizationStep(type, def) {
-    var select = Storage.get('player_normalization_' + type, def);
+    var select = Storage$1.get('player_normalization_' + type, def);
     var items = [{
       title: Lang.translate('player_normalization_step_low'),
       value: 'low',
@@ -6580,7 +6580,7 @@
       nohide: true,
       onBack: settings,
       onSelect: function onSelect(a) {
-        Storage.set('player_normalization_' + type, a.value);
+        Storage$1.set('player_normalization_' + type, a.value);
         settings();
       }
     });
@@ -6590,7 +6590,7 @@
    * Выбор масштаба видео
    */
   function selectSize() {
-    var select = Storage.get('player_size', 'default');
+    var select = Storage$1.get('player_size', 'default');
     var items = [{
       title: Lang.translate('player_size_default_title'),
       subtitle: Lang.translate('player_size_default_descr'),
@@ -6602,10 +6602,10 @@
       value: 'cover',
       selected: select == 'cover'
     }];
-    if (Platform.is('orsay') && Storage.field('player') == 'orsay') {
+    if (Platform.is('orsay') && Storage$1.field('player') == 'orsay') {
       items.splice(1, 1);
     }
-    if (!(Platform.is('tizen') && Storage.field('player') == 'tizen')) {
+    if (!(Platform.is('tizen') && Storage$1.field('player') == 'tizen')) {
       items = items.concat([{
         title: Lang.translate('player_size_fill_title'),
         subtitle: Lang.translate('player_size_fill_descr'),
@@ -6650,7 +6650,7 @@
     });
   }
   function selectSpeed() {
-    var select = Storage.get('player_speed', 'default');
+    var select = Storage$1.get('player_speed', 'default');
     var items = [{
       title: '0.25',
       value: '0.25'
@@ -6676,14 +6676,14 @@
       title: '2',
       value: '2'
     }];
-    if (Platform.is('tizen') && Storage.field('player') == 'tizen' || Platform.is('orsay') && Storage.field('player') == 'orsay') {
+    if (Platform.is('tizen') && Storage$1.field('player') == 'tizen' || Platform.is('orsay') && Storage$1.field('player') == 'orsay') {
       items = [{
         title: Lang.translate('player_speed_default_title'),
         value: 'default',
         selected: select == 'default'
       }, {
         title: '2',
-        subtitle: Platform.is('orsay') && Storage.field('player') == 'orsay' ? Lang.translate('player_speed_two_descr') : '',
+        subtitle: Platform.is('orsay') && Storage$1.field('player') == 'orsay' ? Lang.translate('player_speed_two_descr') : '',
         value: '2'
       }];
     }
@@ -6695,7 +6695,7 @@
       }
     });
     if (!any) {
-      Storage.set('player_speed', 'default');
+      Storage$1.set('player_speed', 'default');
       if (items.length == 3) items[0].selected = true;else items[3].selected = true;
     }
     Select.show({
@@ -6703,7 +6703,7 @@
       items: items,
       nohide: true,
       onSelect: function onSelect(a) {
-        Storage.set('player_speed', a.value);
+        Storage$1.set('player_speed', a.value);
         listener$g.send('speed', {
           speed: a.value
         });
@@ -7090,7 +7090,7 @@
   }
   function initStorage() {
     if (!subparams) {
-      subparams = Storage.get('webos_subs_params', '{}');
+      subparams = Storage$1.get('webos_subs_params', '{}');
       Arrays.extend(subparams, {
         color: 2,
         font_size: 1,
@@ -7110,7 +7110,7 @@
       parameters: parameters,
       method: method
     });
-    Storage.set('webos_subs_params', subparams);
+    Storage$1.set('webos_subs_params', subparams);
   }
   function getWebosmediaId(func) {
     var video = document.querySelector('video');
@@ -8818,8 +8818,8 @@
       }
       rms = Math.sqrt(total / analyser.fftSize);
       var db = toDb(rms);
-      var sm = Storage.get('player_normalization_smooth', 'medium');
-      var pw = Storage.get('player_normalization_power', 'hight');
+      var sm = Storage$1.get('player_normalization_smooth', 'medium');
+      var pw = Storage$1.get('player_normalization_power', 'hight');
       if (min === -48) min = db;
       if (min === -48) min = -40;
       analyser.min_db = smooth(analyser.min_db, min, sm == 'hight' ? 45 : sm == 'medium' ? 25 : 10);
@@ -10113,23 +10113,23 @@
       key: "toggle",
       value: function toggle(url) {
         if (url) {
-          Storage.set('cub_theme', url);
+          Storage$1.set('cub_theme', url);
           this.set(url);
         } else {
-          Storage.set('cub_theme', '');
+          Storage$1.set('cub_theme', '');
           $('#cub-theme').remove();
         }
       }
     }, {
       key: "get",
       value: function get() {
-        return Storage.get('cub_theme', '');
+        return Storage$1.get('cub_theme', '');
       }
     }, {
       key: "set",
       value: function set(url) {
         $('#cub-theme').remove();
-        var href = Utils$2.rewriteIfHTTPS(Utils$2.addUrlComponent(url, 'token=' + encodeURIComponent(Storage.get('account', '{}').token)));
+        var href = Utils$2.rewriteIfHTTPS(Utils$2.addUrlComponent(url, 'token=' + encodeURIComponent(Storage$1.get('account', '{}').token)));
         var css = $('<link rel="stylesheet" href="' + href + '" id="cub-theme">');
         $('body').append(css);
       }
@@ -10156,7 +10156,7 @@
     }, {
       key: "active",
       value: function active() {
-        return Storage.get('cub_theme', '') == this.link;
+        return Storage$1.get('cub_theme', '') == this.link;
       }
     }, {
       key: "visible",
@@ -10288,9 +10288,9 @@
       key: "create",
       value: function create() {
         this.html = Template$1.get('screensaver');
-        var source = this.params && this.params.url ? this.params.url : Storage.get('cub_screensaver', '');
+        var source = this.params && this.params.url ? this.params.url : Storage$1.get('cub_screensaver', '');
         if (!source) source = this["default"];
-        this.url = Utils$2.addUrlComponent(source, 'token=' + encodeURIComponent(Storage.get('account', '{}').token));
+        this.url = Utils$2.addUrlComponent(source, 'token=' + encodeURIComponent(Storage$1.get('account', '{}').token));
         this.preload = $('<div class="screensaver__preload"></div>');
         this.html.prepend(this.preload);
         this.html.find('.screensaver__slides').remove();
@@ -10496,13 +10496,13 @@
       key: "cache",
       value: function cache(call) {
         var _this3 = this;
-        this.items = Storage.get('screensaver_aerial_items', '[]');
+        this.items = Storage$1.get('screensaver_aerial_items', '[]');
         if (this.items.length) call();else {
           this.net.silent('https://raw.githubusercontent.com/OrangeJedi/Aerial/master/videos.json', function (json) {
             _this3.items = json.filter(function (a) {
               return a.src.H2641080p;
             });
-            Storage.set('screensaver_aerial_items', _this3.items);
+            Storage$1.set('screensaver_aerial_items', _this3.items);
             call();
           });
         }
@@ -10596,7 +10596,7 @@
       value: function show(type, params) {
         clearTimeout(this.timer);
         this.listener.send('start', {});
-        var select = Storage.field('screensaver_type');
+        var select = Storage$1.field('screensaver_type');
         if (typeof type == 'string') select = type;
         var Class = Chrome;
         if (this.class_list[select]) Class = this.class_list[select];
@@ -10612,8 +10612,8 @@
         var _this2 = this;
         clearTimeout(this.timer);
         this.time_reset = Date.now();
-        if (!Storage.field('screensaver') || !this.enabled || this.worked) return;
-        var timeout = 1000 * 60 * Storage.field('screensaver_time');
+        if (!Storage$1.field('screensaver') || !this.enabled || this.worked) return;
+        var timeout = 1000 * 60 * Storage$1.field('screensaver_time');
         this.timer = setTimeout(function () {
           //для ведра, когда в лампе появляетя фокус срабатывает таймер
           if (Date.now() - _this2.time_reset <= timeout + 100) _this2.show();else _this2.resetTimer();
@@ -10658,7 +10658,7 @@
     }, {
       key: "active",
       value: function active() {
-        return Storage.field('screensaver_type') == 'cub' && Storage.get('cub_screensaver', '') == this.link;
+        return Storage$1.field('screensaver_type') == 'cub' && Storage$1.get('cub_screensaver', '') == this.link;
       }
     }, {
       key: "visible",
@@ -10696,10 +10696,10 @@
           onSelect: function onSelect(a) {
             Controller.toggle(controller);
             if (a.toggle) {
-              if (_this3.active()) Storage.set('cub_screensaver', '');else {
+              if (_this3.active()) Storage$1.set('cub_screensaver', '');else {
                 if (_this3.data.premium && !Account.hasPremium()) return Lampa.Account.showCubPremium();
-                Storage.set('cub_screensaver', _this3.link);
-                Storage.set('screensaver_type', 'cub');
+                Storage$1.set('cub_screensaver', _this3.link);
+                Storage$1.set('screensaver_type', 'cub');
               }
               _this3.update();
             } else {
@@ -11141,7 +11141,7 @@
    * Запуск
    */
   function init$A() {
-    _loaded = Storage.get('plugins', '[]');
+    _loaded = Storage$1.get('plugins', '[]');
     Settings.main().render().find('[data-component="plugins"]').unbind('hover:enter').on('hover:enter', function () {
       Extensions.show();
     });
@@ -11152,7 +11152,7 @@
     });
   }
   function modify() {
-    var list = Storage.get('plugins', '[]');
+    var list = Storage$1.get('plugins', '[]');
     list = list.map(function (a) {
       return typeof a == 'string' ? {
         url: a,
@@ -11163,17 +11163,17 @@
       a.url = (a.url + '').replace('cub.watch', object$2.cub_domain);
     });
     console.log('Plugins', 'modify:', list);
-    Storage.set('plugins', list);
+    Storage$1.set('plugins', list);
   }
   function remove$3(plug) {
     Arrays.remove(_loaded, plug);
     console.log('Plugins', 'remove:', plug, 'index:', _loaded.indexOf(plug), 'from:', _loaded);
-    Storage.set('plugins', _loaded);
+    Storage$1.set('plugins', _loaded);
   }
   function add$b(plug) {
     _loaded.push(plug);
     console.log('Plugins', 'add:', plug);
-    Storage.set('plugins', _loaded);
+    Storage$1.set('plugins', _loaded);
     push$3(plug);
   }
   function push$3(plug) {
@@ -11200,7 +11200,7 @@
   }
   function save$5() {
     console.log('Plugins', 'save:', _loaded);
-    Storage.set('plugins', _loaded);
+    Storage$1.set('plugins', _loaded);
   }
   function updatePluginDB(name, url) {
     if (Account.hasPremium()) {
@@ -11259,10 +11259,10 @@
       var list = result.map(function (a) {
         return a.url;
       });
-      Storage.set('plugins_blacklist', list);
+      Storage$1.set('plugins_blacklist', list);
       status.append('cub', list);
     }, function () {
-      status.append('cub', Storage.get('plugins_blacklist', '[]'));
+      status.append('cub', Storage$1.get('plugins_blacklist', '[]'));
     });
     _network.silent('./plugins_black_list.json', function (list) {
       status.append('custom', list);
@@ -11283,7 +11283,7 @@
           return plugin.status;
         }).map(function (plugin) {
           return plugin.url;
-        }).concat(Storage.get('plugins', '[]').filter(function (plugin) {
+        }).concat(Storage$1.get('plugins', '[]').filter(function (plugin) {
           return plugin.status;
         }).map(function (plugin) {
           return plugin.url;
@@ -11367,13 +11367,13 @@
 
   var network$a = new create$p();
   function region(call) {
-    var reg = Storage.get('region', '{}');
+    var reg = Storage$1.get('region', '{}');
     Arrays.extend({
       time: 0
     });
     if (!reg.code || reg.time + 1000 * 60 * 60 * 24 < Date.now()) {
       var extracted = function extracted(code) {
-        Storage.set('region', {
+        Storage$1.set('region', {
           code: code.toLowerCase(),
           time: Date.now()
         });
@@ -11382,15 +11382,15 @@
       extract$2('https', extracted, function () {
         //может не работает https
 
-        Storage.set('protocol', 'http');
+        Storage$1.set('protocol', 'http');
         console.log('VPN', 'disable HTTPS');
         extract$2('http', extracted, function () {
           console.log('VPN', 'domain not responding');
-          Storage.set('region', {
-            code: Storage.field('language'),
+          Storage$1.set('region', {
+            code: Storage$1.field('language'),
             time: Date.now()
           });
-          call(Storage.field('language'));
+          call(Storage$1.field('language'));
         });
       });
     } else call(reg.code);
@@ -11401,7 +11401,7 @@
     });
   };
   function init$z() {
-    if (Storage.get('vpn_checked_ready', 'false') || Storage.get('tmdb_proxy_api', '') || Storage.get('tmdb_proxy_image', '')) return;
+    if (Storage$1.get('vpn_checked_ready', 'false') || Storage$1.get('tmdb_proxy_api', '') || Storage$1.get('tmdb_proxy_image', '')) return;
     var install = function install(country) {
       console.log('VPN', 'country ' + country);
       if (country.trim() == 'RU') {
@@ -11429,7 +11429,7 @@
       extract$2('https', install, function () {
         //может не работает https
 
-        Storage.set('protocol', 'http');
+        Storage$1.set('protocol', 'http');
         console.log('VPN', 'disable HTTPS');
         extract$2('http', install, function () {
           console.log('VPN', 'domain not responding');
@@ -11438,7 +11438,7 @@
         });
       });
     }
-    Storage.set('vpn_checked_ready', true);
+    Storage$1.set('vpn_checked_ready', true);
   }
   var VPN = {
     init: init$z,
@@ -11482,7 +11482,7 @@
       $(this).removeClass('rewind');
     });
     html$e.on('click', function (e) {
-      if ((Storage.field('navigation_type') == 'mouse' || Utils$2.isTouchDevice()) && DeviceInput.canClick(e.originalEvent)) {
+      if ((Storage$1.field('navigation_type') == 'mouse' || Utils$2.isTouchDevice()) && DeviceInput.canClick(e.originalEvent)) {
         clearTimeout(click_timer);
         click_nums++;
         if (PlayerIPTV.playning()) click_nums = 1;
@@ -11545,7 +11545,7 @@
       subs[inx].selected = true;
       console.log('WebOS', 'enable subs', inx);
       subsview(true);
-    } else if (Storage.field('subtitles_start')) {
+    } else if (Storage$1.field('subtitles_start')) {
       var full = subs.find(function (s) {
         return (s.label || '').indexOf('олные') >= 0;
       });
@@ -11595,7 +11595,7 @@
     _video.addEventListener('ended', function () {
       listener$d.send('ended', {});
     });
-    if (Platform.is('apple') && Storage.field('player') == 'ios') {
+    if (Platform.is('apple') && Storage$1.field('player') == 'ios') {
       _video.addEventListener('webkitendfullscreen', function (e) {
         window.history.back();
       });
@@ -11711,7 +11711,7 @@
     var pc = Boolean(Platform.is('nw') || Platform.is('browser') || Platform.is('apple') && !Utils$2.isPWA());
 
     // для страховки
-    _video.volume = pc ? parseFloat(Storage.get('player_volume', '1')) : 1;
+    _video.volume = pc ? parseFloat(Storage$1.get('player_volume', '1')) : 1;
     _video.muted = false;
   }
   function hlsBitrate(seconds) {
@@ -11739,8 +11739,8 @@
     var start_level = where.levels.find(function (level, i) {
       var level_width = level.width || 0;
       var level_height = level.height || 0;
-      var quality_width = Math.round(Storage.field('video_quality_default') * 1.777);
-      var quality_height = Storage.field('video_quality_default');
+      var quality_width = Math.round(Storage$1.field('video_quality_default') * 1.777);
+      var quality_height = Storage$1.field('video_quality_default');
       var w = level_width > quality_width - 50 && level_width < quality_width + 50;
       var h = level_height > quality_height - 50 && level_height < quality_height + 50;
       return w || h;
@@ -11818,7 +11818,7 @@
     }
     sx = sx.toFixed(2);
     sy = sy.toFixed(2);
-    if (Platform.is('orsay') && Storage.field('player') == 'inner' || Storage.field('player_scale_method') == 'calculate') {
+    if (Platform.is('orsay') && Storage$1.field('player') == 'inner' || Storage$1.field('player_scale_method') == 'calculate') {
       var nw = vw * rt,
         nh = vh * rt;
       var sz = {
@@ -11942,7 +11942,7 @@
         subs[params$1.sub].mode = 'showing';
         subs[params$1.sub].selected = true;
         subsview(true);
-      } else if (Storage.field('subtitles_start')) {
+      } else if (Storage$1.field('subtitles_start')) {
         var full = subs.find(function (s) {
           return (s.label || '').indexOf('олные') >= 0;
         });
@@ -12070,9 +12070,9 @@
    * Применяет к блоку субтитров пользовательские настройки
    */
   function applySubsSettings() {
-    var hasStroke = Storage.field('subtitles_stroke'),
-      hasBackdrop = Storage.field('subtitles_backdrop'),
-      size = Storage.field('subtitles_size');
+    var hasStroke = Storage$1.field('subtitles_stroke'),
+      hasBackdrop = Storage$1.field('subtitles_backdrop'),
+      size = Storage$1.field('subtitles_size');
     subtitles$1.removeClass('has--stroke has--backdrop size--normal size--large size--small');
     subtitles$1.addClass('size--' + size);
     if (hasStroke) {
@@ -12088,19 +12088,19 @@
    */
   function create$l() {
     var videobox;
-    if (Platform.is('tizen') && Storage.field('player') == 'tizen') {
+    if (Platform.is('tizen') && Storage$1.field('player') == 'tizen') {
       videobox = AVPlay$1(function (object) {
         _video = object;
       });
-    } else if (Platform.is('orsay') && Storage.field('player') == 'orsay') {
+    } else if (Platform.is('orsay') && Storage$1.field('player') == 'orsay') {
       videobox = AVPlay(function (object) {
         _video = object;
       });
     } else {
       videobox = $('<video class="player-video__video" poster="./img/video_poster.png" crossorigin="anonymous"></video>');
-      if (Platform.is('apple') && Storage.field('player') !== 'ios') videobox.attr('playsinline', 'true');
+      if (Platform.is('apple') && Storage$1.field('player') !== 'ios') videobox.attr('playsinline', 'true');
       _video = videobox[0];
-      if (Storage.field('player_normalization')) {
+      if (Storage$1.field('player_normalization')) {
         try {
           console.log('Player', 'normalization enabled');
           normalization = new Normalization();
@@ -12170,7 +12170,7 @@
     create$l();
     if (/\.mpd/.test(src) && typeof dashjs !== 'undefined') {
       try {
-        if (Platform.is('orsay') && Storage.field('player') == 'orsay') {
+        if (Platform.is('orsay') && Storage$1.field('player') == 'orsay') {
           load$1(src);
         } else {
           dash = dashjs.MediaPlayer().create();
@@ -12184,12 +12184,12 @@
     } else if (/\.m3u8/.test(src)) {
       if (navigator.userAgent.toLowerCase().indexOf('maple') > -1) src += '|COMPONENT=HLS';
       if (typeof Hls !== 'undefined') {
-        var use_program = Storage.field('player_hls_method') == 'hlsjs';
+        var use_program = Storage$1.field('player_hls_method') == 'hlsjs';
 
         //если это плеер тайзен, то используем только системный
-        if (Platform.is('tizen') && Storage.field('player') == 'tizen') use_program = false;
+        if (Platform.is('tizen') && Storage$1.field('player') == 'tizen') use_program = false;
         //если это плеер orsay, то используем только системный
-        else if (Platform.is('orsay') && Storage.field('player') == 'orsay') use_program = false;
+        else if (Platform.is('orsay') && Storage$1.field('player') == 'orsay') use_program = false;
         //а если системный и m3u8 не поддерживается, то переключаем на программный
         else if (!use_program && !_video.canPlayType('application/vnd.apple.mpegurl')) use_program = true;
 
@@ -12392,7 +12392,7 @@
    */
   function rewind(forward, custom_step) {
     if (_video.duration) {
-      var step = Storage.field('player_rewind');
+      var step = Storage$1.field('player_rewind');
       if (rewind_position == 0) {
         rewind_force = Math.max(5, custom_step || step);
         rewind_position = _video.currentTime;
@@ -12447,7 +12447,7 @@
   }
   function changeVolume(volume) {
     _video.volume = volume;
-    Storage.set('player_volume', volume);
+    Storage$1.set('player_volume', volume);
   }
 
   /**
@@ -12590,9 +12590,9 @@
     return u ? Utils$2.checkEmptyUrl(u) : u;
   }
   function ip() {
-    var one = Storage.get('torrserver_url');
-    var two = Storage.get('torrserver_url_two');
-    return Storage.field('torrserver_use_link') == 'two' ? two || one : one || two;
+    var one = Storage$1.get('torrserver_url');
+    var two = Storage$1.get('torrserver_url_two');
+    return Storage$1.field('torrserver_use_link') == 'two' ? two || one : one || two;
   }
   function my(success, fail) {
     var data = JSON.stringify({
@@ -12629,7 +12629,7 @@
       title: '[LAMPA] ' + (object.title + '').replace('??', '?'),
       poster: object.poster,
       data: object.data ? JSON.stringify(object.data) : '',
-      save_to_db: Storage.get('torrserver_savedb', 'false')
+      save_to_db: Storage$1.get('torrserver_savedb', 'false')
     });
     clear$9();
     network$9.silent(url$4() + '/torrents', success, function (a, c) {
@@ -12665,7 +12665,7 @@
     }));
   }
   function stream(path, hash, id) {
-    return url$4() + '/stream/' + encodeURIComponent(path.split('\\').pop().split('/').pop()) + '?link=' + hash + '&index=' + id + '&' + (Storage.field('torrserver_preload') ? 'preload' : 'play');
+    return url$4() + '/stream/' + encodeURIComponent(path.split('\\').pop().split('/').pop()) + '?link=' + hash + '&index=' + id + '&' + (Storage$1.field('torrserver_preload') ? 'preload' : 'play');
   }
   function drop(hash, success, fail) {
     var data = JSON.stringify({
@@ -14070,7 +14070,7 @@
   var ctx = canvas.getContext('2d');
   var waiting = {};
   function write(img, src) {
-    if (!Storage.field('cache_images')) return;
+    if (!Storage$1.field('cache_images')) return;
     if (src.indexOf('http') === 0) {
       if (waiting[src]) return;
       waiting[src] = true;
@@ -14101,7 +14101,7 @@
     }
   }
   function read$2(img, src) {
-    if (Storage.field('cache_images')) {
+    if (Storage$1.field('cache_images')) {
       Cache.getData('images', src).then(function (str) {
         if (str) {
           if (typeof str == 'string') img.src = str;else {
@@ -14147,7 +14147,7 @@
    * Запуск
    */
   function init$w() {
-    Storage.listener.follow('change', function (event) {
+    Storage$1.listener.follow('change', function (event) {
       if (event.name == 'background' || event.name == 'background_type') resize();
     });
     var u = Platform.any() ? 'https://yumata.github.io/lampa/' : './';
@@ -14187,7 +14187,7 @@
    * @param {boolean} noimage
    */
   function draw(data, item, noimage) {
-    if (!Storage.get('background', 'true') || noimage) {
+    if (!Storage$1.get('background', 'true') || noimage) {
       background.one.canvas.removeClass('visible');
       background.two.canvas.removeClass('visible');
       return;
@@ -14195,7 +14195,7 @@
     item.canvas[0].width = window.innerWidth;
     item.canvas[0].height = window.innerHeight;
     var palette = data.palette;
-    var type = Storage.field('background_type');
+    var type = Storage$1.field('background_type');
     blur(data, item, function () {
       if (type == 'complex' && bokeh.d) {
         var bright = Color.rgbToHsl(palette.average[0], palette.average[1], palette.average[2]);
@@ -14320,7 +14320,7 @@
    */
   function change() {
     var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    if (url == src || Storage.field('light_version')) return;
+    if (url == src || Storage$1.field('light_version')) return;
     bokeh.d = true;
     if (url) src = url;
     clearTimeout(timer$3);
@@ -14335,7 +14335,7 @@
    */
   function immediately() {
     var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    if (Storage.field('light_version') || immed_time + 1000 > Date.now()) return;
+    if (Storage$1.field('light_version') || immed_time + 1000 > Date.now()) return;
     if (url) src = url;
     clearTimeout(timer$3);
     bokeh.d = false;
@@ -14384,39 +14384,39 @@
         var other = e.body.find('.parental-control-other');
         var active;
         var updateStatus = function updateStatus() {
-          toggle.find('.settings-param__value').text(Lang.translate(Storage.field('parental_control') ? 'settings_parental_control_enabled' : 'settings_parental_control_disabled'));
-          other.toggleClass('hide', !Boolean(Storage.field('parental_control')));
+          toggle.find('.settings-param__value').text(Lang.translate(Storage$1.field('parental_control') ? 'settings_parental_control_enabled' : 'settings_parental_control_disabled'));
+          other.toggleClass('hide', !Boolean(Storage$1.field('parental_control')));
         };
         toggle.on('hover:enter', function () {
           active = Controller.enabled().name;
-          if (Storage.field('parental_control')) {
+          if (Storage$1.field('parental_control')) {
             request(function () {
-              Storage.set('parental_control', false);
+              Storage$1.set('parental_control', false);
               updateStatus();
               Controller.toggle(active);
             }, function () {
               Controller.toggle(active);
             });
-          } else if (!Storage.value('parental_control_pin')) {
+          } else if (!Storage$1.value('parental_control_pin')) {
             set$1(function (code) {
               if (code) {
-                Storage.set('parental_control_pin', code);
-                Storage.set('parental_control', true);
+                Storage$1.set('parental_control_pin', code);
+                Storage$1.set('parental_control', true);
                 updateStatus();
               }
             });
           } else {
-            Storage.set('parental_control', true);
+            Storage$1.set('parental_control', true);
             updateStatus();
           }
         });
         change.on('hover:enter', function () {
           active = Controller.enabled().name;
-          if (Storage.value('parental_control_pin')) {
+          if (Storage$1.value('parental_control_pin')) {
             request(function () {
               set$1(function (code) {
                 if (code) {
-                  Storage.set('parental_control_pin', code);
+                  Storage$1.set('parental_control_pin', code);
                 }
                 Controller.toggle(active);
               });
@@ -14460,9 +14460,9 @@
     }, call);
   }
   function request(call, error) {
-    if (Storage.field('parental_control')) {
+    if (Storage$1.field('parental_control')) {
       pin(Lang.translate('parental_control_input_code'), function (code) {
-        if (code == Storage.value('parental_control_pin')) {
+        if (code == Storage$1.value('parental_control_pin')) {
           call();
         } else if (code) {
           Noty.show(Lang.translate('parental_control_input_error'));
@@ -14480,8 +14480,8 @@
    * @param {function} error - если нет
    */
   function query(call, error) {
-    if (Storage.field('parental_control')) {
-      var type = Storage.field('parental_control_time');
+    if (Storage$1.field('parental_control')) {
+      var type = Storage$1.field('parental_control_time');
       if (type !== 'always') {
         if (type == 'once') {
           if (already_requested) return call();
@@ -14506,8 +14506,8 @@
   function install$1(call) {
     set$1(function (code) {
       if (code) {
-        Storage.set('parental_control_pin', code);
-        Storage.set('parental_control', true);
+        Storage$1.set('parental_control_pin', code);
+        Storage$1.set('parental_control', true);
       }
       call(Boolean(code));
     });
@@ -14518,7 +14518,7 @@
    * @returns bollean
    */
   function enabled$1() {
-    return Storage.field('parental_control');
+    return Storage$1.field('parental_control');
   }
   var ParentalControl = {
     init: init$v,
@@ -14597,9 +14597,9 @@
     html$b.append(PlayerPanel.render());
     html$b.append(PlayerInfo.render());
     html$b.on('mousemove', function () {
-      if (Storage.field('navigation_type') == 'mouse' && !Utils$2.isTouchDevice()) PlayerPanel.mousemove();
+      if (Storage$1.field('navigation_type') == 'mouse' && !Utils$2.isTouchDevice()) PlayerPanel.mousemove();
     });
-    if (!window.localStorage.getItem('player_torrent')) Storage.set('player_torrent', Storage.field('player'));
+    if (!window.localStorage.getItem('player_torrent')) Storage$1.set('player_torrent', Storage$1.field('player'));
 
     /** Следим за обновлением времени */
     PlayerVideo.listener.follow('timeupdate', function (e) {
@@ -14609,7 +14609,7 @@
       PlayerPanel.update('position', e.current / e.duration * 100 + '%');
       Screensaver$2.resetTimer();
       if (work && work.timeline && !work.timeline.waiting_for_user && e.duration) {
-        if (Storage.field('player_timecode') !== 'again' && !work.timeline.continued) {
+        if (Storage$1.field('player_timecode') !== 'again' && !work.timeline.continued) {
           var exact = parseFloat(work.timeline.time + '');
           exact = isNaN(exact) ? 0 : parseFloat(exact.toFixed(3));
           var prend = e.duration - 15,
@@ -14655,7 +14655,7 @@
 
     /** Видео было завершено */
     PlayerVideo.listener.follow('ended', function (e) {
-      if (Storage.field('playlist_next') && !$('body').hasClass('selectbox--open')) PlayerPlaylist.next();
+      if (Storage$1.field('playlist_next') && !$('body').hasClass('selectbox--open')) PlayerPlaylist.next();
     });
 
     /** Дорожки полученые из видео */
@@ -14728,13 +14728,13 @@
     /** Изменить размер видео */
     PlayerPanel.listener.follow('size', function (e) {
       PlayerVideo.size(e.size);
-      Storage.set('player_size', e.size);
+      Storage$1.set('player_size', e.size);
     });
 
     /** Изменить скорость видео */
     PlayerPanel.listener.follow('speed', function (e) {
       PlayerVideo.speed(e.speed);
-      Storage.set('player_speed', e.speed);
+      Storage$1.set('player_speed', e.speed);
     });
 
     /** Предыдущая серия */
@@ -15009,7 +15009,7 @@
   function ask() {
     if (work && work.timeline && work.timeline.percent) {
       work.timeline.waiting_for_user = false;
-      if (Storage.field('player_timecode') == 'ask') {
+      if (Storage$1.field('player_timecode') == 'ask') {
         work.timeline.waiting_for_user = true;
         Select.show({
           title: Lang.translate('title_action'),
@@ -15073,14 +15073,14 @@
     var player_need = 'player' + (need ? '_' + need : '');
     if (launch_player == 'lampa' || launch_player == 'inner' || data.url.indexOf('youtube.com') >= 0) inner();else if (Platform.is('apple')) {
       data.url = data.url.replace('&preload', '&play').replace(/\s/g, '%20');
-      if (Storage.field(player_need) == 'vlc') window.open('vlc://' + data.url);else if (Storage.field(player_need) == 'nplayer') window.open('nplayer-' + data.url);else if (Storage.field(player_need) == 'infuse') window.open('infuse://x-callback-url/play?url=' + encodeURIComponent(data.url));else if (Storage.field(player_need) == 'svplayer') window.open('svplayer://x-callback-url/stream?url=' + encodeURIComponent(data.url));else if (Storage.field(player_need) == 'ios') {
+      if (Storage$1.field(player_need) == 'vlc') window.open('vlc://' + data.url);else if (Storage$1.field(player_need) == 'nplayer') window.open('nplayer-' + data.url);else if (Storage$1.field(player_need) == 'infuse') window.open('infuse://x-callback-url/play?url=' + encodeURIComponent(data.url));else if (Storage$1.field(player_need) == 'svplayer') window.open('svplayer://x-callback-url/stream?url=' + encodeURIComponent(data.url));else if (Storage$1.field(player_need) == 'ios') {
         html$b.addClass('player--ios');
         inner();
       } else inner();
     } else if (Platform.is('apple_tv')) {
       data.url = data.url.replace('&preload', '&play').replace(/\s/g, '%20');
-      if (Storage.field(player_need) == 'vlc') window.location.assign('vlc-x-callback://x-callback-url/stream?url=' + encodeURIComponent(data.url));else if (Storage.field(player_need) == 'infuse') window.location.assign('infuse://x-callback-url/play?url=' + encodeURIComponent(data.url));else if (Storage.field(player_need) == 'svplayer') window.location.assign('svplayer://x-callback-url/stream?url=' + encodeURIComponent(data.url));else if (Storage.field(player_need) == 'tvos') window.location.assign('lampa://video?player=tvos&src=' + encodeURIComponent(data.url) + '&playlist=' + encodeURIComponent(JSON.stringify(data.playlist)));else inner();
-    } else if (Platform.is('webos') && (Storage.field(player_need) == 'webos' || launch_player == 'webos')) {
+      if (Storage$1.field(player_need) == 'vlc') window.location.assign('vlc-x-callback://x-callback-url/stream?url=' + encodeURIComponent(data.url));else if (Storage$1.field(player_need) == 'infuse') window.location.assign('infuse://x-callback-url/play?url=' + encodeURIComponent(data.url));else if (Storage$1.field(player_need) == 'svplayer') window.location.assign('svplayer://x-callback-url/stream?url=' + encodeURIComponent(data.url));else if (Storage$1.field(player_need) == 'tvos') window.location.assign('lampa://video?player=tvos&src=' + encodeURIComponent(data.url) + '&playlist=' + encodeURIComponent(JSON.stringify(data.playlist)));else inner();
+    } else if (Platform.is('webos') && (Storage$1.field(player_need) == 'webos' || launch_player == 'webos')) {
       data.url = data.url.replace('&preload', '&play');
       Preroll.show(data, function () {
         runWebOS({
@@ -15090,7 +15090,7 @@
           position: data.timeline ? data.timeline.time || -1 : -1
         });
       });
-    } else if (Platform.is('android') && (Storage.field(player_need) == 'android' || launch_player == 'android' || data.torrent_hash)) {
+    } else if (Platform.is('android') && (Storage$1.field(player_need) == 'android' || launch_player == 'android' || data.torrent_hash)) {
       data.url = data.url.replace('&preload', '&play');
       if (data.playlist && Array.isArray(data.playlist)) {
         data.playlist = data.playlist.filter(function (p) {
@@ -15103,8 +15103,8 @@
       Preroll.show(data, function () {
         Android.openPlayer(data.url, data);
       });
-    } else if (Platform.desktop() && Storage.field(player_need) == 'other') {
-      var path = Storage.field('player_nw_path');
+    } else if (Platform.desktop() && Storage$1.field(player_need) == 'other') {
+      var path = Storage$1.field('player_nw_path');
       var file = require('fs');
       data.url = data.url.replace('&preload', '&play').replace(/\s/g, '%20');
       if (file.existsSync(path)) {
@@ -15127,7 +15127,7 @@
     if (data.quality) {
       if (Arrays.getKeys(data.quality).length == 1) delete data.quality;else {
         for (var q in data.quality) {
-          if (parseInt(q) == Storage.field('video_quality_default')) {
+          if (parseInt(q) == Storage$1.field('video_quality_default')) {
             data.url = data.quality[q];
             break;
           }
@@ -15147,8 +15147,8 @@
           PlayerPanel.quality(data.quality, data.url);
           if (data.translate) PlayerPanel.setTranslate(data.translate);
           PlayerVideo.url(data.url);
-          PlayerVideo.size(Storage.get('player_size', 'default'));
-          PlayerVideo.speed(Storage.get('player_speed', 'default'));
+          PlayerVideo.size(Storage$1.get('player_size', 'default'));
+          PlayerVideo.speed(Storage$1.get('player_speed', 'default'));
           if (data.subtitles) PlayerVideo.customSubs(data.subtitles);
           PlayerInfo.set('name', data.title);
           if (!preloader.call) $('body').append(html$b);
@@ -15173,8 +15173,8 @@
         listener$9.send('start', data);
         html$b.toggleClass('iptv', true);
         PlayerIPTV.start(data);
-        PlayerVideo.size(Storage.get('player_size', 'default'));
-        PlayerVideo.speed(Storage.get('player_speed', 'default'));
+        PlayerVideo.size(Storage$1.get('player_size', 'default'));
+        PlayerVideo.speed(Storage$1.get('player_speed', 'default'));
         $('body').append(html$b);
         toggle$6();
         PlayerPanel.show(true);
@@ -15262,13 +15262,13 @@
     var acc = Account.canSync();
     var name = 'file_view' + (acc ? '_' + acc.profile.id : '');
     if (window.localStorage.getItem(name) === null && acc) {
-      Storage.set(name, Arrays.clone(Storage.cache('file_view', 10000, {})));
+      Storage$1.set(name, Arrays.clone(Storage$1.cache('file_view', 10000, {})));
     }
     return name;
   }
   function update$7(params) {
     if (params.hash == 0) return;
-    var viewed = Storage.cache(filename(), 10000, {});
+    var viewed = Storage$1.cache(filename(), 10000, {});
     var road = viewed[params.hash];
     if (typeof road == 'undefined' || typeof road == 'number') {
       road = {
@@ -15283,7 +15283,7 @@
     if (typeof params.time !== 'undefined') road.time = params.time;
     if (typeof params.duration !== 'undefined') road.duration = params.duration;
     if (typeof params.profile !== 'undefined') road.profile = params.profile;
-    Storage.set(filename(), viewed);
+    Storage$1.set(filename(), viewed);
     var line = $('.time-line[data-hash="' + params.hash + '"]').toggleClass('hide', params.percent ? false : true);
     $('> div', line).css({
       width: params.percent + '%'
@@ -15306,7 +15306,7 @@
     });
   }
   function view$1(hash) {
-    var viewed = Storage.cache(filename(), 10000, {}),
+    var viewed = Storage$1.cache(filename(), 10000, {}),
       curent = typeof viewed[hash] !== 'undefined' ? viewed[hash] : 0;
     var account = Account.canSync();
     var profile = account && account.profile ? account.profile.id : 0;
@@ -15468,10 +15468,10 @@
     }
     var name_devise = Platform.get() ? Platform.get() : navigator.userAgent.toLowerCase().indexOf('mobile') > -1 ? 'mobile' : navigator.userAgent.toLowerCase().indexOf('x11') > -1 ? 'chrome' : 'other';
     data.device_id = _uid;
-    data.name = Utils$2.capitalizeFirstLetter(name_devise) + ' - ' + Storage.field('device_name');
+    data.name = Utils$2.capitalizeFirstLetter(name_devise) + ' - ' + Storage$1.field('device_name');
     data.method = method;
     data.version = 1;
-    data.account = Storage.get('account', '{}');
+    data.account = Storage$1.get('account', '{}');
     data.premium = Account.hasPremium();
     if (socket && socket.readyState == 1) {
       socket.send(JSON.stringify(data));
@@ -15492,7 +15492,7 @@
 
   var broken_images = 0;
   function proxy(name) {
-    var proxy = Storage.field(name);
+    var proxy = Storage$1.field(name);
     if (proxy.length > 0 && proxy.charAt(proxy.length - 1) == '/') {
       proxy = proxy.substring(0, proxy.length - 1);
     }
@@ -15500,17 +15500,17 @@
   }
   function api$2(url) {
     var base = Utils$2.protocol() + 'api.themoviedb.org/3/' + url;
-    return Storage.field('proxy_tmdb') && Storage.field('tmdb_proxy_api') ? proxy('tmdb_proxy_api') + '/' + base : base;
+    return Storage$1.field('proxy_tmdb') && Storage$1.field('tmdb_proxy_api') ? proxy('tmdb_proxy_api') + '/' + base : base;
   }
   function image(url) {
     var base = Utils$2.protocol() + 'image.tmdb.org/' + url;
-    return Storage.field('proxy_tmdb') && Storage.field('tmdb_proxy_image') ? proxy('tmdb_proxy_image') + '/' + base : base;
+    return Storage$1.field('proxy_tmdb') && Storage$1.field('tmdb_proxy_image') ? proxy('tmdb_proxy_image') + '/' + base : base;
   }
   function broken() {
     broken_images++;
     if (broken_images > 50) {
       broken_images = 0;
-      if (Storage.field('tmdb_proxy_image') && Storage.field('proxy_tmdb_auto')) Storage.set('proxy_tmdb', true);
+      if (Storage$1.field('tmdb_proxy_image') && Storage$1.field('proxy_tmdb_auto')) Storage$1.set('proxy_tmdb', true);
     }
   }
   function key() {
@@ -15699,7 +15699,7 @@
       _classCallCheck(this, NoticeCub);
       _this = _callSuper(this, NoticeCub, [params]);
       _this.name = 'CUB';
-      _this.time = Storage.get('cub_notice_time', '0');
+      _this.time = Storage$1.get('cub_notice_time', '0');
       _this.notices = [];
       setInterval(_this.update.bind(_this), 1000 * 60 * 5);
       _this.update();
@@ -15744,7 +15744,7 @@
     }, {
       key: "viewed",
       value: function viewed() {
-        Storage.set('cub_notice_time', Date.now());
+        Storage$1.set('cub_notice_time', Date.now());
         this.time = Date.now();
         Notice$1.drawCount();
       }
@@ -15948,7 +15948,7 @@
    * Запуск
    */
   function init$r() {
-    data$3 = Storage.cache('recomends_scan', 300, []);
+    data$3 = Storage$1.cache('recomends_scan', 300, []);
     setInterval(function () {
       var history = Favorite.get({
         type: 'history'
@@ -15970,7 +15970,7 @@
         }
       });
       console.log('Recomendations', 'added to scan:', added, 'ready:', data$3.length);
-      Storage.set('recomends_scan', data$3);
+      Storage$1.set('recomends_scan', data$3);
       search$6();
     }, 120 * 1000);
   }
@@ -15985,7 +15985,7 @@
       TMDB.get((elem.tv ? 'tv' : 'movie') + '/' + elem.id + '/recommendations', {}, function (json) {
         console.log('Recomendations', 'result:', json.results && json.results.length ? json.results.length : 0);
         if (json.results && json.results.length) {
-          var recomend = Storage.cache('recomends_list', 100, []);
+          var recomend = Storage$1.cache('recomends_list', 100, []);
           var favorite = Favorite.get({
             type: 'history'
           });
@@ -15998,7 +15998,7 @@
               recomend.push(e);
             }
           });
-          Storage.set('recomends_list', recomend);
+          Storage$1.set('recomends_list', recomend);
         }
       });
     } else {
@@ -16006,10 +16006,10 @@
         return a.scan = 0;
       });
     }
-    Storage.set('recomends_scan', data$3);
+    Storage$1.set('recomends_scan', data$3);
   }
   function get$9(type) {
-    var all = Storage.get('recomends_list', '[]');
+    var all = Storage$1.get('recomends_list', '[]');
     var items = all.filter(function (e) {
       return type == 'tv' ? e.number_of_seasons || e.first_air_date : !(e.number_of_seasons || e.first_air_date);
     }).reverse();
@@ -16244,7 +16244,7 @@
   };
   function url$2(u) {
     var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var ln = [Storage.field('tmdb_lang')];
+    var ln = [Storage$1.field('tmdb_lang')];
     if (params.langs) ln = typeof params.langs == 'string' ? [params.langs] : ln.concat(params.langs.filter(function (n) {
       return n !== ln[0];
     }));
@@ -16269,7 +16269,7 @@
     return u + (/\?/.test(u) ? '&' : '?') + params;
   }
   function img(src, size) {
-    var poster_size = Storage.field('poster_size');
+    var poster_size = Storage$1.field('poster_size');
     var baseimg = 't/p/' + poster_size + '/';
     var path = baseimg;
     if (size) path = path.replace(new RegExp(poster_size, 'g'), size);
@@ -16525,7 +16525,7 @@
   function videos() {
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var oncomplite = arguments.length > 1 ? arguments[1] : undefined;
-    var lg = Storage.field('tmdb_lang');
+    var lg = Storage$1.field('tmdb_lang');
     var status = new status$2(lg == 'en' ? 1 : 2);
     status.onComplite = function (res) {
       var data = [];
@@ -16536,7 +16536,7 @@
       });
     };
     get$8(params.method + '/' + params.id + '/videos', {
-      langs: Storage.field('tmdb_lang')
+      langs: Storage$1.field('tmdb_lang')
     }, function (json) {
       status.append('one', json);
     }, status.error.bind(status));
@@ -16821,7 +16821,7 @@
   }
   function parsePG(movie) {
     var pg;
-    var cd = Storage.field('language');
+    var cd = Storage$1.field('language');
     if (movie.content_ratings) {
       try {
         var _find = movie.content_ratings.results.find(function (a) {
@@ -17155,7 +17155,7 @@
    * Запуск
    */
   function init$q() {
-    data$2 = Storage.cache('timetable', limit$1, []);
+    data$2 = Storage$1.cache('timetable', limit$1, []);
     setInterval(extract, 1000 * 60 * (2));
     setInterval(favorites, 1000 * 60 * 10);
     Favorite.listener.follow('add,added', function (e) {
@@ -17168,14 +17168,14 @@
         });
         if (find) {
           Arrays.remove(data$2, find);
-          Storage.set('timetable', data$2);
-          Storage.remove('timetable', find.id);
+          Storage$1.set('timetable', data$2);
+          Storage$1.remove('timetable', find.id);
         }
       }
     });
     Lampa.Listener.follow('worker_storage', function (e) {
       if (e.type == 'insert' && e.name == 'timetable') {
-        data$2 = Storage.get('timetable', '[]');
+        data$2 = Storage$1.get('timetable', '[]');
       }
     });
   }
@@ -17202,7 +17202,7 @@
         });
       }
     });
-    Storage.set('timetable', data$2);
+    Storage$1.set('timetable', data$2);
   }
 
   /**
@@ -17248,7 +17248,7 @@
       }, save$4);
     } else {
       Arrays.remove(data$2, object$1);
-      Storage.remove('timetable', object$1.id);
+      Storage$1.remove('timetable', object$1.id);
       save$4();
     }
   }
@@ -17269,7 +17269,7 @@
         return a.scaned = 0;
       });
     }
-    Storage.set('timetable', data$2);
+    Storage$1.set('timetable', data$2);
   }
 
   /**
@@ -17279,7 +17279,7 @@
     if (object$1) {
       object$1.scaned = 1;
       object$1.scaned_time = Date.now();
-      Storage.set('timetable', data$2);
+      Storage$1.set('timetable', data$2);
     }
   }
 
@@ -17325,7 +17325,7 @@
           episodes: []
         };
         data$2.push(item);
-        Storage.set('timetable', data$2);
+        Storage$1.set('timetable', data$2);
         object$1 = item;
       } else {
         object$1 = id[0];
@@ -17510,7 +17510,7 @@
             }
             this.card.querySelector('.card__view').appendChild(promo_wrap);
           }
-          if (Storage.field('light_version')) remove(this.card.querySelector('.card__title'));
+          if (Storage$1.field('light_version')) remove(this.card.querySelector('.card__title'));
           remove(this.card.querySelector('.card__age'));
         }
         if (data.release_year == '0000') {
@@ -17527,7 +17527,7 @@
           this.card.querySelector('.card__view').appendChild(vote_elem);
         }
         var qu = data.quality || data.release_quality;
-        if (qu && Storage.field('card_quality')) {
+        if (qu && Storage$1.field('card_quality')) {
           var quality = document.createElement('div');
           quality.classList.add('card__quality');
           var quality_inner = document.createElement('div');
@@ -17584,7 +17584,7 @@
      */
     this.watched = function () {
       var _this2 = this;
-      if (!Storage.field('card_episodes')) return;
+      if (!Storage$1.field('card_episodes')) return;
       if (!this.watched_checked) {
         TimeTable.get(data, function (episodes) {
           var viewed;
@@ -18366,7 +18366,7 @@
         Controller.enabled().controller[step > 0 ? 'right' : 'left']();
       };
       scroll.onScroll = function (step) {};
-      keys = Storage.get('search_history', '[]');
+      keys = Storage$1.get('search_history', '[]');
       keys.map(function (v) {
         return v;
       }).reverse().slice(0, 15).forEach(function (key) {
@@ -18387,8 +18387,8 @@
       }).on('hover:long', function () {
         var selc = scroll.render().find('.selector');
         Arrays.remove(keys, value);
-        Storage.set('search_history', keys);
-        Storage.remove('search_history', value);
+        Storage$1.set('search_history', keys);
+        Storage$1.remove('search_history', value);
         var index = selc.index(key);
         if (index > 0) last = selc.eq(index - 1)[0];else if (selc[index + 1]) last = selc.eq(index + 1)[0];
         key.remove();
@@ -18405,7 +18405,7 @@
         Arrays.remove(keys, value);
         keys.push(value);
       }
-      Storage.set('search_history', keys);
+      Storage$1.set('search_history', keys);
     };
     this.toggle = function () {
       var _this3 = this;
@@ -18495,7 +18495,7 @@
     scroll$1.onScroll = function (step) {
       Layer.visible(scroll$1.render(true));
     };
-    if (Storage.field('keyboard_type') !== 'lampa') search$4.find('.search__input').hide();
+    if (Storage$1.field('keyboard_type') !== 'lampa') search$4.find('.search__input').hide();
     createKeyboard();
     createHistory();
     createSources();
@@ -18659,9 +18659,55 @@
     addPluginOnline: addPluginOnline
   };
 
-  //import Subscribe from '../../utils/subscribe'
-  //import Player from './interaction/player'
+  // import Player from '../../interaction/player'
+  // import PlayerVideo from '../../interaction/player/video'
+  // import PlayerPlaylist from '../../interaction/player/playlist'
 
+  function addEventListenerKeyDown(keyDownAction) {
+    Lampa.Player.listener.follow('ready', onPlayerReady);
+    function onPlayerReady() {
+      document.addEventListener("keydown", keyDownAction);
+      Lampa.Player.listener.follow('destroy', listenDestroy);
+    }
+    function listenDestroy() {
+      document.removeEventListener("keydown", keyDownAction);
+      Lampa.Player.listener.remove('destroy', listenDestroy);
+    }
+  }
+  function addEventListenerLoaded(action) {
+    Lampa.PlayerVideo.listener.follow('loadeddata', action);
+  }
+  function isOpened() {
+    return Lampa.Player.opened();
+  }
+  function isOpenedAndLoaded() {
+    return isOpened() && getVideoDuration() > 0;
+  }
+  function getPositionByPercent(percent) {
+    return getVideoDuration() * percent / 100;
+  }
+  function getVideoDuration() {
+    return Lampa.PlayerVideo.video().duration;
+  }
+  function setVideoPositionSec(seconds) {
+    if (getVideoDuration() > 0) {
+      Lampa.PlayerVideo.to(seconds);
+    }
+  }
+  function nextVideoInPlaylist() {
+    Lampa.PlayerPlaylist.next();
+  }
+  var Player = {
+    addEventListenerKeyDown: addEventListenerKeyDown,
+    addEventListenerLoaded: addEventListenerLoaded,
+    isOpened: isOpened,
+    isOpenedAndLoaded: isOpenedAndLoaded,
+    getPositionByPercent: getPositionByPercent,
+    setVideoPositionSec: setVideoPositionSec,
+    nextVideoInPlaylist: nextVideoInPlaylist
+  };
+
+  //import Subscribe from '../../utils/subscribe'
   function setAppEvents(onAppStartAction, onAppReadyAction) {
     Lampa.Listener.follow('app', function (e) {
       if (e.type == 'start') {
@@ -18673,7 +18719,7 @@
   }
   function setAppKeyDown(onAppKeyDown) {
     Lampa.Keypad.listener.follow('keydown', function (e) {
-      if (!Lampa.Player.opened()) {
+      if (!Player.isOpened()) {
         onAppKeyDown(e);
       }
     });
@@ -19225,7 +19271,7 @@
       title: Lang.translate('search_start'),
       search: true
     }, data$1.type, data$1.rating, data$1['genres_' + type], data$1.language, data$1.year];
-    if (Storage.field('source') == 'cub') items.push(data$1.pgrating, data$1.sort, data$1.quality);
+    if (Storage$1.field('source') == 'cub') items.push(data$1.pgrating, data$1.sort, data$1.quality);
     items.forEach(function (itm) {
       itm.title = Lang.translate(itm.title);
       if (itm.subtitle) itm.subtitle = Lang.translate(itm.subtitle);
@@ -19355,7 +19401,7 @@
   }
   function search$3() {
     Controller.toggle('content');
-    var source = Storage.field('source');
+    var source = Storage$1.field('source');
     var query = source == 'cub' ? queryForCUB() : queryForTMDB();
     var activity = {
       url: query,
@@ -19555,8 +19601,8 @@
     categories: categories,
     categoriesArray: categoriesArray,
     clearAll: clearAll,
-    clearFavoriteAndSetFromJson: clearFavoriteAndSetFromJson,
     getFavoritesAllJson: getFavoritesAllJson,
+    clearFavoriteAndSetFromJson: clearFavoriteAndSetFromJson,
     addFavsToCategory: addFavsToCategory,
     clearFavoriteInCategory: clearFavoriteInCategory
   };
@@ -19604,6 +19650,9 @@
     }]);
   }();
 
+  function showConsole() {
+    Lampa.Controller.toggle('console');
+  }
   function showViewByKeyCode(code) {
     if (code == Btn.btn1Code) {
       showMain();
@@ -19669,8 +19718,108 @@
     });
   }
   var Show = {
+    showConsole: showConsole,
     showViewByKeyCode: showViewByKeyCode
   };
+
+  var Local = {
+    getKey: getKey,
+    setKeyValue: setKeyValue$1,
+    getAllKeys: getAllKeys
+  };
+  function setKeyValue$1(key, value) {
+    localStorage.setItem(key, value);
+  }
+  function getKey(key) {
+    return localStorage.getItem(key);
+  }
+  function getAllKeys() {
+    return Object.entries(localStorage);
+  }
+
+  var System = {
+    isAndroid: isAndroid,
+    isWindows: isWindows
+  };
+  function isAndroid() {
+    return navigator.userAgent.toLowerCase().includes('android');
+    //navigator.userAgent.match(/Android/i);
+  }
+  function isWindows() {
+    return navigator.userAgent.toLowerCase().includes('windows');
+  }
+
+  var firstLoadKey = 'firstLoadKey';
+  var defaultOptions = [
+  //Интерфейс
+  {
+    key: "glass_style",
+    value: false
+  },
+  //Плеер
+  //{key:"player_type", value:"integrate"},
+  {
+    key: "player_rewind",
+    value: 10
+  }, {
+    key: "video_quality_default",
+    value: 720
+  },
+  //TMDB
+  {
+    key: "poster_size",
+    value: "w500"
+  },
+  //Остальное
+  {
+    key: "start_page",
+    value: "favorite@bookmarks"
+  }, {
+    key: "source",
+    value: "cub"
+  }, {
+    key: "screensaver_time",
+    value: 2
+  }, {
+    key: "keyboard_type",
+    value: "integrate"
+  }];
+  var deviceNameKey = 'device_name';
+  var Opt = {
+    setFirstLoadDefaultOptions: setFirstLoadDefaultOptions
+  };
+  function setFirstLoadDefaultOptions() {
+    console.log('TiViAl', 'getDeviceName', getDeviceName());
+    console.log('TiViAl', 'platform', Storage.get('platform', 'noname'));
+    if (isFirstLoadSetFirst() == true) {
+      setDefaultOptions();
+    }
+  }
+  function setDefaultOptions() {
+    var _iterator = _createForOfIteratorHelper(defaultOptions),
+      _step;
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var opt = _step.value;
+        Local.setKeyValue(opt.key, opt.value);
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+    Local.setKeyValue(deviceNameKey, getDeviceName());
+  }
+  function getDeviceName() {
+    if (System.isAndroid()) return 'Android';else if (System.isWindows()) return 'PC';else return 'unkwon';
+  }
+  function isFirstLoadSetFirst() {
+    var isFirst = Local.getKey(firstLoadKey) != firstLoadKey;
+    if (isFirst == true) {
+      setKeyValue(firstLoadKey, firstLoadKey);
+    }
+    return isFirst;
+  }
 
   // import Controller from '../../interaction/controller'
   // import Modal from '../../interaction/modal'
@@ -19770,37 +19919,28 @@
   function init$o(remoteHost) {
     _remoteHost = remoteHost;
   }
-  function loadTextFromUrl(_x) {
-    return _loadTextFromUrl.apply(this, arguments);
-  }
-  function _loadTextFromUrl() {
-    _loadTextFromUrl = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(url) {
-      var urlCorrect, response;
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            urlCorrect = getUrlWithCorrection(url);
-            _context.next = 3;
-            return fetch(urlCorrect);
-          case 3:
-            response = _context.sent;
-            _context.next = 6;
-            return response.text();
-          case 6:
-            return _context.abrupt("return", _context.sent);
-          case 7:
-          case "end":
-            return _context.stop();
+
+  // async function loadTextFromUrl(url) {
+  //     const urlCorrect = getUrlWithCorrection(url);
+  //     const response = await fetch(urlCorrect);
+  //     return await response.text();
+  // }
+
+  function loadTextFromUrl(url) {
+    var urlCorrect = getUrlWithCorrection(url);
+    return new Promise(function (resolve) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == XMLHttpRequest.DONE && xmlHttp.status == 200) {
+          resolve(xmlHttp.responseText);
         }
-      }, _callee);
-    }));
-    return _loadTextFromUrl.apply(this, arguments);
+      };
+      xmlHttp.open("GET", urlCorrect, true); // true for asynchronous
+      xmlHttp.send(null);
+    });
   }
   function getUrlWithCorrection(url) {
-    //console.log('hostname', window.location.hostname);
-    //console.log('window.location.host', window.location.host);
     if (_remoteHost == null) {
-      // || window.location.hostname==localHostName){
       return url;
     } else {
       return _remoteHost + url;
@@ -19810,6 +19950,22 @@
     init: init$o,
     loadTextFromUrl: loadTextFromUrl
   };
+
+  //const localHostName='localhost';
+  //window.location.hostname==localHostName
+  //console.log('hostname', window.location.hostname);
+  //console.log('window.location.host', window.location.host);
+
+  // function loadTextFromUrlPromise(url) {
+  //     return new Promise(function(resolve, reject){
+  //         const urlCorrect = getUrlWithCorrection(url);
+  //         console.log('TiViAl','urlCorrect', urlCorrect);
+  //         fetch(urlCorrect)
+  //         .then(response => {console.log('TiViAl','response'); response.text();})
+  //         .then(text=>{console.log('TiViAl','text', text);resolve(text);});
+  //         //reject('erorrrrrrrrrrrrr!');.catch(e=>console.log(`catch: ${e}`));
+  //     });
+  // }
 
   var favoritesHtmlUrl = 'add/favorites.html';
   var favoritesCurrentUrl = 'add/favsAll.json';
@@ -20131,7 +20287,12 @@
   var view = new View();
   view.onLoad = clearAndAddNew;
   view.onClear = clearAllConfirm;
-  view.onSave = showAllFav;
+  //view.onSave=showAllFav;
+  view.onSave = getLocalStorageKeys;
+  var DevModal = {
+    init: init$n,
+    showFavoriteDev: showFavoriteDev
+  };
   function init$n() {
     return _init$1.apply(this, arguments);
   }
@@ -20155,8 +20316,10 @@
     }));
     return _init$1.apply(this, arguments);
   }
-  function showAllFav() {
-    view.Data = Fav.getFavoritesAllJson();
+  function showFavoriteDev() {
+    var title = 'Менеджер избранного';
+    Msg.showHtmlModal(title, htmlQ);
+    //showComponent(title, favComp.Name);
   }
   function clearAndAddNew() {
     //console.log('data', view.Data);
@@ -20176,15 +20339,11 @@
       Fav.clearAll();
     }
   }
-  function showFavoriteDev() {
-    var title = 'Менеджер избранного';
-    Msg.showHtmlModal(title, htmlQ);
-    //showComponent(title, favComp.Name);
+  function getLocalStorageKeys() {
+    var allKeys = Local.getAllKeys();
+    console.log('allKeys', allKeys);
+    view.Data = JSON.stringify(allKeys);
   }
-  var DevModal = {
-    init: init$n,
-    showFavoriteDev: showFavoriteDev
-  };
 
   var log$2;
   function init$m(_x) {
@@ -20329,50 +20488,15 @@
     showSelectFavsActions: showSelectFavsActions
   };
 
-  // import Player from '../../interaction/player'
-  // import PlayerVideo from '../../interaction/player/video'
-  // import PlayerPlaylist from '../../interaction/player/playlist'
-
-  function addEventListenerKeyDown(keyDownAction) {
-    Lampa.Player.listener.follow('ready', onPlayerReady);
-    function onPlayerReady() {
-      document.addEventListener("keydown", keyDownAction);
-      Lampa.Player.listener.follow('destroy', listenDestroy);
-    }
-    function listenDestroy() {
-      document.removeEventListener("keydown", keyDownAction);
-      Lampa.Player.listener.remove('destroy', listenDestroy);
-    }
-  }
-  function addEventListenerLoaded(action) {
-    Lampa.PlayerVideo.listener.follow('loadeddata', action);
-  }
-  function getPositionByPercent(percent) {
-    return getVideoDuration() * percent / 100;
-  }
-  function getVideoDuration() {
-    return Lampa.PlayerVideo.video().duration;
-  }
-  function setVideoPositionSec(seconds) {
-    if (getVideoDuration() > 0) {
-      Lampa.PlayerVideo.to(seconds);
-    }
-  }
-  function nextVideoInPlaylist() {
-    Lampa.PlayerPlaylist.next();
-  }
-  var Player = {
-    addEventListenerKeyDown: addEventListenerKeyDown,
-    addEventListenerLoaded: addEventListenerLoaded,
-    getPositionByPercent: getPositionByPercent,
-    setVideoPositionSec: setVideoPositionSec,
-    nextVideoInPlaylist: nextVideoInPlaylist
-  };
-
   var timeCodesUrl = 'add/timeCodes.json';
   function loadTimeCodes() {
     return _loadTimeCodes.apply(this, arguments);
-  }
+  } // function loadTimeCodes() {
+  //     return new Promise(function(resolve){
+  //         Core.loadTextFromUrl(timeCodesUrl)
+  //             .then(text=>resolve(parseTimeCodes(text)));
+  //     });
+  // }
   function _loadTimeCodes() {
     _loadTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var newTimeCodesJson;
@@ -20383,7 +20507,7 @@
             return RepCore.loadTextFromUrl(timeCodesUrl);
           case 2:
             newTimeCodesJson = _context.sent;
-            return _context.abrupt("return", JSON.parse(newTimeCodesJson));
+            return _context.abrupt("return", parseTimeCodes(newTimeCodesJson));
           case 4:
           case "end":
             return _context.stop();
@@ -20391,6 +20515,9 @@
       }, _callee);
     }));
     return _loadTimeCodes.apply(this, arguments);
+  }
+  function parseTimeCodes(json) {
+    return JSON.parse(json);
   }
   var Rep = {
     loadTimeCodes: loadTimeCodes
@@ -20439,31 +20566,38 @@
     this.imdbId = card.imdb_id;
     this.kpId = card.kinopoisk_id;
     this.title = card.name;
+    this.titleOrig = card.original_name;
   });
 
   var timeCodes = [];
+  var timeCodesRem = [];
   var log$1;
   var _movie;
   var modes = {
     persent: {
       title: 'Проценты',
-      action: setTimeCodesByPercents
+      actionOnPlayerLoaded: setTimeCodesByPercents
     },
     min10: {
       title: '10 минут',
-      action: setTimeCodesBy10min
+      actionSet: setTimeCodesBy10min
     },
-    byId: {
+    loadRemSelect: {
+      title: 'Загрузить...',
+      actionSet: showSelectTimeCodesRemote
+    },
+    loadRemById: {
       title: 'по id',
-      action: setTimeCodesByRemIdData
+      actionSet: loadAllTimeCodes,
+      actionOnPlayerLoaded: setTimeCodesByRemIdData
     }
   };
-  var _modeByDefault = modes.persent;
+  var _timeCodesMode = modes.persent;
   function init$l(author) {
     log$1 = new Log(author, 'TimeCode');
     initTimeCodes();
     Player.addEventListenerKeyDown(onPlayerKeyDown);
-    Player.addEventListenerLoaded(setTimeCodesByPlayerLoad);
+    Player.addEventListenerLoaded(setTimeCodesOnPlayerLoaded);
     log$1.event('init');
   }
   function initTimeCodes() {
@@ -20477,12 +20611,43 @@
     _movie = new Movie(card);
     log$1.eventParam('setCurMovie', _movie);
   }
-  function setModeOnPlayerLoad(mode) {
-    _modeByDefault = mode;
-    if (_modeByDefault.title == modes.byId.title) ;
+  function setTimeCodesMode(_x) {
+    return _setTimeCodesMode.apply(this, arguments);
   }
-  function setTimeCodesByPlayerLoad() {
-    _modeByDefault.action();
+  function _setTimeCodesMode() {
+    _setTimeCodesMode = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(mode) {
+      var actionReturn;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _timeCodesMode = mode;
+            if (!_timeCodesMode.actionSet) {
+              _context.next = 6;
+              break;
+            }
+            actionReturn = _timeCodesMode.actionSet();
+            if (!(actionReturn instanceof Promise)) {
+              _context.next = 6;
+              break;
+            }
+            _context.next = 6;
+            return actionReturn;
+          case 6:
+            if (Player.isOpenedAndLoaded()) {
+              setTimeCodesOnPlayerLoaded();
+            }
+          case 7:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _setTimeCodesMode.apply(this, arguments);
+  }
+  function setTimeCodesOnPlayerLoaded() {
+    if (_timeCodesMode.actionOnPlayerLoaded) {
+      _timeCodesMode.actionOnPlayerLoaded();
+    }
   }
   function setTimeCodesByPercents() {
     for (var i = 0; i < timeCodes.length; i++) {
@@ -20494,14 +20659,91 @@
       timeCodes[i].timeInSec = i * 10 * 60;
     }
   }
-  function setTimeCodesByRemIdData() {
 
-    // const cardId=_movie.cardId;
-    // const remTimeCodes=rep.load(cardId);
-    //if(remTimeCodes)
-    // setTimeCodesByRemData(remTimeCodes);
-    //else
-    //setTimeCodesByPercents
+  // function loadAllTimeCodes(){
+  //     console.log('1 loadAllTimeCodes');
+  //     Rep.loadTimeCodesPromise()
+  //         .then(tcds=>{timeCodesRem=tcds; log.eventParam('11 ', timeCodesRem[0]);});
+  //     console.log('2 loadAllTimeCodes', timeCodesRem);
+  // }
+  function loadAllTimeCodes() {
+    return _loadAllTimeCodes.apply(this, arguments);
+  }
+  function _loadAllTimeCodes() {
+    _loadAllTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return Rep.loadTimeCodes();
+          case 2:
+            timeCodesRem = _context2.sent;
+            log$1.eventParam('loadAllTimeCodes: ', timeCodesRem[0]);
+          case 4:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return _loadAllTimeCodes.apply(this, arguments);
+  }
+  function setTimeCodesByRemIdData() {
+    //console.log('3 setTimeCodesByRemIdData', timeCodesRem);
+
+    if (!timeCodesRem || timeCodesRem.length == 0) {
+      setTimeCodesByPercents();
+    } else {
+      var timeCodeId = timeCodesRem.find(function (t) {
+        return t.cardId == _movie.cardId;
+      });
+      if (!timeCodeId) {
+        timeCodeId = timeCodesRem.find(function (t) {
+          return t.kpId == _movie.kpId;
+        });
+      }
+      if (!timeCodeId) {
+        timeCodeId = timeCodesRem.find(function (t) {
+          return t.imdbId == _movie.imdbId;
+        });
+      }
+      if (!timeCodeId) {
+        setTimeCodesByPercents();
+      } else {
+        setTimeCodesByRemData(timeCodeId);
+        log$1.eventParam('setTimeCodesByRemIdData', timeCodeId);
+      }
+    }
+  }
+  function showSelectTimeCodesRemote() {
+    return _showSelectTimeCodesRemote.apply(this, arguments);
+  }
+  function _showSelectTimeCodesRemote() {
+    _showSelectTimeCodesRemote = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      var remTimeCodes, items;
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return Rep.loadTimeCodes();
+          case 2:
+            remTimeCodes = _context3.sent;
+            items = getShowItemsFromRepository(remTimeCodes);
+            Msg.showSelectActionOne('Тайм коды:', items, setTimeCodesByRemData);
+          case 5:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3);
+    }));
+    return _showSelectTimeCodesRemote.apply(this, arguments);
+  }
+  function getShowItemsFromRepository(remTimeCodes) {
+    remTimeCodes.forEach(function (code) {
+      if (code.s && code.e) {
+        code.subtitle = "\u0421\u0435\u0437\u043E\u043D ".concat(code.s, " \u044D\u043F\u0438\u0437\u043E\u0434 ").concat(code.e);
+      }
+    });
+    return remTimeCodes;
   }
   function setTimeCodesByRemData(timeCode) {
     for (var i = 0; i < timeCodes.length; i++) {
@@ -20519,10 +20761,10 @@
       e.preventDefault();
     }
     if (e.keyCode == Btn.zeroBtnCode) {
-      DoublePress.checkDoubleClick(showSelectTimeCodesMode, setPosition);
+      DoublePress.checkDoubleClick(selectTimeCodesMode, setPosition);
     } else setPosition();
     if (e.keyCode === Btn.numLockZeroBtnCodeForDeveloper) {
-      showSelectTimeCodesMode();
+      selectTimeCodesMode();
     }
     function setPosition() {
       setVideoPositionByKeyCode(e.keyCode);
@@ -20536,57 +20778,12 @@
       Player.setVideoPositionSec(timeL.timeInSec);
     }
   }
-  function showSelectTimeCodesMode() {
-    var itemsAdd = [{
-      title: "В процентах",
-      subscribe: "subscribe",
-      action: setTimeCodesByPercents
-    }, {
-      title: "Через 10 мин",
-      action: setTimeCodesBy10min
-    }, {
-      title: "Загрузить...",
-      action: showSelectTimeCodesRemote
-    }];
-    Msg.showSelectActionInItem('Установить метки:', itemsAdd);
-  }
-  function showSelectTimeCodesRemote() {
-    return _showSelectTimeCodesRemote.apply(this, arguments);
-  }
-  function _showSelectTimeCodesRemote() {
-    _showSelectTimeCodesRemote = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var remTimeCodes, items;
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return Rep.loadTimeCodes();
-          case 2:
-            remTimeCodes = _context.sent;
-            items = getShowItemsFromRepository(remTimeCodes);
-            Msg.showSelectActionOne('Тайм коды:', items, setTimeCodesByRemData);
-          case 5:
-          case "end":
-            return _context.stop();
-        }
-      }, _callee);
-    }));
-    return _showSelectTimeCodesRemote.apply(this, arguments);
-  }
-  function getShowItemsFromRepository(remTimeCodes) {
-    remTimeCodes.forEach(function (code) {
-      if (code.s && code.e) {
-        code.subtitle = "\u0421\u0435\u0437\u043E\u043D ".concat(code.s, " \u044D\u043F\u0438\u0437\u043E\u0434 ").concat(code.e);
-      }
-    });
-    return remTimeCodes;
-  }
-  function selectModeOnPlayerLoad() {
+  function selectTimeCodesMode() {
     var items = ObjectArray.getArrayFromObjectProps(modes);
     items.forEach(addSubTitle);
-    Msg.showSelectActionOne('Режим при загрузке:', items, setModeOnPlayerLoad);
+    Msg.showSelectActionOne('Режим таймкода:', items, setTimeCodesMode);
     function addSubTitle(mode) {
-      if (mode.title == _modeByDefault.title) {
+      if (mode.title == _timeCodesMode.title) {
         mode.subtitle = 'текущий';
       } else {
         mode.subtitle = '';
@@ -20595,7 +20792,7 @@
   }
   var TimeCode = {
     init: init$l,
-    selectModeOnPlayerLoad: selectModeOnPlayerLoad,
+    selectTimeCodesMode: selectTimeCodesMode,
     setCurMovie: setCurMovie
   };
 
@@ -20640,6 +20837,7 @@
   };
 
   //import Test from './test.js'
+  //import Ip from './utils/ipLocal.js'
 
   var author = 'TiViAl';
   var log = new Log(author, 'Main');
@@ -20652,6 +20850,7 @@
     log.event('init');
   }
   function onAppStart() {
+    Opt.setFirstLoadDefaultOptions();
     log.event('onAppStart');
   }
   function onAppReady() {
@@ -20662,11 +20861,12 @@
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            log.event('onAppReady');
             Plug.addPluginOnline();
             TimeCode.init(author);
-            _context.next = 5;
+            _context.next = 4;
             return Favs.init(author);
+          case 4:
+            log.event('onAppReady');
           case 5:
           case "end":
             return _context.stop();
@@ -20680,8 +20880,10 @@
 
     if (e.code == Btn.zeroBtnCode) {
       Favs.showSelectFavsActions();
-    } else if (e.code == Btn.btn7Code) ; else if (e.code == Btn.btn8Code) ; else if (e.code == Btn.btn9Code) {
-      TimeCode.selectModeOnPlayerLoad();
+    } else if (e.code == Btn.btn7Code) ; else if (e.code == Btn.btn8Code) {
+      TimeCode.selectTimeCodesMode();
+    } else if (e.code == Btn.btn9Code) {
+      Show.showConsole();
     } else {
       Show.showViewByKeyCode(e.code);
     }
@@ -20715,7 +20917,7 @@
     html$8.find('.head__logo-icon,.head__menu-icon').on('click', function (e) {
       if (DeviceInput.canClick(e.originalEvent)) Controller.toggle('menu');
     });
-    Storage.listener.follow('change', function (e) {
+    Storage$1.listener.follow('change', function (e) {
       if (e.name == 'account') {
         html$8.find('.open--profile').toggleClass('hide', e.value.token && window.lampa_settings.account_use ? false : true);
       }
@@ -20833,7 +21035,7 @@
         check$1();
       }
     });
-    Storage.listener.follow('change', function (e) {
+    Storage$1.listener.follow('change', function (e) {
       if (e.name == 'account_use') timelines(true);
       if (e.name == 'account') {
         timelines(true);
@@ -20857,8 +21059,8 @@
       window.lampa_settings.dcma = dcma;
     });
     setInterval(checkValidAccount, 1000 * 60 * 10);
-    updateBookmarks(Storage.get('account_bookmarks', '[]'));
-    notice_load.data = Storage.get('account_notice', '[]');
+    updateBookmarks(Storage$1.get('account_bookmarks', '[]'));
+    notice_load.data = Storage$1.get('account_notice', '[]');
     checkProfile(function () {
       update$4();
       timelines();
@@ -20868,7 +21070,7 @@
     });
   }
   function checkProfile(call) {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token && window.lampa_settings.account_use) {
       if (account.profile.id) call();else {
         network$6.silent(api$1 + 'profiles/all', function (result) {
@@ -20877,7 +21079,7 @@
           });
           if (main) {
             account.profile = main;
-            Storage.set('account', account);
+            Storage$1.set('account', account);
           }
           call();
         }, function () {
@@ -20889,17 +21091,17 @@
         });
       }
     } else {
-      Storage.set('account_user', '');
+      Storage$1.set('account_user', '');
     }
   }
   function checkValidAccount() {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token) {
       Socket.send('check_token', {});
     }
   }
   function updateProfileIcon() {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     var button = Head.render().find('.head__body .open--profile').toggleClass('hide', !Boolean(account.token));
     if (account.token) {
       var img = button.find('img')[0];
@@ -20910,10 +21112,10 @@
     }
   }
   function persons(secuses, error) {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token && window.lampa_settings.account_use) {
       network$6.silent(api$1 + 'person/list', function (data) {
-        Storage.set('person_subscribes_id', data.results.map(function (a) {
+        Storage$1.set('person_subscribes_id', data.results.map(function (a) {
           return a.person_id;
         }));
         if (secuses) secuses(data.results);
@@ -20925,10 +21127,10 @@
     } else error();
   }
   function getUser() {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token && window.lampa_settings.account_use) {
       network$6.silent(api$1 + 'users/get', function (result) {
-        Storage.set('account_user', JSON.stringify(result.user));
+        Storage$1.set('account_user', JSON.stringify(result.user));
       }, false, false, {
         headers: {
           token: account.token
@@ -20940,11 +21142,11 @@
     return 10;
   }
   function timelines(full, visual) {
-    var account = Storage.get('account', '{}');
-    if (account.token && Storage.field('account_use') && window.lampa_settings.account_use && window.lampa_settings.account_sync) {
+    var account = Storage$1.get('account', '{}');
+    if (account.token && Storage$1.field('account_use') && window.lampa_settings.account_use && window.lampa_settings.account_sync) {
       var url = api$1 + 'timeline/all';
       var _all = full;
-      if (Storage.get('timeline_full_update_time', '0') + 1000 * 60 * 60 * 24 < Date.now()) _all = true;
+      if (Storage$1.get('timeline_full_update_time', '0') + 1000 * 60 * 60 * 24 < Date.now()) _all = true;
       if (_all) url = url + '?full=true';
       network$6.silent(url, function (result) {
         if (visual) {
@@ -20956,9 +21158,9 @@
         } else {
           var name = 'file_view_' + account.profile.id;
           if (window.localStorage.getItem(name) === null) {
-            Storage.set(name, Arrays.clone(Storage.cache('file_view', 10000, {})));
+            Storage$1.set(name, Arrays.clone(Storage$1.cache('file_view', 10000, {})));
           }
-          var viewed = Storage.cache(name, 10000, {});
+          var viewed = Storage$1.cache(name, 10000, {});
           for (var _i in result.timelines) {
             var _time = result.timelines[_i];
             viewed[_i] = _time;
@@ -20969,9 +21171,9 @@
             });
             delete viewed[_i].hash;
           }
-          Storage.set(name, viewed);
+          Storage$1.set(name, viewed);
         }
-        Storage.set('timeline_full_update_time', Date.now());
+        Storage$1.set('timeline_full_update_time', Date.now());
       }, function () {
         setTimeout(timelines.bind(timelines, full), 1000 * 60);
       }, false, {
@@ -20983,8 +21185,8 @@
     }
   }
   function save$3(method, type, card) {
-    var account = Storage.get('account', '{}');
-    if (account.token && Storage.field('account_use') && window.lampa_settings.account_use && window.lampa_settings.account_sync) {
+    var account = Storage$1.get('account', '{}');
+    if (account.token && Storage$1.field('account_use') && window.lampa_settings.account_use && window.lampa_settings.account_sync) {
       var list = bookmarks;
       var find = list.find(function (elem) {
         return elem.card_id == card.id && elem.type == type;
@@ -21018,7 +21220,7 @@
     }
   }
   function clear$7(where) {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token && window.lampa_settings.account_use && window.lampa_settings.account_sync) {
       network$6.silent(api$1 + 'bookmarks/clear', function (result) {
         if (result.secuses) update$4();
@@ -21034,7 +21236,7 @@
     }
   }
   function update$4(call) {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token && window.lampa_settings.account_use && window.lampa_settings.account_sync) {
       network$6.silent(api$1 + 'bookmarks/all?full=1', function (result) {
         if (result.secuses) {
@@ -21055,18 +21257,18 @@
     }
   }
   function plugins(call) {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token && window.lampa_settings.account_use) {
       network$6.timeout(3000);
       network$6.silent(api$1 + 'plugins/all', function (result) {
         if (result.secuses) {
-          Storage.set('account_plugins', result.plugins);
+          Storage$1.set('account_plugins', result.plugins);
           call(result.plugins);
         } else {
-          call(Storage.get('account_plugins', '[]'));
+          call(Storage$1.get('account_plugins', '[]'));
         }
       }, function () {
-        call(Storage.get('account_plugins', '[]'));
+        call(Storage$1.get('account_plugins', '[]'));
       }, false, {
         headers: {
           token: account.token,
@@ -21078,7 +21280,7 @@
     }
   }
   function extensions(call) {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     var headers = {};
     if (account.token && window.lampa_settings.account_use) {
       headers = {
@@ -21099,17 +21301,17 @@
             });
           });
         }
-        Storage.set('account_extensions', result);
+        Storage$1.set('account_extensions', result);
         call(result);
       } else {
-        call(Storage.get('account_extensions', '{}'));
+        call(Storage$1.get('account_extensions', '{}'));
       }
     }, function () {
-      call(Storage.get('account_extensions', '{}'));
+      call(Storage$1.get('account_extensions', '{}'));
     }, false, headers);
   }
   function pluginsStatus(plugin, status) {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token && window.lampa_settings.account_use) {
       network$6.silent(api$1 + (plugin.author ? 'extensions' : 'plugins') + '/status', false, false, {
         id: plugin.id,
@@ -21154,8 +21356,8 @@
             network$6.clear();
             network$6.silent(api$1 + 'device/add', function (result) {
               Loading.stop();
-              Storage.set('account', result, true);
-              Storage.set('account_email', result.email, true);
+              Storage$1.set('account', result, true);
+              Storage$1.set('account_email', result.email, true);
               window.location.reload();
             }, function () {
               Loading.stop();
@@ -21183,7 +21385,7 @@
   }
   function renderPanel() {
     if (body$2) {
-      var account = Storage.get('account', '{}');
+      var account = Storage$1.get('account', '{}');
       var signed = account.token ? true : false;
       if (!window.lampa_settings.account_sync) {
         body$2.find('[data-name="account_use"]').remove();
@@ -21201,14 +21403,14 @@
         body$2.find('.settings--account-user-info .settings-param__value').text(account.email);
         body$2.find('.settings--account-user-profile .settings-param__value').text(account.profile.name);
         body$2.find('.settings--account-user-out').on('hover:enter', function () {
-          Storage.set('account', '');
-          Storage.set('account_user', '');
-          Storage.set('account_email', '');
+          Storage$1.set('account', '');
+          Storage$1.set('account_user', '');
+          Storage$1.set('account_email', '');
           Settings.update();
           update$4();
         });
         body$2.find('.settings--account-user-sync').on('hover:enter', function () {
-          account = Storage.get('account', '{}');
+          account = Storage$1.get('account', '{}');
           Select.show({
             title: Lang.translate('settings_cub_sync'),
             items: [{
@@ -21281,14 +21483,14 @@
     }
   }
   function profile() {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     body$2.find('.settings--account-user-profile .settings-param__value').text(account.profile.name);
     body$2.find('.settings--account-user-profile').on('hover:enter', function () {
       showProfiles('settings_component');
     });
   }
   function showProfiles(controller) {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     Loading.start(function () {
       network$6.clear();
       Loading.stop();
@@ -21310,7 +21512,7 @@
           }),
           onSelect: function onSelect(a) {
             account.profile = result.profiles[a.index];
-            Storage.set('account', account);
+            Storage$1.set('account', account);
             if (body$2) body$2.find('.settings--account-user-profile .settings-param__value').text(a.name);
             notice_load.time = 0;
             Controller.toggle(controller);
@@ -21333,7 +21535,7 @@
     });
   }
   function check$1() {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token) {
       renderStatus$1(Lang.translate('account_authorized'), Lang.translate('account_logged_in') + ' ' + account.email);
     } else {
@@ -21341,13 +21543,13 @@
     }
   }
   function working() {
-    return Storage.get('account', '{}').token && Storage.field('account_use') && window.lampa_settings.account_use && window.lampa_settings.account_sync;
+    return Storage$1.get('account', '{}').token && Storage$1.field('account_use') && window.lampa_settings.account_use && window.lampa_settings.account_sync;
   }
   function canSync(logged_check) {
-    return (logged_check ? logged() && window.lampa_settings.account_sync : working()) ? Storage.get('account', '{}') : false;
+    return (logged_check ? logged() && window.lampa_settings.account_sync : working()) ? Storage$1.get('account', '{}') : false;
   }
   function logged() {
-    return Storage.get('account', '{}').token ? window.lampa_settings.account_use : false;
+    return Storage$1.get('account', '{}').token ? window.lampa_settings.account_use : false;
   }
   function get$6(params) {
     return bookmarks.filter(function (elem) {
@@ -21366,7 +21568,7 @@
       type: 'account_bookmarks_parse',
       data: rows
     }, function (e) {
-      Storage.set('account_bookmarks', rows);
+      Storage$1.set('account_bookmarks', rows);
       bookmarks = e.data;
       if (call) call();
       listener$5.send('update_bookmarks', {
@@ -21376,7 +21578,7 @@
     });
   }
   function notice(call) {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token && window.lampa_settings.account_use && window.lampa_settings.account_sync) {
       if (notice_load.time + 1000 * 60 * 10 < Date.now()) {
         network$6.timeout(1000);
@@ -21384,7 +21586,7 @@
           if (result.secuses) {
             notice_load.time = Date.now();
             notice_load.data = result.notice;
-            Storage.set('account_notice', result.notice.map(function (n) {
+            Storage$1.set('account_notice', result.notice.map(function (n) {
               return n;
             }));
             call(result.notice);
@@ -21409,7 +21611,7 @@
     network$6.silent(api$1 + 'torrent/popular', secuses, error, data);
   }
   function backup() {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token) {
       Select.show({
         title: Lang.translate('settings_cub_backup'),
@@ -21590,14 +21792,14 @@
     } else if (error) error();
   }
   function logoff(data) {
-    var account = Storage.get('account', '{}');
+    var account = Storage$1.get('account', '{}');
     if (account.token && account.email == data.email) {
-      Storage.set('account', '');
-      Storage.set('account_use', false);
-      Storage.set('account_user', '');
-      Storage.set('account_email', '');
-      Storage.set('account_notice', '');
-      Storage.set('account_bookmarks', '');
+      Storage$1.set('account', '');
+      Storage$1.set('account_use', false);
+      Storage$1.set('account_user', '');
+      Storage$1.set('account_email', '');
+      Storage$1.set('account_notice', '');
+      Storage$1.set('account_bookmarks', '');
       $('.head .open--profile').addClass('hide');
       window.location.reload();
     }
@@ -21643,7 +21845,7 @@
   var category$2 = ['like', 'wath', 'book', 'history', 'look', 'viewed', 'scheduled', 'continued', 'thrown'];
   var marks = ['look', 'viewed', 'scheduled', 'continued', 'thrown'];
   function save$2() {
-    Storage.set('favorite', data);
+    Storage$1.set('favorite', data);
   }
 
   /**
@@ -21847,7 +22049,7 @@
    * Считать последние данные
    */
   function read$1() {
-    data = Storage.get('favorite', '{}');
+    data = Storage$1.get('favorite', '{}');
     var empty = {
       card: []
     };
@@ -22209,7 +22411,7 @@
     var status = new status$2(8);
     status.onComplite = oncomplite;
     if (Utils$2.dcma(params.method, params.id)) return onerror();
-    get$4('3/' + params.method + '/' + params.id + '?api_key=' + TMDB$1.key() + '&append_to_response=content_ratings,release_dates,keywords&language=' + Storage.field('tmdb_lang'), params, function (json) {
+    get$4('3/' + params.method + '/' + params.id + '?api_key=' + TMDB$1.key() + '&append_to_response=content_ratings,release_dates,keywords&language=' + Storage$1.field('tmdb_lang'), params, function (json) {
       json.source = 'tmdb';
       if (params.method == 'tv') {
         var season = Utils$2.countSeasons(json);
@@ -22410,7 +22612,7 @@
   }
   function availableDiscovery() {
     var list = [];
-    var active = Storage.get('source', 'tmdb');
+    var active = Storage$1.get('source', 'tmdb');
     for (var key in sources) {
       console.log('Api', 'discovery check:', key, sources[key].discovery ? true : false, _typeof(sources[key].discovery));
       if (sources[key].discovery) {
@@ -22842,7 +23044,7 @@
     var self = this;
     var follow = function follow(e) {
       if (e.name == 'parser_use') {
-        var status = Storage.field('parser_use');
+        var status = Storage$1.field('parser_use');
         if (window.lampa_settings.torrents_use) tbtn.toggleClass('selector', status).toggleClass('hide', !status);
         self.groupButtons();
       }
@@ -22855,12 +23057,12 @@
       poster: {}
     };
     var event = new Event();
-    var new_html = Storage.field('card_interfice_type') == 'new';
+    var new_html = Storage$1.field('card_interfice_type') == 'new';
     Arrays.extend(data.movie, {
       title: data.movie.name,
       original_title: data.movie.original_name,
       runtime: 0,
-      img: data.movie.poster_path ? Api.img(data.movie.poster_path, Storage.field('poster_size')).replace(/\/w200/, '/w500') : './img/img_broken.svg'
+      img: data.movie.poster_path ? Api.img(data.movie.poster_path, Storage$1.field('poster_size')).replace(/\/w200/, '/w500') : './img/img_broken.svg'
     });
     this.create = function () {
       var _this = this;
@@ -22967,7 +23169,7 @@
           url: '',
           title: Lang.translate('title_torrents'),
           component: 'torrents',
-          search: combinations[Storage.field('parse_lang')],
+          search: combinations[Storage$1.field('parse_lang')],
           search_one: data.movie.title,
           search_two: data.movie.original_title,
           movie: data.movie,
@@ -22993,7 +23195,7 @@
       }
       html.find('.full-start-new__head').toggleClass('hide', !head.length).html(head.join(', '));
       html.find('.full-start-new__details').html(info.join('<span class="full-start-new__split">●</span>'));
-      Storage.listener.follow('change', follow);
+      Storage$1.listener.follow('change', follow);
       follow({
         name: 'parser_use'
       });
@@ -23015,26 +23217,26 @@
         btn.trigger('hover:enter');
       }).on('hover:long', function () {
         clon.remove();
-        Storage.set('full_btn_priority', '');
+        Storage$1.set('full_btn_priority', '');
         last = html.find('.button--play')[0];
         Controller.toggle('full_start');
       });
       cont.prepend(clon);
     };
     this.vote = function (type, add) {
-      var mine = Storage.get('mine_reactions', {});
+      var mine = Storage$1.get('mine_reactions', {});
       var id = (data.movie.name ? 'tv' : 'movie') + '_' + data.movie.id;
       if (!mine[id]) mine[id] = [];
       var ready = mine[id].indexOf(type) >= 0;
       if (add) {
         if (!ready) mine[id].push(type);
-        Storage.set('mine_reactions', mine);
+        Storage$1.set('mine_reactions', mine);
       }
       return ready;
     };
     this.reactions = function () {
       var _this2 = this;
-      if (!Storage.field('card_interfice_reactions')) return html.find('.full-start-new__reactions, .button--reaction').remove();
+      if (!Storage$1.field('card_interfice_reactions')) return html.find('.full-start-new__reactions, .button--reaction').remove();
       var drawReactions = function drawReactions() {
         if (data.reactions && data.reactions.result && data.reactions.result.length) {
           var reactions = data.reactions.result;
@@ -23159,6 +23361,7 @@
             noenter: !Account.hasPremium()
           });
         });
+        console.log('start', 'settings_input_links', items);
         Select.show({
           title: Lang.translate('settings_input_links'),
           items: items,
@@ -23187,7 +23390,7 @@
       var _this4 = this;
       var play = html.find('.button--play');
       var btns = html.find('.buttons--container > .full-start__button').not('.hide');
-      var priority = Storage.get('full_btn_priority', '') + '';
+      var priority = Storage$1.get('full_btn_priority', '') + '';
       if (priority) {
         var priority_button;
         btns.each(function () {
@@ -23197,7 +23400,7 @@
         if (priority_button) this.setBtnInPriority(priority_button);
       }
       play.unbind().on('hover:enter', function (e) {
-        priority = Storage.get('full_btn_priority', '') + '';
+        priority = Storage$1.get('full_btn_priority', '') + '';
         btns = html.find('.buttons--container > .full-start__button').not('.hide').filter(function () {
           return priority !== Utils$2.hash($(this).clone().removeClass('focus').prop('outerHTML'));
         });
@@ -23215,6 +23418,7 @@
               btn: $(this)
             });
           });
+          console.log('start', 'settings_rest_source', items);
           Select.show({
             title: Lang.translate('settings_rest_source'),
             items: items,
@@ -23222,7 +23426,7 @@
               a.btn.trigger('hover:enter');
             },
             onLong: function onLong(a) {
-              Storage.set('full_btn_priority', Utils$2.hash(a.btn.clone().removeClass('focus').prop('outerHTML')));
+              Storage$1.set('full_btn_priority', Utils$2.hash(a.btn.clone().removeClass('focus').prop('outerHTML')));
               _this4.setBtnInPriority(a.btn);
             },
             onBack: function onBack() {
@@ -23259,7 +23463,7 @@
             return a.time > b.time ? -1 : a.time < b.time ? 1 : 0;
           });
           var my_lang = items.filter(function (n) {
-            return n.code == Storage.field('tmdb_lang');
+            return n.code == Storage$1.field('tmdb_lang');
           });
           var en_lang = items.filter(function (n) {
             return n.code == 'en' && my_lang.indexOf(n) == -1;
@@ -23280,7 +23484,7 @@
             items: al_lang,
             onSelect: function onSelect(a) {
               _this5.toggle();
-              if (Platform.is('android') && Storage.field('player_launch_trailers') == 'youtube' && a.youtube) {
+              if (Platform.is('android') && Storage$1.field('player_launch_trailers') == 'youtube' && a.youtube) {
                 Android.openYoutube(a.id);
               } else {
                 var playlist = al_lang.filter(function (v) {
@@ -23447,7 +23651,7 @@
       event.destroy();
       load_images.poster.onerror = function () {};
       html.remove();
-      Storage.listener.remove('change', follow);
+      Storage$1.listener.remove('change', follow);
     };
   }
 
@@ -23928,7 +24132,7 @@
     this.create = function () {
       var _this = this;
       this.activity.loader(true);
-      if (object.source == 'tmdb' && Storage.field('source') == 'cub') {
+      if (object.source == 'tmdb' && Storage$1.field('source') == 'cub') {
         object.source = 'cub';
       }
       scroll.minus();
@@ -24019,7 +24223,7 @@
       if (object.source == 'tmdb') {
         button = $('<div class="empty__footer"><div class="simple-button selector">' + Lang.translate('change_source_on_cub') + '</div></div>');
         button.find('.selector').on('hover:enter', function () {
-          Storage.set('source', 'cub');
+          Storage$1.set('source', 'cub');
           Activity$1.replace({
             source: 'cub'
           });
@@ -24099,7 +24303,7 @@
     };
     this.loadBackground = function (data) {
       var background = data.movie.backdrop_path ? Api.img(data.movie.backdrop_path, 'w1280') : data.movie.background_image ? data.movie.background_image : '';
-      if (window.innerWidth > 790 && background && !Storage.field('light_version') && Storage.field('background_type') !== 'poster') {
+      if (window.innerWidth > 790 && background && !Storage$1.field('light_version') && Storage$1.field('background_type') !== 'poster') {
         background_image = html.find('.full-start__background')[0] || {};
         background_image.onload = function (e) {
           html.find('.full-start__background').addClass('loaded');
@@ -24171,7 +24375,7 @@
       if (object.source == 'tmdb') {
         button = $('<div class="empty__footer"><div class="simple-button selector">' + Lang.translate('change_source_on_cub') + '</div></div>');
         button.find('.selector').on('hover:enter', function () {
-          Storage.set('source', 'cub');
+          Storage$1.set('source', 'cub');
           Activity$1.replace({
             source: 'cub'
           });
@@ -24360,7 +24564,7 @@
   function create$7(data) {
     var html;
     var last;
-    var subscribed = Storage.get('person_subscribes_id', '[]').find(function (a) {
+    var subscribed = Storage$1.get('person_subscribes_id', '[]').find(function (a) {
       return a == data.id;
     });
     var network = new create$p();
@@ -24395,16 +24599,16 @@
         last = e.target;
       });
       html.find('.button--subscribe').on('hover:enter', function () {
-        var subscribes = Storage.get('person_subscribes_id', '[]');
+        var subscribes = Storage$1.get('person_subscribes_id', '[]');
         subscribed = subscribes.find(function (a) {
           return a == data.id;
         });
         if (!subscribed && !Account.hasPremium()) return Account.showCubPremium();
-        var account = Account.logged() ? Storage.get('account', '{}') : false;
+        var account = Account.logged() ? Storage$1.get('account', '{}') : false;
         if (!account) return Account.showNoAccount();
         network.silent(Utils$2.protocol() + object$2.cub_domain + '/api/person/' + (subscribed ? 'unsubscribe' : 'subscribe'), function (result) {
           if (subscribed) Arrays.remove(subscribes, data.id);else if (subscribes.indexOf(data.id) == -1) subscribes.push(data.id);
-          Storage.set('person_subscribes_id', subscribes);
+          Storage$1.set('person_subscribes_id', subscribes);
           subscribed = subscribes.find(function (a) {
             return a == data.id;
           });
@@ -24588,7 +24792,7 @@
     var update = function update(e) {
       if (e.name == 'account') comp.activity.needRefresh();
     };
-    Storage.listener.follow('change', update);
+    Storage$1.listener.follow('change', update);
     comp.create = function () {
       this.activity.loader(true);
       Api.favorite(object, this.build.bind(this), this.empty.bind(this));
@@ -24624,11 +24828,11 @@
             Favorite.clear('history');
             Lampa.Activity.replace({});
           } else if (action.label) {
-            Storage.set('online_view', []);
-            Storage.set('torrents_view', []);
+            Storage$1.set('online_view', []);
+            Storage$1.set('torrents_view', []);
             Noty.show(Lang.translate('fav_label_cleared'));
           } else if (action.timecode) {
-            Storage.set('file_view', {});
+            Storage$1.set('file_view', {});
             Noty.show(Lang.translate('fav_time_cleared'));
           }
         };
@@ -24665,7 +24869,7 @@
         search.find('.search-box__input').text(Lang.translate('search_input') + '...');
       }
     }
-    if (Storage.field('keyboard_type') !== 'lampa') search.find('.search-box__input').hide();
+    if (Storage$1.field('keyboard_type') !== 'lampa') search.find('.search-box__input').hide();
     $('body').append(search);
     $('body').toggleClass('ambience--enable', true);
     var keyboard = new create$2({
@@ -24701,7 +24905,7 @@
       var _this = this;
       var search = [];
       var year = ((params.movie ? params.movie.first_air_date || params.movie.release_date : '0000') + '').slice(0, 4);
-      var earlier = Storage.get('user_clarifys', '{}')[params.movie.id];
+      var earlier = Storage$1.get('user_clarifys', '{}')[params.movie.id];
       search.push({
         title: Lang.translate('filter_set_name'),
         query: ''
@@ -24782,11 +24986,11 @@
             new create$6({
               input: params.search,
               onSearch: function onSearch(new_query) {
-                var earliers = Storage.get('user_clarifys', '{}');
+                var earliers = Storage$1.get('user_clarifys', '{}');
                 if (!earliers[params.movie.id]) earliers[params.movie.id] = [];
                 if (earliers[params.movie.id].indexOf(new_query) == -1) {
                   earliers[params.movie.id].push(new_query);
-                  Storage.set('user_clarifys', earliers);
+                  Storage$1.set('user_clarifys', earliers);
                 }
                 _this.onSearch(new_query);
               },
@@ -24913,7 +25117,7 @@
   var memorys = {};
   var remember = 1000 * 60 * 60 * 14;
   function show$3(name, text, elem) {
-    if (!Storage.field('helper')) return;
+    if (!Storage$1.field('helper')) return;
     var help = memorys[name];
     if (!help) {
       help = {
@@ -24927,7 +25131,7 @@
     if (help.time + remember < Date.now() && help.count < 3) {
       help.time = Date.now();
       help.count++;
-      Storage.set('helper', memorys);
+      Storage$1.set('helper', memorys);
       clearTimeout(time);
       time = setTimeout(function () {
         html$6.removeClass('helper--visible');
@@ -24944,12 +25148,12 @@
     }
   }
   function init$g() {
-    memorys = Storage.cache('helper', 300, {});
+    memorys = Storage$1.cache('helper', 300, {});
     Settings.listener.follow('open', function (e) {
       if (e.name == 'more') {
         e.body.find('.helper--start-again').on('hover:enter', function () {
           memorys = {};
-          Storage.set('helper', memorys);
+          Storage$1.set('helper', memorys);
           Noty.show(Lang.translate('helper_cleared'));
         });
       }
@@ -24970,7 +25174,7 @@
   function start$3(element, movie) {
     SERVER.object = element;
     if (movie) SERVER.movie = movie;
-    if (Platform.is('android') && !Storage.field('internal_torrclient')) {
+    if (Platform.is('android') && !Storage$1.field('internal_torrclient')) {
       Android.openTorrent(SERVER);
       if (movie && movie.id) Favorite.add('history', movie, 100);
       if (callback$1) callback$1();
@@ -24982,7 +25186,7 @@
   function open$2(hash, movie) {
     SERVER.hash = hash;
     if (movie) SERVER.movie = movie;
-    if (Platform.is('android') && !Storage.field('internal_torrclient')) {
+    if (Platform.is('android') && !Storage$1.field('internal_torrclient')) {
       Android.playHash(SERVER);
       if (callback$1) callback$1();
     } else if (Torserver.url()) {
@@ -25024,7 +25228,7 @@
     }, function (echo) {
       //Torserver.error()
 
-      var jac = Storage.field('parser_torrent_type') == 'jackett';
+      var jac = Storage$1.field('parser_torrent_type') == 'jackett';
       var tpl = Template$1.get('torrent_nohash', {
         title: Lang.translate('title_error'),
         text: Lang.translate('torrent_parser_no_hash'),
@@ -25483,13 +25687,13 @@
         }
       }
     };
-    Storage.listener.follow('change', function (e) {
+    Storage$1.listener.follow('change', function (e) {
       if (e.name == 'parse_in_search') {
         Search.removeSource(source);
-        if (Storage.field('parse_in_search')) Search.addSource(source);
+        if (Storage$1.field('parse_in_search')) Search.addSource(source);
       }
     });
-    if (Storage.field('parse_in_search')) {
+    if (Storage$1.field('parse_in_search')) {
       Search.addSource(source);
     }
   }
@@ -25510,9 +25714,9 @@
         if (data.Results.length) oncomplite(data);else onerror(e);
       });
     }
-    if (Storage.field('parser_torrent_type') == 'jackett') {
-      if (Storage.field('jackett_url')) {
-        url = Utils$2.checkEmptyUrl(Storage.field('jackett_url'));
+    if (Storage$1.field('parser_torrent_type') == 'jackett') {
+      if (Storage$1.field('jackett_url')) {
+        url = Utils$2.checkEmptyUrl(Storage$1.field('jackett_url'));
         var ignore = false; //params.from_search && !url.match(/\d+\.\d+\.\d+/g)
 
         if (ignore) error('');else {
@@ -25521,20 +25725,20 @@
       } else {
         error(Lang.translate('torrent_parser_set_link') + ': Jackett');
       }
-    } else if (Storage.field('parser_torrent_type') == 'prowlarr') {
-      if (Storage.field('prowlarr_url')) {
-        url = Utils$2.checkEmptyUrl(Storage.field('prowlarr_url'));
+    } else if (Storage$1.field('parser_torrent_type') == 'prowlarr') {
+      if (Storage$1.field('prowlarr_url')) {
+        url = Utils$2.checkEmptyUrl(Storage$1.field('prowlarr_url'));
         prowlarr(params, complite, error);
       } else {
         error(Lang.translate('torrent_parser_set_link') + ': Prowlarr');
       }
     } else {
-      if (Storage.get('native')) {
+      if (Storage$1.get('native')) {
         torlook(params, complite, error);
-      } else if (Storage.field('torlook_parse_type') == 'site' && Storage.field('parser_website_url')) {
-        url = Utils$2.checkEmptyUrl(Storage.field('parser_website_url'));
+      } else if (Storage$1.field('torlook_parse_type') == 'site' && Storage$1.field('parser_website_url')) {
+        url = Utils$2.checkEmptyUrl(Storage$1.field('parser_website_url'));
         torlook(params, complite, error);
-      } else if (Storage.field('torlook_parse_type') == 'native') {
+      } else if (Storage$1.field('torlook_parse_type') == 'native') {
         torlook(params, complite, error);
       } else error(Lang.translate('torrent_parser_set_link') + ': TorLook');
     }
@@ -25559,7 +25763,7 @@
     });
   }
   function viewed(hash) {
-    var view = Storage.cache('torrents_view', 5000, []);
+    var view = Storage$1.cache('torrents_view', 5000, []);
     return view.indexOf(hash) > -1;
   }
   function torlook() {
@@ -25572,7 +25776,7 @@
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var oncomplite = arguments.length > 1 ? arguments[1] : undefined;
     var onerror = arguments.length > 2 ? arguments[2] : undefined;
-    network$3.timeout(1000 * Storage.field('parse_timeout'));
+    network$3.timeout(1000 * Storage$1.field('parse_timeout'));
     var s = 'https://torlook.site/api.php?key=4JuCSML44FoEsmqK&s=';
     var q = (params.search + '').replace(/( )/g, "+").toLowerCase();
     var u = s + encodeURIComponent(q);
@@ -25608,8 +25812,8 @@
     var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var oncomplite = arguments.length > 1 ? arguments[1] : undefined;
     var onerror = arguments.length > 2 ? arguments[2] : undefined;
-    network$3.timeout(1000 * Storage.field('parse_timeout'));
-    var u = url + '/api/v2.0/indexers/' + (Storage.field('jackett_interview') == 'healthy' ? 'status:healthy' : 'all') + '/results?apikey=' + Storage.field('jackett_key') + '&Query=' + encodeURIComponent(params.search);
+    network$3.timeout(1000 * Storage$1.field('parse_timeout'));
+    var u = url + '/api/v2.0/indexers/' + (Storage$1.field('jackett_interview') == 'healthy' ? 'status:healthy' : 'all') + '/results?apikey=' + Storage$1.field('jackett_key') + '&Query=' + encodeURIComponent(params.search);
     if (!params.from_search) {
       var genres = params.movie.genres.map(function (a) {
         return a.name;
@@ -25644,8 +25848,8 @@
     var oncomplite = arguments.length > 1 ? arguments[1] : undefined;
     var onerror = arguments.length > 2 ? arguments[2] : undefined;
     var u = new URL('/api/v1/search', url);
-    network$3.timeout(1000 * Storage.field('parse_timeout'));
-    u.searchParams.set('apikey', Storage.field('prowlarr_key'));
+    network$3.timeout(1000 * Storage$1.field('parse_timeout'));
+    u.searchParams.set('apikey', Storage$1.field('prowlarr_key'));
     u.searchParams.set('query', params.search);
     if (!params.from_search) {
       var isSerial = !!(params.movie.first_air_date || params.movie.last_air_date);
@@ -25681,8 +25885,8 @@
   }
   function marnet(element, oncomplite, onerror) {
     network$3.timeout(1000 * 15);
-    var s = Utils$2.checkHttp(Storage.field('torlook_site')) + '/';
-    var u = Storage.get('native') || Storage.field('torlook_parse_type') == 'native' ? s + element.reguest : url.replace('{q}', encodeURIComponent(s + element.reguest));
+    var s = Utils$2.checkHttp(Storage$1.field('torlook_site')) + '/';
+    var u = Storage$1.get('native') || Storage$1.field('torlook_parse_type') == 'native' ? s + element.reguest : url.replace('{q}', encodeURIComponent(s + element.reguest));
     network$3["native"](u, function (html) {
       var math = html.match(/magnet:(.*?)'/);
       if (math && math[1]) {
@@ -25821,7 +26025,7 @@
     while (i--) {
       filter_items.year.push(y - (19 - i) + '');
     }
-    var viewed = Storage.cache('torrents_view', 5000, []);
+    var viewed = Storage$1.cache('torrents_view', 5000, []);
     var finded_seasons = [];
     var finded_seasons_full = [];
     var voices = ["Laci", "Kerob", "LE-Production", "Parovoz Production", "Paradox", "Omskbird", "LostFilm", "Причудики", "BaibaKo", "NewStudio", "AlexFilm", "FocusStudio", "Gears Media", "Jaskier", "ViruseProject", "Кубик в Кубе", "IdeaFilm", "Sunshine Studio", "Ozz.tv", "Hamster Studio", "Сербин", "To4ka", "Кравец", "Victory-Films", "SNK-TV", "GladiolusTV", "Jetvis Studio", "ApofysTeam", "ColdFilm", "Agatha Studdio", "KinoView", "Jimmy J.", "Shadow Dub Project", "Amedia", "Red Media", "Selena International", "Гоблин", "Universal Russia", "Kiitos", "Paramount Comedy", "Кураж-Бамбей", "Студия Пиратского Дубляжа", "Чадов", "Карповский", "RecentFilms", "Первый канал", "Alternative Production", "NEON Studio", "Колобок", "Дольский", "Синема УС", "Гаврилов", "Живов", "SDI Media", "Алексеев", "GreenРай Studio", "Михалев", "Есарев", "Визгунов", "Либергал", "Кузнецов", "Санаев", "ДТВ", "Дохалов", "Sunshine Studio", "Горчаков", "LevshaFilm", "CasStudio", "Володарский", "ColdFilm", "Шварко", "Карцев", "ETV+", "ВГТРК", "Gravi-TV", "1001cinema", "Zone Vision Studio", "Хихикающий доктор", "Murzilka", "turok1990", "FOX", "STEPonee", "Elrom", "Колобок", "HighHopes", "SoftBox", "GreenРай Studio", "NovaFilm", "Четыре в квадрате", "Greb&Creative", "MUZOBOZ", "ZM-Show", "RecentFilms", "Kerems13", "Hamster Studio", "New Dream Media", "Игмар", "Котов", "DeadLine Studio", "Jetvis Studio", "РенТВ", "Андрей Питерский", "Fox Life", "Рыбин", "Trdlo.studio", "Studio Victory Аsia", "Ozeon", "НТВ", "CP Digital", "AniLibria", "STEPonee", "Levelin", "FanStudio", "Cmert", "Интерфильм", "SunshineStudio", "Kulzvuk Studio", "Кашкин", "Вартан Дохалов", "Немахов", "Sedorelli", "СТС", "Яроцкий", "ICG", "ТВЦ", "Штейн", "AzOnFilm", "SorzTeam", "Гаевский", "Мудров", "Воробьев Сергей", "Студия Райдо", "DeeAFilm Studio", "zamez", "ViruseProject", "Иванов", "STEPonee", "РенТВ", "СВ-Дубль", "BadBajo", "Комедия ТВ", "Мастер Тэйп", "5-й канал СПб", "SDI Media", "Гланц", "Ох! Студия", "СВ-Кадр", "2x2", "Котова", "Позитив", "RusFilm", "Назаров", "XDUB Dorama", "Реальный перевод", "Kansai", "Sound-Group", "Николай Дроздов", "ZEE TV", "Ozz.tv", "MTV", "Сыендук", "GoldTeam", "Белов", "Dream Records", "Яковлев", "Vano", "SilverSnow", "Lord32x", "Filiza Studio", "Sony Sci-Fi", "Flux-Team", "NewStation", "XDUB Dorama", "Hamster Studio", "Dream Records", "DexterTV", "ColdFilm", "Good People", "RusFilm", "Levelin", "AniDUB", "SHIZA Project", "AniLibria.TV", "StudioBand", "AniMedia", "Kansai", "Onibaku", "JWA Project", "MC Entertainment", "Oni", "Jade", "Ancord", "ANIvoice", "Nika Lenina", "Bars MacAdams", "JAM", "Anika", "Berial", "Kobayashi", "Cuba77", "RiZZ_fisher", "OSLIKt", "Lupin", "Ryc99", "Nazel & Freya", "Trina_D", "JeFerSon", "Vulpes Vulpes", "Hamster", "KinoGolos", "Fox Crime", "Денис Шадинский", "AniFilm", "Rain Death", "LostFilm", "New Records", "Ancord", "Первый ТВЧ", "RG.Paravozik", "Profix Media", "Tycoon", "RealFake", "HDrezka", "Jimmy J.", "AlexFilm", "Discovery", "Viasat History", "AniMedia", "JAM", "HiWayGrope", "Ancord", "СВ-Дубль", "Tycoon", "SHIZA Project", "GREEN TEA", "STEPonee", "AlphaProject", "AnimeReactor", "Animegroup", "Shachiburi", "Persona99", "3df voice", "CactusTeam", "AniMaunt", "AniMedia", "AnimeReactor", "ShinkaDan", "Jaskier", "ShowJet", "RAIM", "RusFilm", "Victory-Films", "АрхиТеатр", "Project Web Mania", "ko136", "КураСгречей", "AMS", "СВ-Студия", "Храм Дорам ТВ", "TurkStar", "Медведев", "Рябов", "BukeDub", "FilmGate", "FilmsClub", "Sony Turbo", "ТВЦ", "AXN Sci-Fi", "NovaFilm", "DIVA Universal", "Курдов", "Неоклассика", "fiendover", "SomeWax", "Логинофф", "Cartoon Network", "Sony Turbo", "Loginoff", "CrezaStudio", "Воротилин", "LakeFilms", "Andy", "CP Digital", "XDUB Dorama + Колобок", "SDI Media", "KosharaSerials", "Екатеринбург Арт", "Julia Prosenuk", "АРК-ТВ Studio", "Т.О Друзей", "Anifilm", "Animedub", "AlphaProject", "Paramount Channel", "Кириллица", "AniPLague", "Видеосервис", "JoyStudio", "HighHopes", "TVShows", "AniFilm", "GostFilm", "West Video", "Формат AB", "Film Prestige", "West Video", "Екатеринбург Арт", "SovetRomantica", "РуФилмс", "AveBrasil", "Greb&Creative", "BTI Studios", "Пифагор", "Eurochannel", "NewStudio", "Кармен Видео", "Кошкин", "Кравец", "Rainbow World", "Воротилин", "Варус-Видео", "ClubFATE", "HiWay Grope", "Banyan Studio", "Mallorn Studio", "Asian Miracle Group", "Эй Би Видео", "AniStar", "Korean Craze", "LakeFilms", "Невафильм", "Hallmark", "Netflix", "Mallorn Studio", "Sony Channel", "East Dream", "Bonsai Studio", "Lucky Production", "Octopus", "TUMBLER Studio", "CrazyCatStudio", "Amber", "Train Studio", "Анастасия Гайдаржи", "Мадлен Дюваль", "Fox Life", "Sound Film", "Cowabunga Studio", "Фильмэкспорт", "VO-Production", "Sound Film", "Nickelodeon", "MixFilm", "GreenРай Studio", "Sound-Group", "Back Board Cinema", "Кирилл Сагач", "Bonsai Studio", "Stevie", "OnisFilms", "MaxMeister", "Syfy Universal", "TUMBLER Studio", "NewStation", "Neo-Sound", "Муравский", "IdeaFilm", "Рутилов", "Тимофеев", "Лагута", "Дьяконов", "Zone Vision Studio", "Onibaku", "AniMaunt", "Voice Project", "AniStar", "Пифагор", "VoicePower", "StudioFilms", "Elysium", "AniStar", "BeniAffet", "Selena International", "Paul Bunyan", "CoralMedia", "Кондор", "Игмар", "ViP Premiere", "FireDub", "AveTurk", "Sony Sci-Fi", "Янкелевич", "Киреев", "Багичев", "2x2", "Лексикон", "Нота", "Arisu", "Superbit", "AveDorama", "VideoBIZ", "Киномания", "DDV", "Alternative Production", "WestFilm", "Анастасия Гайдаржи + Андрей Юрченко", "Киномания", "Agatha Studdio", "GreenРай Studio", "VSI Moscow", "Horizon Studio", "Flarrow Films", "Amazing Dubbing", "Asian Miracle Group", "Видеопродакшн", "VGM Studio", "FocusX", "CBS Drama", "NovaFilm", "Novamedia", "East Dream", "Дасевич", "Анатолий Гусев", "Twister", "Морозов", "NewComers", "kubik&ko", "DeMon", "Анатолий Ашмарин", "Inter Video", "Пронин", "AMC", "Велес", "Volume-6 Studio", "Хоррор Мэйкер", "Ghostface", "Sephiroth", "Акира", "Деваль Видео", "RussianGuy27", "neko64", "Shaman", "Franek Monk", "Ворон", "Andre1288", "Selena International", "GalVid", "Другое кино", "Студия NLS", "Sam2007", "HaseRiLLoPaW", "Севастьянов", "D.I.M.", "Марченко", "Журавлев", "Н-Кино", "Lazer Video", "SesDizi", "Red Media", "Рудой", "Товбин", "Сергей Дидок", "Хуан Рохас", "binjak", "Карусель", "Lizard Cinema", "Варус-Видео", "Акцент", "RG.Paravozik", "Max Nabokov", "Barin101", "Васька Куролесов", "Фортуна-Фильм", "Amalgama", "AnyFilm", "Студия Райдо", "Козлов", "Zoomvision Studio", "Пифагор", "Urasiko", "VIP Serial HD", "НСТ", "Кинолюкс", "Project Web Mania", "Завгородний", "AB-Video", "Twister", "Universal Channel", "Wakanim", "SnowRecords", "С.Р.И", "Старый Бильбо", "Ozz.tv", "Mystery Film", "РенТВ", "Латышев", "Ващенко", "Лайко", "Сонотек", "Psychotronic", "DIVA Universal", "Gremlin Creative Studio", "Нева-1", "Максим Жолобов", "Good People", "Мобильное телевидение", "Lazer Video", "IVI", "DoubleRec", "Milvus", "RedDiamond Studio", "Astana TV", "Никитин", "КТК", "D2Lab", "НСТ", "DoubleRec", "Black Street Records", "Останкино", "TatamiFilm", "Видеобаза", "Crunchyroll", "Novamedia", "RedRussian1337", "КонтентикOFF", "Creative Sound", "HelloMickey Production", "Пирамида", "CLS Media", "Сонькин", "Мастер Тэйп", "Garsu Pasaulis", "DDV", "IdeaFilm", "Gold Cinema", "Че!", "Нарышкин", "Intra Communications", "OnisFilms", "XDUB Dorama", "Кипарис", "Королёв", "visanti-vasaer", "Готлиб", "Paramount Channel", "СТС", "диктор CDV", "Pazl Voice", "Прямостанов", "Zerzia", "НТВ", "MGM", "Дьяков", "Вольга", "АРК-ТВ Studio", "Дубровин", "МИР", "Netflix", "Jetix", "Кипарис", "RUSCICO", "Seoul Bay", "Филонов", "Махонько", "Строев", "Саня Белый", "Говинда Рага", "Ошурков", "Horror Maker", "Хлопушка", "Хрусталев", "Антонов Николай", "Золотухин", "АрхиАзия", "Попов", "Ultradox", "Мост-Видео", "Альтера Парс", "Огородников", "Твин", "Хабар", "AimaksaLTV", "ТНТ", "FDV", "3df voice", "The Kitchen Russia", "Ульпаней Эльром", "Видеоимпульс", "GoodTime Media", "Alezan", "True Dubbing Studio", "FDV", "Карусель", "Интер", "Contentica", "Мельница", "RealFake", "ИДДК", "Инфо-фильм", "Мьюзик-трейд", "Кирдин | Stalk", "ДиоНиК", "Стасюк", "TV1000", "Hallmark", "Тоникс Медиа", "Бессонов", "Gears Media", "Бахурани", "NewDub", "Cinema Prestige", "Набиев", "New Dream Media", "ТВ3", "Малиновский Сергей", "Superbit", "Кенс Матвей", "LE-Production", "Voiz", "Светла", "Cinema Prestige", "JAM", "LDV", "Videogram", "Индия ТВ", "RedDiamond Studio", "Герусов", "Элегия фильм", "Nastia", "Семыкина Юлия", "Электричка", "Штамп Дмитрий", "Пятница", "Oneinchnales", "Gravi-TV", "D2Lab", "Кинопремьера", "Бусов Глеб", "LE-Production", "1001cinema", "Amazing Dubbing", "Emslie", "1+1", "100 ТВ", "1001 cinema", "2+2", "2х2", "3df voice", "4u2ges", "5 канал", "A. Lazarchuk", "AAA-Sound", "AB-Video", "AdiSound", "ALEKS KV", "AlexFilm", "AlphaProject", "Alternative Production", "Amalgam", "AMC", "Amedia", "AMS", "Andy", "AniLibria", "AniMedia", "Animegroup", "Animereactor", "AnimeSpace Team", "Anistar", "AniUA", "AniWayt", "Anything-group", "AOS", "Arasi project", "ARRU Workshop", "AuraFilm", "AvePremier", "AveTurk", "AXN Sci-Fi", "Azazel", "AzOnFilm", "BadBajo", "BadCatStudio", "BBC Saint-Petersburg", "BD CEE", "Black Street Records", "Bonsai Studio", "Boльгa", "Brain Production", "BraveSound", "BTI Studios", "Bubble Dubbing Company", "Byako Records", "Cactus Team", "Cartoon Network", "CBS Drama", "CDV", "Cinema Prestige", "CinemaSET GROUP", "CinemaTone", "ColdFilm", "Contentica", "CP Digital", "CPIG", "Crunchyroll", "Cuba77", "D1", "D2lab", "datynet", "DDV", "DeadLine", "DeadSno", "DeMon", "den904", "Description", "DexterTV", "Dice", "Discovery", "DniproFilm", "DoubleRec", "DreamRecords", "DVD Classic", "East Dream", "Eladiel", "Elegia", "ELEKTRI4KA", "Elrom", "ELYSIUM", "Epic Team", "eraserhead", "erogg", "Eurochannel", "Extrabit", "F-TRAIN", "Family Fan Edition", "FDV", "FiliZa Studio", "Film Prestige", "FilmGate", "FilmsClub", "FireDub", "Flarrow Films", "Flux-Team", "FocusStudio", "FOX", "Fox Crime", "Fox Russia", "FoxLife", "Foxlight", "Franek Monk", "Gala Voices", "Garsu Pasaulis", "Gears Media", "Gemini", "General Film", "GetSmart", "Gezell Studio", "Gits", "GladiolusTV", "GoldTeam", "Good People", "Goodtime Media", "GoodVideo", "GostFilm", "Gramalant", "Gravi-TV", "GREEN TEA", "GreenРай Studio", "Gremlin Creative Studio", "Hallmark", "HamsterStudio", "HiWay Grope", "Horizon Studio", "hungry_inri", "ICG", "ICTV", "IdeaFilm", "IgVin &amp; Solncekleshka", "ImageArt", "INTERFILM", "Ivnet Cinema", "IНТЕР", "Jakob Bellmann", "JAM", "Janetta", "Jaskier", "JeFerSon", "jept", "JetiX", "Jetvis", "JimmyJ", "KANSAI", "KIHO", "kiitos", "KinoGolos", "Kinomania", "KosharaSerials", "Kолобок", "L0cDoG", "LakeFilms", "LDV", "LE-Production", "LeDoyen", "LevshaFilm", "LeXiKC", "Liga HQ", "Line", "Lisitz", "Lizard Cinema Trade", "Lord32x", "lord666", "LostFilm", "Lucky Production", "Macross", "madrid", "Mallorn Studio", "Marclail", "Max Nabokov", "MC Entertainment", "MCA", "McElroy", "Mega-Anime", "Melodic Voice Studio", "metalrus", "MGM", "MifSnaiper", "Mikail", "Milirina", "MiraiDub", "MOYGOLOS", "MrRose", "MTV", "Murzilka", "MUZOBOZ", "National Geographic", "NemFilm", "Neoclassica", "NEON Studio", "New Dream Media", "NewComers", "NewStation", "NewStudio", "Nice-Media", "Nickelodeon", "No-Future", "NovaFilm", "Novamedia", "Octopus", "Oghra-Brown", "OMSKBIRD", "Onibaku", "OnisFilms", "OpenDub", "OSLIKt", "Ozz TV", "PaDet", "Paramount Comedy", "Paramount Pictures", "Parovoz Production", "PashaUp", "Paul Bunyan", "Pazl Voice", "PCB Translate", "Persona99", "PiratVoice", "Postmodern", "Profix Media", "Project Web Mania", "Prolix", "QTV", "R5", "Radamant", "RainDeath", "RATTLEBOX", "RealFake", "Reanimedia", "Rebel Voice", "RecentFilms", "Red Media", "RedDiamond Studio", "RedDog", "RedRussian1337", "Renegade Team", "RG Paravozik", "RinGo", "RoxMarty", "Rumble", "RUSCICO", "RusFilm", "RussianGuy27", "Saint Sound", "SakuraNight", "Satkur", "Sawyer888", "Sci-Fi Russia", "SDI Media", "Selena", "seqw0", "SesDizi", "SGEV", "Shachiburi", "SHIZA", "ShowJet", "Sky Voices", "SkyeFilmTV", "SmallFilm", "SmallFilm", "SNK-TV", "SnowRecords", "SOFTBOX", "SOLDLUCK2", "Solod", "SomeWax", "Sony Channel", "Sony Turbo", "Sound Film", "SpaceDust", "ssvss", "st.Elrom", "STEPonee", "SunshineStudio", "Superbit", "Suzaku", "sweet couple", "TatamiFilm", "TB5", "TF-AniGroup", "The Kitchen Russia", "The Mike Rec.", "Timecraft", "To4kaTV", "Tori", "Total DVD", "TrainStudio", "Troy", "True Dubbing Studio", "TUMBLER Studio", "turok1990", "TV 1000", "TVShows", "Twister", "Twix", "Tycoon", "Ultradox", "Universal Russia", "VashMax2", "VendettA", "VHS", "VicTeam", "VictoryFilms", "Video-BIZ", "Videogram", "ViruseProject", "visanti-vasaer", "VIZ Media", "VO-production", "Voice Project Studio", "VoicePower", "VSI Moscow", "VulpesVulpes", "Wakanim", "Wayland team", "WestFilm", "WiaDUB", "WVoice", "XL Media", "XvidClub Studio", "zamez", "ZEE TV", "Zendos", "ZM-SHOW", "Zone Studio", "Zone Vision", "Агапов", "Акопян", "Алексеев", "Артемьев", "Багичев", "Бессонов", "Васильев", "Васильцев", "Гаврилов", "Герусов", "Готлиб", "Григорьев", "Дасевич", "Дольский", "Карповский", "Кашкин", "Киреев", "Клюквин", "Костюкевич", "Матвеев", "Михалев", "Мишин", "Мудров", "Пронин", "Савченко", "Смирнов", "Тимофеев", "Толстобров", "Чуев", "Шуваев", "Яковлев", "ААА-sound", "АБыГДе", "Акалит", "Акира", "Альянс", "Амальгама", "АМС", "АнВад", "Анубис", "Anubis", "Арк-ТВ", "АРК-ТВ Studio", "Б. Федоров", "Бибиков", "Бигыч", "Бойков", "Абдулов", "Белов", "Вихров", "Воронцов", "Горчаков", "Данилов", "Дохалов", "Котов", "Кошкин", "Назаров", "Попов", "Рукин", "Рутилов", "Варус Видео", "Васька Куролесов", "Ващенко С.", "Векшин", "Велес", "Весельчак", "Видеоимпульс", "Витя «говорун»", "Войсовер", "Вольга", "Ворон", "Воротилин", "Г. Либергал", "Г. Румянцев", "Гей Кино Гид", "ГКГ", "Глуховский", "Гризли", "Гундос", "Деньщиков", "Есарев", "Нурмухаметов", "Пучков", "Стасюк", "Шадинский", "Штамп", "sf@irat", "Держиморда", "Домашний", "ДТВ", "Дьяконов", "Е. Гаевский", "Е. Гранкин", "Е. Лурье", "Е. Рудой", "Е. Хрусталёв", "ЕА Синема", "Екатеринбург Арт", "Живаго", "Жучков", "З Ранку До Ночі", "Завгородний", "Зебуро", "Зереницын", "И. Еремеев", "И. Клушин", "И. Сафронов", "И. Степанов", "ИГМ", "Игмар", "ИДДК", "Имидж-Арт", "Инис", "Ирэн", "Ист-Вест", "К. Поздняков", "К. Филонов", "К9", "Карапетян", "Кармен Видео", "Карусель", "Квадрат Малевича", "Килька", "Кипарис", "Королев", "Котова", "Кравец", "Кубик в Кубе", "Кураж-Бамбей", "Л. Володарский", "Лазер Видео", "ЛанселаП", "Лапшин", "Лексикон", "Ленфильм", "Леша Прапорщик", "Лизард", "Люсьена", "Заугаров", "Иванов", "Иванова и П. Пашут", "Латышев", "Ошурков", "Чадов", "Яроцкий", "Максим Логинофф", "Малиновский", "Марченко", "Мастер Тэйп", "Махонько", "Машинский", "Медиа-Комплекс", "Мельница", "Мика Бондарик", "Миняев", "Мительман", "Мост Видео", "Мосфильм", "Муравский", "Мьюзик-трейд", "Н-Кино", "Н. Антонов", "Н. Дроздов", "Н. Золотухин", "Н.Севастьянов seva1988", "Набиев", "Наталья Гурзо", "НЕВА 1", "Невафильм", "НеЗупиняйПродакшн", "Неоклассика", "Несмертельное оружие", "НЛО-TV", "Новий", "Новый диск", "Новый Дубляж", "Новый Канал", "Нота", "НСТ", "НТВ", "НТН", "Оверлорд", "Огородников", "Омикрон", "Гланц", "Карцев", "Морозов", "Прямостанов", "Санаев", "Парадиз", "Пепелац", "Первый канал ОРТ", "Переводман", "Перец", "Петербургский дубляж", "Петербуржец", "Пирамида", "Пифагор", "Позитив-Мультимедиа", "Прайд Продакшн", "Премьер Видео", "Премьер Мультимедиа", "Причудики", "Р. Янкелевич", "Райдо", "Ракурс", "РенТВ", "Россия", "РТР", "Русский дубляж", "Русский Репортаж", "РуФилмс", "Рыжий пес", "С. Визгунов", "С. Дьяков", "С. Казаков", "С. Кузнецов", "С. Кузьмичёв", "С. Лебедев", "С. Макашов", "С. Рябов", "С. Щегольков", "С.Р.И.", "Сolumbia Service", "Самарский", "СВ Студия", "СВ-Дубль", "Светла", "Селена Интернешнл", "Синема Трейд", "Синема УС", "Синта Рурони", "Синхрон", "Советский", "Сокуров", "Солодухин", "Сонотек", "Сонькин", "Союз Видео", "Союзмультфильм", "СПД - Сладкая парочка", "Строев", "СТС", "Студии Суверенного Лепрозория", "Студия «Стартрек»", "KOleso", "Студия Горького", "Студия Колобок", "Студия Пиратского Дубляжа", "Студия Райдо", "Студия Трёх", "Гуртом", "Супербит", "Сыендук", "Так Треба Продакшн", "ТВ XXI век", "ТВ СПб", "ТВ-3", "ТВ6", "ТВИН", "ТВЦ", "ТВЧ 1", "ТНТ", "ТО Друзей", "Толмачев", "Точка Zрения", "Трамвай-фильм", "ТРК", "Уолт Дисней Компани", "Хихидок", "Хлопушка", "Цікава Ідея", "Четыре в квадрате", "Швецов", "Штамп", "Штейн", "Ю. Живов", "Ю. Немахов", "Ю. Сербин", "Ю. Товбин", "Я. Беллманн", "Red Head Sound", "UKR"];
@@ -26064,7 +26268,7 @@
       this.activity.loader(true);
       if (object.movie.original_language == 'ja' && object.movie.genres.find(function (g) {
         return g.id == 16;
-      }) && Storage.field('language') !== 'en') {
+      }) && Storage$1.field('language') !== 'en') {
         network.silent(TMDB$1.api((object.movie.name ? 'tv' : 'movie') + '/' + object.movie.id + '?api_key=' + TMDB$1.key() + '&language=en'), function (result) {
           object.search_two = result.name || result.title;
           _this.parse();
@@ -26125,7 +26329,7 @@
       scroll.append(em);
     };
     this.buildSorted = function () {
-      var need = Storage.get('torrents_sort', 'Seeders');
+      var need = Storage$1.get('torrents_sort', 'Seeders');
       var select = [{
         title: Lang.translate('torrent_parser_sort_by_seeders'),
         sort: 'Seeders'
@@ -26168,16 +26372,16 @@
       return object.movie.id + ':' + (object.movie.number_of_seasons ? 'tv' : 'movie');
     };
     this.getFilterData = function () {
-      var all = Storage.cache('torrents_filter_data', 500, {});
+      var all = Storage$1.cache('torrents_filter_data', 500, {});
       var cid = this.cardID();
-      return all[cid] || Storage.get('torrents_filter', '{}');
+      return all[cid] || Storage$1.get('torrents_filter', '{}');
     };
     this.setFilterData = function (filter) {
-      var all = Storage.cache('torrents_filter_data', 500, {});
+      var all = Storage$1.cache('torrents_filter_data', 500, {});
       var cid = this.cardID();
       all[cid] = filter;
-      Storage.set('torrents_filter_data', all);
-      Storage.set('torrents_filter', filter);
+      Storage$1.set('torrents_filter_data', all);
+      Storage$1.set('torrents_filter', filter);
     };
     this.buildFilterd = function () {
       var need = this.getFilterData();
@@ -26291,7 +26495,7 @@
       filter.chosen('filter', select);
     };
     this.selectedSort = function () {
-      var select = Storage.get('torrents_sort', 'Seeders');
+      var select = Storage$1.get('torrents_sort', 'Seeders');
       filter.chosen('sort', [sort_translate[select]]);
     };
     this.build = function () {
@@ -26301,7 +26505,7 @@
       this.filtred();
       filter.onSelect = function (type, a, b) {
         if (type == 'sort') {
-          Storage.set('torrents_sort', a.sort);
+          Storage$1.set('torrents_sort', a.sort);
           filter.sort(results.Results, a.sort);
           _this3.sortWithPopular();
         } else {
@@ -26517,8 +26721,8 @@
         item.find('.torrent-item__viewed').remove();
       }
       element.viewed = add;
-      Storage.set('torrents_view', viewed);
-      if (!add) Storage.remove('torrents_view', element.hash);
+      Storage$1.set('torrents_view', viewed);
+      if (!add) Storage$1.remove('torrents_view', element.hash);
     };
     this.addToBase = function (element) {
       Torserver.add({
@@ -27829,7 +28033,7 @@
     };
     this.create = function () {
       this.activity.loader(true);
-      Storage.listener.follow('change', follow);
+      Storage$1.listener.follow('change', follow);
       Account.persons(this.build.bind(this), this.empty.bind(this));
     };
     this.empty = function () {
@@ -27947,7 +28151,7 @@
       network.clear();
       Arrays.destroy(items);
       scroll.destroy();
-      Storage.listener.remove('change', follow);
+      Storage$1.listener.remove('change', follow);
       html.remove();
       body.remove();
       items = [];
@@ -28192,7 +28396,7 @@
   function init$e() {
     content = Template$1.js('activitys');
     slides = content.querySelector('.activitys__slides');
-    maxsave = Storage.get('pages_save_total', 5);
+    maxsave = Storage$1.get('pages_save_total', 5);
     parseStartCard();
     empty();
     var wait = true;
@@ -28210,8 +28414,8 @@
         backward();
       }
     });
-    Storage.listener.follow('change', function (event) {
-      if (event.name == 'pages_save_total') maxsave = Storage.get('pages_save_total', 5);
+    Storage$1.listener.follow('change', function (event) {
+      if (event.name == 'pages_save_total') maxsave = Storage$1.get('pages_save_total', 5);
       if (event.name == 'light_version') {
         activites.forEach(function (activity) {
           if (activity.activity) activity.activity.refresh();
@@ -28367,7 +28571,7 @@
     for (var i in object) {
       if (i !== 'activity') saved[i] = object[i];
     }
-    Storage.set('activity', saved);
+    Storage$1.set('activity', saved);
   }
 
   /**
@@ -28406,8 +28610,8 @@
    * С какой активности начать запуск лампы
    */
   function last$1() {
-    var active = Storage.get('activity', 'false');
-    var start_from = Storage.field("start_page");
+    var active = Storage$1.get('activity', 'false');
+    var start_from = Storage$1.field("start_page");
     if (window.start_deep_link) {
       push$1(window.start_deep_link);
     } else if (active && start_from === "last") {
@@ -28436,9 +28640,9 @@
       } else {
         push$1({
           url: '',
-          title: Lang.translate('title_main') + ' - ' + Storage.field('source').toUpperCase(),
+          title: Lang.translate('title_main') + ' - ' + Storage$1.field('source').toUpperCase(),
           component: 'main',
-          source: Storage.field('source'),
+          source: Storage$1.field('source'),
           page: 1
         });
       }
@@ -28644,7 +28848,7 @@
         Utils$2.trigger(elem, 'hover:long');
       };
       elem.trigger_click = function (e) {
-        if (Storage.field('navigation_type') == 'mouse' || Platform.screen('mobile')) {
+        if (Storage$1.field('navigation_type') == 'mouse' || Platform.screen('mobile')) {
           if (DeviceInput.canClick(e)) {
             Utils$2.trigger(elem, 'hover:enter');
           }
@@ -28658,10 +28862,10 @@
       elem.trigger_mouseleave = function () {
         elem.classList.remove('focus');
       };
-      if (Storage.field('navigation_type') == 'mouse' || Platform.screen('mobile')) {
+      if (Storage$1.field('navigation_type') == 'mouse' || Platform.screen('mobile')) {
         elem.addEventListener('click', elem.trigger_click);
       }
-      if (!Utils$2.isTouchDevice() && Storage.field('navigation_type') == 'mouse') {
+      if (!Utils$2.isTouchDevice() && Storage$1.field('navigation_type') == 'mouse') {
         elem.addEventListener('mouseenter', elem.trigger_mouseenter);
         elem.addEventListener('mouseleave', elem.trigger_mouseleave);
         elem.addEventListener('mouseout', longClear);
@@ -28862,7 +29066,7 @@
     var last;
     var ime;
     var recognition;
-    var simple = Storage.field('keyboard_type') !== 'lampa';
+    var simple = Storage$1.field('keyboard_type') !== 'lampa';
     var input;
     var last_value;
     var height = window.innerHeight;
@@ -29056,7 +29260,7 @@
                   items: items,
                   onSelect: function onSelect(item) {
                     Select.hide();
-                    Storage.set('keyboard_default_lang', item.value);
+                    Storage$1.set('keyboard_default_lang', item.value);
                     var shifted = _keyBord.options.layoutName.split('-')[1] == 'shift';
                     var new_layout = item.value + (shifted ? '-shift' : '');
                     _this.shifted(!shifted, new_layout, item.value);
@@ -29084,7 +29288,7 @@
             }
           }
         });
-        var lang = Storage.get('keyboard_default_lang', Storage.get('language', 'ru'));
+        var lang = Storage$1.get('keyboard_default_lang', Storage$1.get('language', 'ru'));
         _keyBord.setOptions({
           layoutName: lang == 'ru' ? 'default' : Arrays.getKeys(layout).indexOf(lang) >= 0 ? lang : layout.en ? 'en' : 'default'
         });
@@ -29254,7 +29458,7 @@
   function edit(params, call) {
     html$5 = Template$1.get('settings_input');
     input = html$5.find('.settings-input__input');
-    var lamp = Storage.field('keyboard_type') == 'lampa' || params.keyboard == 'lampa';
+    var lamp = Storage$1.field('keyboard_type') == 'lampa' || params.keyboard == 'lampa';
     if (!lamp) input.hide();
     $('body').addClass('keyboard-input--visible').append(html$5);
     keyboard = new create$2(params);
@@ -29271,7 +29475,7 @@
     if (params.title) html$5.find('.settings-input__content').prepend('<div class="settings-input__title">' + params.title + '</div>');
     keyboard.listener.follow('down', function (event) {
       if (params.nosave) return;
-      var members = Storage.get('setting_member', []);
+      var members = Storage$1.get('setting_member', []);
       var links = [];
       links.push({
         title: (members.indexOf(input.text()) == -1 ? Lang.translate('settings_add') : Lang.translate('settings_remove')) + ' ' + Lang.translate('settings_this_value'),
@@ -29291,6 +29495,7 @@
         subtitle: Lang.translate('settings_for_local'),
         url: '127.0.0.1:8090'
       }]);
+      console.log('input', 'title_links', links);
       Select.show({
         title: Lang.translate('title_links'),
         items: links,
@@ -29303,7 +29508,7 @@
               Arrays.remove(members, a.subtitle);
               Noty.show(Lang.translate('settings_removed') + ' (' + a.subtitle + ')');
             }
-            Storage.set('setting_member', members);
+            Storage$1.set('setting_member', members);
           } else {
             keyboard.value(a.url);
           }
@@ -29313,7 +29518,7 @@
           if (a.member) {
             Arrays.remove(members, a.url);
             Noty.show(Lang.translate('settings_removed') + ' (' + a.url + ')');
-            Storage.set('setting_member', members);
+            Storage$1.set('setting_member', members);
             $(elem).css({
               opacity: 0.4
             });
@@ -29495,7 +29700,7 @@
     }, Platform.screen('mobile') || Platform.is('apple_tv') ? 'integrate' : 'lampa');
 
     //язык и комбинации для поиска
-    var langcode = Storage.get('language', 'ru');
+    var langcode = Storage$1.get('language', 'ru');
     var langname = Lang.codes()[langcode];
     var selector = {
       'df': '#{settings_param_torrent_lang_orig}',
@@ -29507,7 +29712,7 @@
       'lg_df': langname + ' + #{settings_param_torrent_lang_orig}',
       'lg_df_year': langname + ' + #{settings_param_torrent_lang_orig} + #{torrent_parser_year}'
     };
-    if (Arrays.getKeys(selector).indexOf(Storage.get('parse_lang', 'df')) == -1) Storage.set('parse_lang', 'df');
+    if (Arrays.getKeys(selector).indexOf(Storage$1.get('parse_lang', 'df')) == -1) Storage$1.set('parse_lang', 'df');
     select('parse_lang', selector, 'df');
     select('tmdb_lang', Lang.codes(), 'ru');
     var agent = navigator.userAgent.toLowerCase();
@@ -29557,13 +29762,13 @@
       if (type == 'toggle') {
         var params = values[name];
         var keys = Arrays.isArray(params) ? params : Arrays.getKeys(params),
-          value = Storage.get(name, defaults[name]) + '',
+          value = Storage$1.get(name, defaults[name]) + '',
           position = keys.indexOf(value);
         position++;
         if (position >= keys.length) position = 0;
         position = Math.max(0, Math.min(keys.length - 1, position));
         value = keys[position];
-        Storage.set(name, value);
+        Storage$1.set(name, value);
         update$2(elem, elems, elems_html);
         if (onChange) onChange(value);
       }
@@ -29571,9 +29776,9 @@
         Input.edit({
           elem: elem,
           name: name,
-          value: elem.data('string') ? window.localStorage.getItem(name) || defaults[name] : Storage.get(name, defaults[name]) + ''
+          value: elem.data('string') ? window.localStorage.getItem(name) || defaults[name] : Storage$1.get(name, defaults[name]) + ''
         }, function (new_value) {
-          Storage.set(name, new_value);
+          Storage$1.set(name, new_value);
           update$2(elem, elems, elems_html);
           if (onChange) onChange(new_value);
         });
@@ -29588,7 +29793,7 @@
         Input.edit({
           value: ''
         }, function (new_value) {
-          if (new_value && Storage.add(name, new_value)) {
+          if (new_value && Storage$1.add(name, new_value)) {
             displayAddItem(elem, new_value);
             listener$1.send('update_scroll');
           }
@@ -29596,7 +29801,7 @@
       }
       if (type == 'select') {
         var _params = values[name];
-        var _value = Storage.get(name, defaults[name]) + '';
+        var _value = Storage$1.get(name, defaults[name]) + '';
         var items = [];
         for (var i in _params) {
           items.push({
@@ -29606,6 +29811,7 @@
           });
         }
         var enabled = Controller.enabled().name;
+        console.log('params', items);
         Select.show({
           title: Lang.translate('title_choice'),
           items: items,
@@ -29613,7 +29819,7 @@
             Controller.toggle(enabled);
           },
           onSelect: function onSelect(a) {
-            Storage.set(name, a.value);
+            Storage$1.set(name, a.value);
             update$2(elem, elems, elems_html);
             Controller.toggle(enabled);
             if (onChange) onChange(a.value);
@@ -29639,9 +29845,9 @@
     var name = elem.data('name');
     var item = $('<div class="settings-param selector"><div class="settings-param__name">' + element + '</div>' + '</div>');
     item.on('hover:long', function () {
-      var list = Storage.get(name, '[]');
+      var list = Storage$1.get(name, '[]');
       Arrays.remove(list, element);
-      Storage.set(name, list);
+      Storage$1.set(name, list);
       item.css({
         opacity: 0.5
       });
@@ -29654,7 +29860,7 @@
    * @param {object} elem
    */
   function displayAddList(elem) {
-    var list = Storage.get(elem.data('name'), '[]');
+    var list = Storage$1.get(elem.data('name'), '[]');
     list.forEach(function (element) {
       displayAddItem(elem, element);
     });
@@ -29667,7 +29873,7 @@
    */
   function update$2(elem, elems, elems_html) {
     var name = elem.data('name');
-    var key = elem.data('string') ? window.localStorage.getItem(name) || defaults[name] : Storage.get(name, defaults[name] + '');
+    var key = elem.data('string') ? window.localStorage.getItem(name) || defaults[name] : Storage$1.get(name, defaults[name] + '');
     var val = typeof values[name] == 'string' ? key : values[name][key] || values[name][defaults[name]];
     var plr = elem.attr('placeholder');
     if (!val && plr) val = plr;
@@ -29676,7 +29882,7 @@
     if (children) {
       var parent = elems_html ? elems_html.find('[data-parent="' + children + '"]') : elems.filter('[data-parent="' + children + '"]');
       var value = elem.data('children-value');
-      var visibl = value ? Storage.field(name) !== value : !Storage.field(name);
+      var visibl = value ? Storage$1.field(name) !== value : !Storage$1.field(name);
       if (elem.data('children-reverse')) visibl = !visibl;
       parent.toggleClass('hide', visibl);
       parent.filter('[data-visible-value]').each(function () {
@@ -29692,7 +29898,7 @@
    * @returns *
    */
   function field$1(name) {
-    return Storage.get(name, defaults[name] + '');
+    return Storage$1.get(name, defaults[name] + '');
   }
 
   /**
@@ -29943,7 +30149,7 @@
         var start_time = Date.now();
         this.class_type = class_type;
         console.log('StorageWorker', this.field, 'start follow');
-        Storage.listener.follow('change', function (e) {
+        Storage$1.listener.follow('change', function (e) {
           if (_this.field == e.name && _this.loaded && Account.canSync() && Account.hasPremium()) {
             try {
               _this.save(e.value);
@@ -29993,9 +30199,9 @@
     }, {
       key: "parse",
       value: function parse(from, nolisten) {
-        var to = Storage.cache(this.field, this.limit, Arrays.clone(this.empty));
+        var to = Storage$1.cache(this.field, this.limit, Arrays.clone(this.empty));
         this.filter(from, to);
-        Storage.set(this.field, to, nolisten);
+        Storage$1.set(this.field, to, nolisten);
         this.data = this.restrict(Arrays.decodeJson(localStorage.getItem(this.field), Arrays.clone(this.empty)));
         Lampa.Listener.send('worker_storage', {
           type: 'insert',
@@ -30020,7 +30226,7 @@
           console.log('StorageWorker', this.field, 'update start');
           var url = api + 'storage/data/' + encodeURIComponent(this.field) + '/' + this.class_type;
           var all = full;
-          if (Storage.get('storage_' + this.field + '_update_time', '0') + 1000 * 60 * 60 * 24 < Date.now()) all = true;
+          if (Storage$1.get('storage_' + this.field + '_update_time', '0') + 1000 * 60 * 60 * 24 < Date.now()) all = true;
           if (all) url = url + '?full=true';
           network$2.silent(url, function (result) {
             try {
@@ -30029,7 +30235,7 @@
             } catch (e) {
               console.log('StorageWorker', _this2.field, e.message);
             }
-            Storage.set('storage_' + _this2.field + '_update_time', Date.now());
+            Storage$1.set('storage_' + _this2.field + '_update_time', Date.now());
             _this2.loaded = true;
           }, false, false, {
             headers: {
@@ -30043,9 +30249,9 @@
       key: "removeFromSocket",
       value: function removeFromSocket(data) {
         Arrays.remove(this.data, data.value);
-        var store = Storage.cache(this.field, this.limit, Arrays.clone(this.empty));
+        var store = Storage$1.cache(this.field, this.limit, Arrays.clone(this.empty));
         Arrays.remove(store, data.value);
-        Storage.set(this.field, store, true);
+        Storage$1.set(this.field, store, true);
       }
     }, {
       key: "updateFromSocket",
@@ -30148,12 +30354,12 @@
           return a.id == data.id;
         });
         if (find) Arrays.remove(this.data, find);
-        var store = Storage.cache(this.field, this.limit, Arrays.clone(this.empty));
+        var store = Storage$1.cache(this.field, this.limit, Arrays.clone(this.empty));
         find = store.find(function (a) {
           return a.id == data.id;
         });
         if (find) Arrays.remove(store, find);
-        Storage.set(this.field, store, true);
+        Storage$1.set(this.field, store, true);
       }
     }, {
       key: "updateFromSocket",
@@ -30214,9 +30420,9 @@
       key: "removeFromSocket",
       value: function removeFromSocket(data) {
         delete this.data[id];
-        var store = Storage.cache(this.field, this.limit, Arrays.clone(this.empty));
+        var store = Storage$1.cache(this.field, this.limit, Arrays.clone(this.empty));
         delete store[id];
-        Storage.set(this.field, store, true);
+        Storage$1.set(this.field, store, true);
       }
     }, {
       key: "updateFromSocket",
@@ -30403,7 +30609,7 @@
       call(5000 * 1024);
     }
   }
-  var Storage = {
+  var Storage$1 = {
     listener: listener,
     init: init$c,
     get: get,
@@ -32612,7 +32818,7 @@
    */
   function translate(name, custom_code) {
     name = name + '';
-    var code = custom_code || Storage.get('language', 'ru');
+    var code = custom_code || Storage$1.get('language', 'ru');
     if (!langs[code]) code = lang_default;
     if (name.indexOf('#{') >= 0) {
       return name.replace(/#{([a-z_0-9-]+)}/g, function (e, s) {
@@ -32668,7 +32874,7 @@
     return Arrays.clone(keys);
   }
   function selected(check_codes) {
-    return check_codes.indexOf(Storage.get('language', 'ru')) >= 0 ? true : false;
+    return check_codes.indexOf(Storage$1.get('language', 'ru')) >= 0 ? true : false;
   }
   var Lang = {
     translate: translate,
@@ -32779,11 +32985,11 @@
             sort_item.removeClass('traverse');
             sort_item = false;
             var name = $(last).text().trim();
-            var hide = Storage.get('menu_hide', '[]');
+            var hide = Storage$1.get('menu_hide', '[]');
             if (hide.indexOf(name) == -1) {
               if ($('.menu__list:eq(0) .menu__item:not(.hidden)', html$4).length > 3) hide.push(name);
             } else hide.splice(hide.indexOf(name), 1);
-            Storage.set('menu_hide', hide);
+            Storage$1.set('menu_hide', hide);
             hideItems();
           }
         }
@@ -32814,12 +33020,12 @@
     }, 500);
   }
   function checkSort() {
-    var memory = Storage.get('menu_sort', '[]');
+    var memory = Storage$1.get('menu_sort', '[]');
     var anon = getSort();
     anon.forEach(function (item) {
       if (memory.indexOf(item) == -1) memory.push(item);
     });
-    Storage.set('menu_sort', memory);
+    Storage$1.set('menu_sort', memory);
     orderSort();
     hideItems();
   }
@@ -32831,10 +33037,10 @@
     return items;
   }
   function saveSort() {
-    Storage.set('menu_sort', getSort());
+    Storage$1.set('menu_sort', getSort());
   }
   function orderSort() {
-    var items = Storage.get('menu_sort', '[]');
+    var items = Storage$1.get('menu_sort', '[]');
     if (items.length) {
       var list = $('.menu__list:eq(0)', html$4);
       items.forEach(function (item) {
@@ -32844,7 +33050,7 @@
     }
   }
   function hideItems() {
-    var items = Storage.get('menu_hide', '[]');
+    var items = Storage$1.get('menu_hide', '[]');
     $('.menu__item', html$4).removeClass('hidden');
     if (items.length) {
       var list = $('.menu__list:eq(0)', html$4);
@@ -32901,17 +33107,17 @@
         console.log("Lampa menu action == ".concat(action));
         Activity$1.push({
           url: action,
-          title: (action == 'movie' ? Lang.translate('menu_movies') : action == 'anime' ? Lang.translate('menu_anime') : Lang.translate('menu_tv')) + ' - ' + Storage.field('source').toUpperCase(),
+          title: (action == 'movie' ? Lang.translate('menu_movies') : action == 'anime' ? Lang.translate('menu_anime') : Lang.translate('menu_tv')) + ' - ' + Storage$1.field('source').toUpperCase(),
           component: 'category',
-          source: action == 'anime' ? 'cub' : Storage.field('source')
+          source: action == 'anime' ? 'cub' : Storage$1.field('source')
         });
       }
       if (prepared(action, ['main'])) {
         Activity$1.push({
           url: '',
-          title: Lang.translate('title_main') + ' - ' + Storage.field('source').toUpperCase(),
+          title: Lang.translate('title_main') + ' - ' + Storage$1.field('source').toUpperCase(),
           component: 'main',
-          source: Storage.field('source')
+          source: Storage$1.field('source')
         });
       }
       if (prepared(action, ['myperson'])) {
@@ -33005,20 +33211,20 @@
   }
   function catalog() {
     Api.menu({
-      source: Storage.field('source')
+      source: Storage$1.field('source')
     }, function (menu) {
       Select.show({
         title: Lang.translate('title_catalog'),
         items: menu,
         onSelect: function onSelect(a) {
-          var tmdb = Storage.field('source') == 'tmdb' || Storage.field('source') == 'cub';
+          var tmdb = Storage$1.field('source') == 'tmdb' || Storage$1.field('source') == 'cub';
           Activity$1.push({
-            url: Storage.field('source') == 'tmdb' ? 'movie' : 'movie',
-            title: (a.title || Lang.translate('title_catalog')) + ' - ' + Storage.field('source').toUpperCase(),
+            url: Storage$1.field('source') == 'tmdb' ? 'movie' : 'movie',
+            title: (a.title || Lang.translate('title_catalog')) + ' - ' + Storage$1.field('source').toUpperCase(),
             component: tmdb ? 'category' : 'category_full',
             genres: a.id,
             id: a.id,
-            source: Storage.field('source'),
+            source: Storage$1.field('source'),
             card_type: true,
             page: 1
           });
@@ -33331,7 +33537,7 @@
    * Запуск
    */
   function init$8() {
-    if (Storage.field('cloud_use')) status(1);
+    if (Storage$1.field('cloud_use')) status(1);
     Settings.listener.follow('open', function (e) {
       body = null;
       if (e.name == 'cloud') {
@@ -33339,7 +33545,7 @@
         renderStatus();
       }
     });
-    Storage.listener.follow('change', function (e) {
+    Storage$1.listener.follow('change', function (e) {
       if (e.name == 'cloud_token') {
         login(start$1);
       } else if (e.name == 'cloud_use') {
@@ -33386,7 +33592,7 @@
         desc.text('Вы успешно авторизовались');
       }
       if (code == 4) {
-        var time = Utils$2.parseTime(Storage.get('cloud_time', '2021.01.01'));
+        var time = Utils$2.parseTime(Storage$1.get('cloud_time', '2021.01.01'));
         name.text('Синхронизовано');
         desc.text(time.full + ' в ' + time.time);
       }
@@ -33399,7 +33605,7 @@
    * @param {Function} fail - провал
    */
   function login(good, fail) {
-    if (Storage.get('cloud_token') && Storage.field('cloud_use')) {
+    if (Storage$1.get('cloud_token') && Storage$1.field('cloud_use')) {
       network$1.silent('https://api.github.com/gists', function (data) {
         status(3);
         if (good) good();
@@ -33407,7 +33613,7 @@
           type: 'delete',
           beforeSend: {
             name: 'Authorization',
-            value: 'bearer ' + Storage.get('cloud_token')
+            value: 'bearer ' + Storage$1.get('cloud_token')
           },
           headers: {
             'Accept': 'application/vnd.github.v3+json'
@@ -33425,14 +33631,14 @@
       }), {
         beforeSend: {
           name: 'Authorization',
-          value: 'bearer ' + Storage.get('cloud_token')
+          value: 'bearer ' + Storage$1.get('cloud_token')
         },
         headers: {
           'Accept': 'application/vnd.github.v3+json'
         }
       });
     } else {
-      status(Storage.field('cloud_use') ? 1 : 0);
+      status(Storage$1.field('cloud_use') ? 1 : 0);
       if (fail) fail();
     }
   }
@@ -33441,12 +33647,12 @@
    * Считываем файл и обновляем данные с облака
    */
   function read(call) {
-    var time = Storage.get('cloud_time', '2021.01.01');
+    var time = Storage$1.get('cloud_time', '2021.01.01');
     if (time !== readed.item.updated_at) {
       network$1.silent(readed.file.raw_url, function (data) {
-        Storage.set('cloud_time', readed.item.updated_at);
+        Storage$1.set('cloud_time', readed.item.updated_at);
         for (var i in data) {
-          Storage.set(i, data[i], true);
+          Storage$1.set(i, data[i], true);
         }
         status(4);
         if (call) call();
@@ -33465,7 +33671,7 @@
    * Получаем список файлов
    */
   function start$1(call) {
-    if (Storage.get('cloud_token') && Storage.field('cloud_use')) {
+    if (Storage$1.get('cloud_token') && Storage$1.field('cloud_use')) {
       network$1.silent('https://api.github.com/gists', function (data) {
         var file;
         var item;
@@ -33478,7 +33684,7 @@
           }
         });
         if (file) {
-          Storage.set('cloud_data_id', item.id);
+          Storage$1.set('cloud_data_id', item.id);
           readed = {
             file: file,
             item: item
@@ -33488,7 +33694,7 @@
       }, function () {}, false, {
         beforeSend: {
           name: 'Authorization',
-          value: 'bearer ' + Storage.get('cloud_token')
+          value: 'bearer ' + Storage$1.get('cloud_token')
         },
         headers: {
           'Accept': 'application/vnd.github.v3+json'
@@ -33501,22 +33707,22 @@
    * Сохраняем закладки в облако
    */
   function save(call) {
-    if (Storage.get('cloud_token') && Storage.field('cloud_use')) {
+    if (Storage$1.get('cloud_token') && Storage$1.field('cloud_use')) {
       var conent = JSON.stringify({
-        torrents_view: Storage.get('torrents_view', '[]'),
-        plugins: Storage.get('plugins', '[]'),
-        favorite: Storage.get('favorite', '{}'),
-        file_view: Storage.get('file_view', '{}'),
-        setting_member: Storage.get('setting_member', '[]')
+        torrents_view: Storage$1.get('torrents_view', '[]'),
+        plugins: Storage$1.get('plugins', '[]'),
+        favorite: Storage$1.get('favorite', '{}'),
+        file_view: Storage$1.get('file_view', '{}'),
+        setting_member: Storage$1.get('setting_member', '[]')
       }, null, 4);
-      var id = Storage.get('cloud_data_id', '');
+      var id = Storage$1.get('cloud_data_id', '');
       network$1.silent('https://api.github.com/gists' + (id ? '/' + id : ''), function (data) {
-        Storage.set('cloud_time', data.updated_at);
-        Storage.set('cloud_data_id', data.id);
+        Storage$1.set('cloud_time', data.updated_at);
+        Storage$1.set('cloud_data_id', data.id);
         status(4);
         if (call) call();
       }, function () {
-        Storage.set('cloud_data_id', '');
+        Storage$1.set('cloud_data_id', '');
         status(5);
       }, JSON.stringify({
         'files': {
@@ -33527,7 +33733,7 @@
       }), {
         beforeSend: {
           name: 'Authorization',
-          value: 'bearer ' + Storage.get('cloud_token')
+          value: 'bearer ' + Storage$1.get('cloud_token')
         },
         headers: {
           'Accept': 'application/vnd.github.v3+json'
@@ -33750,7 +33956,7 @@
       if (object.source == 'tmdb') {
         button = $('<div class="empty__footer"><div class="simple-button selector">' + Lang.translate('change_source_on_cub') + '</div></div>');
         button.find('.selector').on('hover:enter', function () {
-          Storage.set('source', 'cub');
+          Storage$1.set('source', 'cub');
           Activity$1.replace({
             source: 'cub'
           });
@@ -33912,7 +34118,7 @@
     $('body').append(html);
     Controller.add('language', {
       toggle: function toggle() {
-        var focus = html.find('[data-code="' + Storage.get('language', 'ru') + '"]');
+        var focus = html.find('[data-code="' + Storage$1.get('language', 'ru') + '"]');
         Controller.collectionSet(scroll.render());
         Controller.collectionFocus(focus[0], scroll.render());
       },
@@ -34028,7 +34234,7 @@
     }, {
       name: Lang.translate('plugins_remove'),
       select: function select() {
-        Storage.set('plugins', []);
+        Storage$1.set('plugins', []);
         close();
       }
     }, {
@@ -34181,8 +34387,8 @@
       return n.id == id;
     })) return;
     var codes = Arrays.getKeys(Lang.codes());
-    network.silent(TMDB$1.api(id + '?append_to_response=translations,credits&language=' + Storage.get('language', 'ru') + '&api_key=' + TMDB$1.key()), function (movie) {
-      network.silent(TMDB$1.api(id + '/images?include_image_language=' + codes.join(',') + '&language=' + Storage.get('language', 'ru') + '&api_key=' + TMDB$1.key()), function (images) {
+    network.silent(TMDB$1.api(id + '?append_to_response=translations,credits&language=' + Storage$1.get('language', 'ru') + '&api_key=' + TMDB$1.key()), function (movie) {
+      network.silent(TMDB$1.api(id + '/images?include_image_language=' + codes.join(',') + '&language=' + Storage$1.get('language', 'ru') + '&api_key=' + TMDB$1.key()), function (images) {
         var card = Arrays.clone(movie);
         console.log('Premiere', 'card loaded', card);
         delete card.translations;
@@ -34308,7 +34514,7 @@
 
   function init$4() {
     if (Account.logged() && Lang.selected(['ru', 'uk', 'be', 'bg'])) {
-      var user = Storage.get('account_user', '{}');
+      var user = Storage$1.get('account_user', '{}');
       if (user.premium && !Account.hasPremium()) setTimeout(push, 5000);
     }
   }
@@ -34432,9 +34638,9 @@
         if (action == 'back') window.history.back();else if (action == 'main') {
           Activity$1.push({
             url: '',
-            title: Lang.translate('title_main') + ' - ' + Storage.field('source').toUpperCase(),
+            title: Lang.translate('title_main') + ' - ' + Storage$1.field('source').toUpperCase(),
             component: 'main',
-            source: Storage.field('source')
+            source: Storage$1.field('source')
           });
         } else if (action == 'search') {
           Lampa.Search.open();
@@ -34575,9 +34781,9 @@
             var params = {
               url: Torserver.url() + '/download/300'
             };
-            if (Storage.field('torrserver_auth')) {
-              params.login = Storage.get('torrserver_login');
-              params.password = Storage.get('torrserver_password');
+            if (Storage$1.field('torrserver_auth')) {
+              params.login = Storage$1.get('torrserver_login');
+              params.password = Storage$1.get('torrserver_password');
             }
             start(params);
           }
@@ -34780,7 +34986,7 @@
     Listener: start$7(),
     Lang: Lang,
     Subscribe: start$7,
-    Storage: Storage,
+    Storage: Storage$1,
     Platform: Platform,
     Utils: Utils$2,
     Params: Params,
@@ -34903,7 +35109,7 @@
     Console.init();
     Keypad.init();
     Layer.init();
-    Storage.init();
+    Storage$1.init();
 
     /** Передаем фокус в контроллер */
 
@@ -35037,11 +35243,11 @@
 
     /** Надо зачиcтить, не хорошо светить пароль ;) */
 
-    Storage.set('account_password', '');
+    Storage$1.set('account_password', '');
 
     /** Чтоб не писали по 100 раз */
 
-    Storage.set('parser_torrent_type', Storage.get('parser_torrent_type') || 'jackett');
+    Storage$1.set('parser_torrent_type', Storage$1.get('parser_torrent_type') || 'jackett');
 
     /** Инфа */
 
@@ -35054,7 +35260,7 @@
     console.log('App', 'is mobile:', Platform.screen('mobile'));
     console.log('App', 'is touch:', Utils$2.isTouchDevice());
     console.log('App', 'is PWA:', Utils$2.isPWA());
-    console.log('App', 'platform:', Storage.get('platform', 'noname'));
+    console.log('App', 'platform:', Storage$1.get('platform', 'noname'));
 
     /** Выход из приложения */
 
@@ -35141,13 +35347,13 @@
 
     /** Start - следим за переключением в лайт версию и обновляем интерфейс */
 
-    Storage.listener.follow('change', function (e) {
+    Storage$1.listener.follow('change', function (e) {
       if (e.name == 'light_version') {
-        $('body').toggleClass('light--version', Storage.field('light_version'));
+        $('body').toggleClass('light--version', Storage$1.field('light_version'));
         Layer.update();
       }
       if (e.name == 'keyboard_type') {
-        $('body').toggleClass('system--keyboard', Storage.field('keyboard_type') == 'lampa' ? false : true);
+        $('body').toggleClass('system--keyboard', Storage$1.field('keyboard_type') == 'lampa' ? false : true);
       }
     });
 
@@ -35157,21 +35363,21 @@
 
     var torrent_net = new create$p();
     function check(name) {
-      if (Platform.is('android') && !Storage.field('internal_torrclient')) return;
+      if (Platform.is('android') && !Storage$1.field('internal_torrclient')) return;
       var item = $('[data-name="' + name + '"]').find('.settings-param__status').removeClass('active error wait').addClass('wait');
-      var url = Storage.get(name);
+      var url = Storage$1.get(name);
       if (url) {
         torrent_net.timeout(10000);
         var head = {
           dataType: 'text'
         };
-        var auth = Storage.field('torrserver_auth');
+        var auth = Storage$1.field('torrserver_auth');
         if (auth) {
           head.headers = {
-            Authorization: "Basic " + Base64.encode(Storage.get('torrserver_login') + ':' + Storage.get('torrserver_password'))
+            Authorization: "Basic " + Base64.encode(Storage$1.get('torrserver_login') + ':' + Storage$1.get('torrserver_password'))
           };
         }
-        torrent_net["native"](Utils$2.checkEmptyUrl(Storage.get(name)), function () {
+        torrent_net["native"](Utils$2.checkEmptyUrl(Storage$1.get(name)), function () {
           item.removeClass('wait').addClass('active');
         }, function (a, c) {
           if (a.status == 401) {
@@ -35188,7 +35394,7 @@
         }, false, head);
       }
     }
-    Storage.listener.follow('change', function (e) {
+    Storage$1.listener.follow('change', function (e) {
       if (e.name == 'torrserver_url') check(e.name);
       if (e.name == 'torrserver_url_two') check(e.name);
       if (e.name == 'torrserver_use_link') check(e.value == 'one' ? 'torrserver_url' : 'torrserver_url_two');
@@ -35198,7 +35404,7 @@
         $('[data-name="protocol"]', e.body).remove();
       }
       if (e.name == 'server') {
-        var name = Storage.field('torrserver_use_link') == 'one' ? 'torrserver_url' : 'torrserver_url_two';
+        var name = Storage$1.field('torrserver_use_link') == 'one' ? 'torrserver_url' : 'torrserver_url_two';
         check(name);
         if (!Account.hasPremium() && Lang.selected(['ru', 'be', 'uk']) && !Personal.confirm()) {
           var ad = $("\n                    <div class=\"ad-server\">\n                        <div class=\"ad-server__text\">\n                            \u0410\u0440\u0435\u043D\u0434\u043E\u0432\u0430\u0442\u044C \u0441\u0441\u044B\u043B\u043A\u0443 \u043D\u0430 \u0441\u0435\u0440\u0432\u0435\u0440 \u0431\u0435\u0437 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043A\u0438 \u0438 \u043D\u0430\u0441\u0442\u0440\u043E\u0435\u043A.\n                        </div>\n                        <img src=\"https://i.ibb.co/VWSW4KG/qr-code-1.png\" class=\"ad-server__qr\">\n                        <div class=\"ad-server__label\">\u0420\u0435\u043A\u043B\u0430\u043C\u0430 - https://tsarea.us</div>\n                    </div>\n                ");
@@ -35218,12 +35424,12 @@
                 window.location.reload();
               }
             });
-            Storage.set('language', code, true);
-            Storage.set('tmdb_lang', code, true);
+            Storage$1.set('language', code, true);
+            Storage$1.set('tmdb_lang', code, true);
           }, function () {
             Controller.toggle('settings_component');
           });
-        }).find('.settings-param__value').text(Lang.translate(Lang.codes()[Storage.get('language', 'ru')]));
+        }).find('.settings-param__value').text(Lang.translate(Lang.codes()[Storage$1.get('language', 'ru')]));
       }
     });
 
@@ -35235,7 +35441,7 @@
 
     /** Включаем лайт версию если было включено */
 
-    $('body').toggleClass('light--version', Storage.field('light_version')).toggleClass('system--keyboard', Storage.field('keyboard_type') == 'lampa' ? false : true);
+    $('body').toggleClass('light--version', Storage$1.field('light_version')).toggleClass('system--keyboard', Storage$1.field('keyboard_type') == 'lampa' ? false : true);
 
     /** Добавляем hls и dash плагин */
 
@@ -35396,8 +35602,8 @@
       developerApp(loadLang);
     } else {
       LangChoice.open(function (code) {
-        Storage.set('language', code, true);
-        Storage.set('tmdb_lang', code, true);
+        Storage$1.set('language', code, true);
+        Storage$1.set('tmdb_lang', code, true);
         Keypad.disable();
         loadLang();
       });
