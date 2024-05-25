@@ -19795,11 +19795,7 @@
     value: false
   },
   //Плеер
-  {
-    key: "player",
-    value: "inner"
-  },
-  //for android
+  //{key:"player", value:"inner"},//for not all android
   {
     key: "player_rewind",
     value: 10
@@ -19846,6 +19842,12 @@
       _iterator.f();
     }
     Local.setKeyValue(deviceNameKey, System.systemInfo.deviceName);
+    if (System.systemInfo.deviceName != 'SmartTv') {
+      setPlayerInner();
+    }
+  }
+  function setPlayerInner() {
+    Local.setKeyValue("player", "inner");
   }
   function isFirstLoadSetFirst() {
     var isFirst = Local.getKey(firstLoadKey) != firstLoadKey;
