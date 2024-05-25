@@ -19845,7 +19845,7 @@
     } finally {
       _iterator.f();
     }
-    Local.setKeyValue(deviceNameKey, System.getDeviceName());
+    Local.setKeyValue(deviceNameKey, System.systemInfo.deviceName);
   }
   function isFirstLoadSetFirst() {
     var isFirst = Local.getKey(firstLoadKey) != firstLoadKey;
