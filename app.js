@@ -20939,18 +20939,18 @@
     }, {
       title: "Открыть кинопоиск",
       action: function action() {
-        return openUrl(movie.urlKpId);
+        return openUrl(movie.urlKpId, '_self');
       }
     }, {
       title: "Открыть imdb",
       action: function action() {
-        return openUrl(movie.urlImdbId);
+        return openUrl(movie.urlImdbId, '_parent');
       }
     }];
     Msg.showSelectActionInItem('Кино', itemsAdd);
   }
-  function openUrl(url) {
-    window.open(url);
+  function openUrl(url, param) {
+    window.open(url, param);
     // console.log('TiViAl', url);
     // let a= document.createElement('a');
     // a.target= '_blank';
