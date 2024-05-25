@@ -19725,7 +19725,7 @@
   var Local = {
     getKey: getKey,
     setKeyValue: setKeyValue,
-    getAllKeys: getAllKeys
+    getAllKeysWithValues: getAllKeysWithValues
   };
   function setKeyValue(key, value) {
     localStorage.setItem(key, value);
@@ -19733,7 +19733,7 @@
   function getKey(key) {
     return localStorage.getItem(key);
   }
-  function getAllKeys() {
+  function getAllKeysWithValues() {
     return Object.entries(localStorage);
   }
 
@@ -19760,7 +19760,11 @@
     value: false
   },
   //Плеер
-  //{key:"player_type", value:"integrate"},
+  {
+    key: "player",
+    value: "inner"
+  },
+  //for android
   {
     key: "player_rewind",
     value: 10
@@ -19789,8 +19793,6 @@
   }];
   var deviceNameKey = 'device_name';
   function setFirstLoadDefaultOptions() {
-    console.log('TiViAl', 'getDeviceName', getDeviceName());
-    console.log('TiViAl', 'platform', Lampa.Storage.get('platform', 'noname'));
     if (isFirstLoadSetFirst() == true) {
       setDefaultOptions();
     }
@@ -20291,8 +20293,7 @@
   var view = new View();
   view.onLoad = clearAndAddNew;
   view.onClear = clearAllConfirm;
-  //view.onSave=showAllFav;
-  view.onSave = getLocalStorageKeys;
+  view.onSave = showAllFav;
   function init$n() {
     return _init$1.apply(this, arguments);
   }
@@ -20321,6 +20322,9 @@
     Msg.showHtmlModal(title, htmlQ);
     //showComponent(title, favComp.Name);
   }
+  function showAllFav() {
+    view.Data = Fav.getFavoritesAllJson();
+  }
   function clearAndAddNew() {
     //console.log('data', view.Data);
     if (!view.Data) {
@@ -20338,11 +20342,6 @@
     if (isClearAll) {
       Fav.clearAll();
     }
-  }
-  function getLocalStorageKeys() {
-    var allKeys = Local.getAllKeys();
-    console.log('allKeys', allKeys);
-    view.Data = JSON.stringify(allKeys);
   }
 
   var log$2;
@@ -20848,6 +20847,7 @@
   log.event('loaded');
   function init$k() {
     log.event(EsVersion.getVersionWithYear());
+    log.event(navigator.userAgent);
     AppEvent.setAppEvents(onAppStart, onAppReady);
     AppEvent.setAppKeyDown(onAppKeyDown);
     AppEvent.setCardSelect(onCardSelect);
