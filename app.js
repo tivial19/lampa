@@ -18725,8 +18725,8 @@
     });
   }
   function setCardSelect(onsetCardSelect) {
-    Lampa.Listener.follow('activity', function (e) {
-      if (e.component == 'full' && e.type == 'start') {
+    Lampa.Listener.follow('full', function (e) {
+      if (e.type == 'complite') {
         onsetCardSelect(e.object.card);
       }
     });
@@ -18736,6 +18736,15 @@
     setAppKeyDown: setAppKeyDown,
     setCardSelect: setCardSelect
   };
+
+  // function setCardSelect(onsetCardSelect) {
+  //   Lampa.Listener.follow('activity', e =>{
+  //     console.log('TiViAl', 'setCardSelect', `e.component=${e.component} e.type=${e.type}`);
+  //     if(e.component=='full' && e.type=='start'){
+  //       onsetCardSelect(e.object.card);
+  //     }
+  //   });
+  // }
 
   var Btn = {
     'backBtnCode': 8,
@@ -19941,13 +19950,6 @@
       value: function eventParam(eventName, param) {
         console.log(this.author, this.scriptName, eventName, param);
       }
-    }, {
-      key: "movie",
-      value: function movie(_movie) {
-        this.eventParam('data', _movie.data);
-        this.eventParam('KpId', _movie.kpid);
-        this.eventParam('ImDbId', _movie.imid);
-      }
     }]);
   }();
 
@@ -20401,23 +20403,19 @@
   function showSelectFavsActions() {
     var itemsAdd = [{
       title: "Загрузить категорию",
-      comment: 'comment',
       action: function action() {
         return askCategoryOfFavs(loadFavoriteCategoryAsk);
       }
     }, {
       title: "Очистить категорию",
-      subtext: 'comment',
       action: function action() {
         return askCategoryOfFavs(clearCategoryAsk);
       }
     }, {
       title: "Загрузить все",
-      comment: 'comment',
       action: loadFavoriteAllAsk
     }, {
       title: "Очистить все",
-      subtext: 'comment',
       action: clearAllAsk
     }, {
       title: "Окно разработчика",
@@ -20524,12 +20522,7 @@
   var timeCodesUrl = 'add/timeCodes.json';
   function loadTimeCodes() {
     return _loadTimeCodes.apply(this, arguments);
-  } // function loadTimeCodes() {
-  //     return new Promise(function(resolve){
-  //         Core.loadTextFromUrl(timeCodesUrl)
-  //             .then(text=>resolve(parseTimeCodes(text)));
-  //     });
-  // }
+  }
   function _loadTimeCodes() {
     _loadTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var newTimeCodesJson;
@@ -20593,14 +20586,37 @@
     checkDoubleClick: checkDoubleClick
   };
 
-  var Movie = /*#__PURE__*/_createClass(function Movie(card) {
-    _classCallCheck(this, Movie);
-    this.cardId = card.id;
-    this.imdbId = card.imdb_id;
-    this.kpId = card.kinopoisk_id;
-    this.title = card.name;
-    this.titleOrig = card.original_name;
-  });
+  var Movie = /*#__PURE__*/function () {
+    function Movie(card) {
+      _classCallCheck(this, Movie);
+      this.cardId = card.id;
+      this.imdbId = card.imdb_id;
+      this.kpId = card.kinopoisk_id;
+      if (card.title) this.title = card.title;else this.title = card.name;
+      if (card.original_title) this.titleOrig = card.original_title;else this.titleOrig = card.original_name;
+      if (card.seasons) this.seasons = card.seasons;else {
+        this.seasons = card.number_of_seasons;
+        this.episodes = card.number_of_episodes;
+      }
+      this.urlKp = 'https://www.kinopoisk.ru/';
+      this.kpType = 'film';
+      if (this.isSerial()) this.kpType = 'series';
+      this.urlKpId = this.urlKp + this.kpType + '/' + this.kpId;
+      this.urlImdb = 'https://www.imdb.com/';
+      this.urlImdbId = "".concat(this.urlImdb, "/title/").concat(this.imdbId);
+    }
+    return _createClass(Movie, [{
+      key: "getIdInfo",
+      value: function getIdInfo() {
+        return "cardId = ".concat(this.cardId, " kpId = ").concat(this.kpId, " imdbId = ").concat(this.imdbId);
+      }
+    }, {
+      key: "isSerial",
+      value: function isSerial() {
+        return this.seasons != null;
+      }
+    }]);
+  }();
 
   var timeCodes = [];
   var timeCodesRem = [];
@@ -20642,7 +20658,7 @@
   }
   function setCurMovie(card) {
     _movie = new Movie(card);
-    log$1.eventParam('setCurMovie', _movie);
+    //log.eventParam('setCurMovie', _movie);
   }
   function setTimeCodesMode(_x) {
     return _setTimeCodesMode.apply(this, arguments);
@@ -20692,13 +20708,6 @@
       timeCodes[i].timeInSec = i * 10 * 60;
     }
   }
-
-  // function loadAllTimeCodes(){
-  //     console.log('1 loadAllTimeCodes');
-  //     Rep.loadTimeCodesPromise()
-  //         .then(tcds=>{timeCodesRem=tcds; log.eventParam('11 ', timeCodesRem[0]);});
-  //     console.log('2 loadAllTimeCodes', timeCodesRem);
-  // }
   function loadAllTimeCodes() {
     return _loadAllTimeCodes.apply(this, arguments);
   }
@@ -20711,8 +20720,7 @@
             return Rep.loadTimeCodes();
           case 2:
             timeCodesRem = _context2.sent;
-            log$1.eventParam('loadAllTimeCodes: ', timeCodesRem[0]);
-          case 4:
+          case 3:
           case "end":
             return _context2.stop();
         }
@@ -20869,6 +20877,78 @@
     getVersionWithYear: getVersionWithYear
   };
 
+  var MovieComent = {
+    showMovieComments: showMovieComments
+  };
+  var num = 0;
+  function showMovieComments(_x) {
+    return _showMovieComments.apply(this, arguments);
+  }
+  function _showMovieComments() {
+    _showMovieComments = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(movie) {
+      var comments;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return getMovieComments(movie);
+          case 2:
+            comments = _context.sent;
+            showMovieCommentsModal(movie, comments);
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _showMovieComments.apply(this, arguments);
+  }
+  function getMovieComments(movie) {
+    return new Promise(function (resolve) {
+      $.get(getCommentUrl(movie, num), function (comments) {
+        resolve(comments);
+      });
+    });
+  }
+  function getCommentUrl(movie, n) {
+    return 'https://skaz.tv/otzyv.php?kp=' + movie.kpId + '&tmdb=' + movie.imdbId + '&num=' + n;
+  }
+  function showMovieCommentsModal(movie, comments) {
+    var modal = $('<div><div class="broadcast__text" style="text-align:left"><div class="otzyv">' + comments + '</div></div></div>');
+    Msg.showHtmlModal(movie.getIdInfo(), modal);
+  }
+
+  var CardButton = {
+    drawButtonOnCard: drawButtonOnCard
+  };
+  var buttonTitle = 'Карта';
+  function drawButtonOnCard(card) {
+    $('.full-start-new__buttons').append('<div class="full-start__button selector button--otzyv"><svg height="34" viewBox="0 0 28 34" fill="none" xmlns="http://www.w3.org/2000/svg"> <rect x="1.5" y="1.5" width="25" height="31" rx="2.5" stroke="currentColor" stroke-width="3"></rect><rect x="6" y="7" width="9" height="9" rx="1" fill="currentColor"></rect><rect x="6" y="19" width="16" height="3" rx="1.5" fill="currentColor"></rect><rect x="6" y="25" width="11" height="3" rx="1.5" fill="currentColor"></rect><rect x="17" y="7" width="5" height="3" rx="1.5" fill="currentColor"></rect> </svg><span>' + buttonTitle + '</span></div>');
+    $('.button--otzyv').on('hover:enter', function () {
+      return onCardButtonClick(card);
+    });
+  }
+  function onCardButtonClick(card) {
+    var movie = new Movie(card);
+    var itemsAdd = [{
+      title: "Показать коменты",
+      action: function action() {
+        return MovieComent.showMovieComments(movie);
+      }
+    }, {
+      title: "Открыть кинопоиск",
+      action: function action() {
+        return window.open(movie.urlKpId);
+      }
+    }, {
+      title: "Открыть imdb",
+      action: function action() {
+        return window.open(movie.urlImdbId);
+      }
+    }];
+    Msg.showSelectActionInItem('Кино', itemsAdd);
+  }
+
   //import Test from './test.js'
   //import Ip from './utils/ipLocal.js'
 
@@ -20928,6 +21008,7 @@
   }
   function onCardSelect(card) {
     TimeCode.setCurMovie(card);
+    CardButton.drawButtonOnCard(card);
   }
   function onHeadFavClick() {
     Favs.showSelectFavsActions();
