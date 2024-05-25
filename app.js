@@ -19724,10 +19724,10 @@
 
   var Local = {
     getKey: getKey,
-    setKeyValue: setKeyValue$1,
+    setKeyValue: setKeyValue,
     getAllKeys: getAllKeys
   };
-  function setKeyValue$1(key, value) {
+  function setKeyValue(key, value) {
     localStorage.setItem(key, value);
   }
   function getKey(key) {
@@ -19749,6 +19749,9 @@
     return navigator.userAgent.toLowerCase().includes('windows');
   }
 
+  var Opt = {
+    setFirstLoadDefaultOptions: setFirstLoadDefaultOptions
+  };
   var firstLoadKey = 'firstLoadKey';
   var defaultOptions = [
   //Интерфейс
@@ -19785,9 +19788,6 @@
     value: "integrate"
   }];
   var deviceNameKey = 'device_name';
-  var Opt = {
-    setFirstLoadDefaultOptions: setFirstLoadDefaultOptions
-  };
   function setFirstLoadDefaultOptions() {
     console.log('TiViAl', 'getDeviceName', getDeviceName());
     console.log('TiViAl', 'platform', Lampa.Storage.get('platform', 'noname'));
@@ -19816,7 +19816,7 @@
   function isFirstLoadSetFirst() {
     var isFirst = Local.getKey(firstLoadKey) != firstLoadKey;
     if (isFirst == true) {
-      setKeyValue(firstLoadKey, firstLoadKey);
+      Local.setKeyValue(firstLoadKey, firstLoadKey);
     }
     return isFirst;
   }
@@ -20283,16 +20283,16 @@
     this.onClear = null;
   });
 
+  var DevModal = {
+    init: init$n,
+    showFavoriteDev: showFavoriteDev
+  };
   var htmlQ;
   var view = new View();
   view.onLoad = clearAndAddNew;
   view.onClear = clearAllConfirm;
   //view.onSave=showAllFav;
   view.onSave = getLocalStorageKeys;
-  var DevModal = {
-    init: init$n,
-    showFavoriteDev: showFavoriteDev
-  };
   function init$n() {
     return _init$1.apply(this, arguments);
   }
@@ -20839,6 +20839,10 @@
   //import Test from './test.js'
   //import Ip from './utils/ipLocal.js'
 
+  var Main = {
+    init: init$k,
+    onHeadFavClick: onHeadFavClick
+  };
   var author = 'TiViAl';
   var log = new Log(author, 'Main');
   log.event('loaded');
@@ -20894,10 +20898,6 @@
   function onHeadFavClick() {
     Favs.showSelectFavsActions();
   }
-  var Main = {
-    init: init$k,
-    onHeadFavClick: onHeadFavClick
-  };
 
   var html$8;
   var last$2;
