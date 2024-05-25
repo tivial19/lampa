@@ -20930,6 +20930,8 @@
   }
   function onCardButtonClick(card) {
     var movie = new Movie(card);
+    console.log(card);
+    console.log(movie);
     var itemsAdd = [{
       title: "Показать коменты",
       action: function action() {
@@ -20938,12 +20940,12 @@
     }, {
       title: "Открыть кинопоиск",
       action: function action() {
-        return window.open(movie.urlKpId);
+        return window.open(movie.urlKpId, '_system');
       }
     }, {
       title: "Открыть imdb",
       action: function action() {
-        return window.open(movie.urlImdbId);
+        return window.open(movie.urlImdbId, '_blank');
       }
     }];
     Msg.showSelectActionInItem('Кино', itemsAdd);
