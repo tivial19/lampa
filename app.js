@@ -20940,15 +20940,23 @@
     }, {
       title: "Открыть кинопоиск",
       action: function action() {
-        return window.open(movie.urlKpId, '_system');
+        return openUrl(movie.urlKpId);
       }
     }, {
       title: "Открыть imdb",
       action: function action() {
-        return window.open(movie.urlImdbId, '_blank');
+        return openUrl(movie.urlImdbId);
       }
     }];
     Msg.showSelectActionInItem('Кино', itemsAdd);
+  }
+  function openUrl(url) {
+    console.log('TiViAl', url);
+    var a = document.createElement('a');
+    a.target = '_blank';
+    a.href = url;
+    a.click();
+    //window.open(url);
   }
 
   //import Test from './test.js'
@@ -21002,7 +21010,9 @@
 
     if (e.code == Btn.zeroBtnCode) {
       TimeCode.selectTimeCodesMode();
-    } else if (e.code == Btn.btn7Code) ; else if (e.code == Btn.btn8Code) {
+    } else if (e.code == Btn.btn7Code) {
+      window.open('https://tivial19.github.io/lampa/data/');
+    } else if (e.code == Btn.btn8Code) {
       Favs.showSelectFavsActions();
     } else {
       Show.showViewByKeyCode(e.code);
