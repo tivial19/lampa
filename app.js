@@ -4235,7 +4235,6 @@
     _scroll.append(params.html);
     if (params.buttons) buttons();
     $('body').append(html$i);
-    console.log('append(html)', html$i);
     max();
     toggle$a(params.select);
   }
@@ -11289,8 +11288,6 @@
           return plugin.url;
         })) : [];
         puts.push('./plugins/modification.js');
-        //puts.push('https://nb557.github.io/plugins/online_mod.js');
-
         puts = puts.filter(function (element, index) {
           return puts.indexOf(element) === index;
         });
@@ -13065,10 +13062,6 @@
    * @param {{type:string, object:{}}} params 
    */
   function open$4(params) {
-    console.log('broadcast open params.type:', params.type);
-    console.log('broadcast open params.object:', params.object);
-    console.log('broadcast open Socket.uid()', Socket.uid());
-    console.log('broadcast open Socket.devices()', Socket.devices());
     var enabled = Controller.enabled().name;
     var text = params.type == 'card' ? Lang.translate('broadcast_open') : params.type == 'play' ? Lang.translate('broadcast_play') : '';
     var temp = Template$1.get('broadcast', {
@@ -13098,7 +13091,6 @@
                 params: params.object,
                 uid: device.uid
               });
-              console.log('broadcast Socket.sendOpen', params.object);
             }
             if (params.type == 'play') {
               Socket.send('other', {
@@ -14545,18 +14537,9 @@
     confirm: confirm$1
   };
 
-  function init$u() {
-    console.log("AD preroll init");
-  }
+  function init$u() {}
   function show$5(data, call) {
-    // console.log("AD preroll show");
-    // console.log('next', next);
-    // next = Date.now() + 1000*60*random(30,80);
-    // console.log('next', next);
-    // const minToNext = 60*(next - Date.now());
-
-    // console.log('minToNext', minToNext);
-    // console.log('window.god_enabled', window.god_enabled);
+    //if(window.god_enabled) return launch(call)
 
     return call();
   }
@@ -15420,18 +15403,11 @@
       socket.close();
     }, false);
     socket.addEventListener('message', function (event) {
-      var s1 = event.data;
-      var result = JSON.parse(s1);
-      var s2 = JSON.stringify(result);
-      console.log('socket.addEventListenerJSON', s1);
-      console.log('socket.addEventListenerJSON', s2);
-      console.log('socket.s1==s2', s1 == s2);
-      console.log('socket.addEventListenerResult', result);
+      var result = JSON.parse(event.data);
       if (window.lampa_settings.socket_methods) {
         if (result.method == 'devices') {
           _devices = result.data;
         } else if (result.method == 'open') {
-          console.log('socket addEventListener messageopen', result.data);
           Controller.toContent();
           Activity$1.push(result.data);
         } else if (result.method == 'timeline') {
@@ -15463,9 +15439,6 @@
     }, 1000);
   }
   function send(method, data) {
-    if (method == 'open') {
-      console.log('socket send method open:', method, data);
-    }
     var name_devise = Platform.get() ? Platform.get() : navigator.userAgent.toLowerCase().indexOf('mobile') > -1 ? 'mobile' : navigator.userAgent.toLowerCase().indexOf('x11') > -1 ? 'chrome' : 'other';
     data.device_id = _uid;
     data.name = Utils$2.capitalizeFirstLetter(name_devise) + ' - ' + Storage.field('device_name');
@@ -15473,10 +15446,7 @@
     data.version = 1;
     data.account = Storage.get('account', '{}');
     data.premium = Account.hasPremium();
-    if (socket && socket.readyState == 1) {
-      socket.send(JSON.stringify(data));
-      console.log('socket.send(JSON', JSON.stringify(data));
-    } else expects.push(data);
+    if (socket && socket.readyState == 1) socket.send(JSON.stringify(data));else expects.push(data);
   }
   var Socket = {
     listener: listener$7,
@@ -17750,26 +17720,21 @@
           }
           if (_this3.onMenuSelect) _this3.onMenuSelect(a, _this3.card, data);
           Controller.toggle(enabled);
+        },
+        onDraw: function onDraw(item, elem) {
+          if (elem.collect) {
+            if (!Account.hasPremium()) {
+              var wrap = $('<div class="selectbox-item__lock"></div>');
+              wrap.append(Template$1.js('icon_lock'));
+              item.find('.selectbox-item__checkbox').remove();
+              item.append(wrap);
+              item.on('hover:enter', function () {
+                Select.close();
+                Account.showCubPremium();
+              });
+            }
+          }
         }
-        // ,
-        // onDraw: (item, elem)=>{
-        //     if(elem.collect){
-        //         if(!Account.hasPremium()){
-        //             let wrap = $('<div class="selectbox-item__lock"></div>')
-        //                 wrap.append(Template.js('icon_lock'))
-
-        //             item.find('.selectbox-item__checkbox').remove()
-
-        //             item.append(wrap)
-
-        //             item.on('hover:enter',()=>{
-        //                 Select.close()
-
-        //                 Account.showCubPremium()
-        //             })
-        //         }
-        //     }
-        // }
       });
     };
 
@@ -18637,130 +18602,6 @@
     render: render$4
   };
 
-  //import Plugins from '../../utils/plugins'
-
-  function addPluginOnline() {
-    addPlugin('nb557', 'online', 'https://nb557.github.io/plugins/online_mod.js');
-  }
-  function addPlugin(author, name, url) {
-    var existPlug = Lampa.Plugins.get().find(function (a) {
-      return a.url == url;
-    });
-    if (!existPlug) {
-      Lampa.Plugins.push({
-        url: url,
-        status: 1,
-        name: name,
-        author: author
-      });
-    }
-  }
-  var Plug = {
-    addPluginOnline: addPluginOnline
-  };
-
-  // import Player from '../../interaction/player'
-  // import PlayerVideo from '../../interaction/player/video'
-  // import PlayerPlaylist from '../../interaction/player/playlist'
-
-  function addEventListenerKeyDown(keyDownAction) {
-    Lampa.Player.listener.follow('ready', onPlayerReady);
-    function onPlayerReady() {
-      document.addEventListener("keydown", keyDownAction);
-      Lampa.Player.listener.follow('destroy', listenDestroy);
-    }
-    function listenDestroy() {
-      document.removeEventListener("keydown", keyDownAction);
-      Lampa.Player.listener.remove('destroy', listenDestroy);
-    }
-  }
-  function addEventListenerLoaded(action) {
-    Lampa.PlayerVideo.listener.follow('loadeddata', action);
-  }
-  function isOpened() {
-    return Lampa.Player.opened();
-  }
-  function isOpenedAndLoaded() {
-    return isOpened() && getVideoDuration() > 0;
-  }
-  function getPositionByPercent(percent) {
-    return getVideoDuration() * percent / 100;
-  }
-  function getVideoDuration() {
-    return Lampa.PlayerVideo.video().duration;
-  }
-  function setVideoPositionSec(seconds) {
-    if (getVideoDuration() > 0) {
-      Lampa.PlayerVideo.to(seconds);
-    }
-  }
-  function nextVideoInPlaylist() {
-    Lampa.PlayerPlaylist.next();
-  }
-  var Player = {
-    addEventListenerKeyDown: addEventListenerKeyDown,
-    addEventListenerLoaded: addEventListenerLoaded,
-    isOpened: isOpened,
-    isOpenedAndLoaded: isOpenedAndLoaded,
-    getPositionByPercent: getPositionByPercent,
-    setVideoPositionSec: setVideoPositionSec,
-    nextVideoInPlaylist: nextVideoInPlaylist
-  };
-
-  //import Subscribe from '../../utils/subscribe'
-  function setAppEvents(onAppStartAction, onAppReadyAction) {
-    Lampa.Listener.follow('app', function (e) {
-      if (e.type == 'start') {
-        onAppStartAction();
-      } else if (e.type == 'ready') {
-        onAppReadyAction();
-      }
-    });
-  }
-  function setAppKeyDown(onAppKeyDown) {
-    Lampa.Keypad.listener.follow('keydown', function (e) {
-      if (!Player.isOpened()) {
-        onAppKeyDown(e);
-      }
-    });
-  }
-  function setCardSelect(onsetCardSelect) {
-    Lampa.Listener.follow('full', function (e) {
-      if (e.type == 'complite') {
-        onsetCardSelect(e.object.card);
-      }
-    });
-  }
-  var AppEvent = {
-    setAppEvents: setAppEvents,
-    setAppKeyDown: setAppKeyDown,
-    setCardSelect: setCardSelect
-  };
-
-  // function setCardSelect(onsetCardSelect) {
-  //   Lampa.Listener.follow('activity', e =>{
-  //     console.log('TiViAl', 'setCardSelect', `e.component=${e.component} e.type=${e.type}`);
-  //     if(e.component=='full' && e.type=='start'){
-  //       onsetCardSelect(e.object.card);
-  //     }
-  //   });
-  // }
-
-  var Btn = {
-    'backBtnCode': 8,
-    'zeroBtnCode': 48,
-    'btn1Code': 49,
-    'btn2Code': 50,
-    'btn3Code': 51,
-    'btn4Code': 52,
-    'btn5Code': 53,
-    'btn6Code': 54,
-    'btn7Code': 55,
-    'btn8Code': 56,
-    'btn9Code': 57,
-    'numLockZeroBtnCodeForDeveloper': 96
-  };
-
   var data$1 = {};
   data$1.type = {
     title: '#{title_type}',
@@ -19290,7 +19131,6 @@
         });
       }
     });
-    console.log('Lampa content_filter Show items', items);
     Select.show({
       title: Lang.translate('title_filter'),
       items: items,
@@ -19466,13 +19306,179 @@
   //     // _filterShow = Filter.default.filterShow;
   // }
 
-  function getArrayFromObjectProps(objectArray) {
-    return Object.keys(objectArray).map(function (prop) {
+  //import Plugins from '../../utils/plugins'
+
+  function addPluginOnline() {
+    addPlugin('nb557', 'online', 'https://nb557.github.io/plugins/online_mod.js');
+  }
+  function addPlugin(author, name, url) {
+    var existPlug = Lampa.Plugins.get().find(function (a) {
+      return a.url == url;
+    });
+    if (!existPlug) {
+      Lampa.Plugins.push({
+        url: url,
+        status: 1,
+        name: name,
+        author: author
+      });
+    }
+  }
+  var Plug = {
+    addPluginOnline: addPluginOnline
+  };
+
+  // import Player from '../../interaction/player'
+  // import PlayerVideo from '../../interaction/player/video'
+  // import PlayerPlaylist from '../../interaction/player/playlist'
+
+  var dataCurent = {
+    card: null,
+    season: 0,
+    episode: 0
+  };
+  function addEventListenerLoaded(action) {
+    Lampa.Listener.follow('full', function (e) {
+      if (e.type == 'complite') {
+        dataCurent.card = e.object.card;
+      }
+    });
+    Lampa.Player.listener.follow('ready', function (data) {
+      var se = getSeasonEpisodeFromTitle(data.title);
+      dataCurent.season = se.season;
+      dataCurent.episode = se.episode;
+    });
+    Lampa.PlayerVideo.listener.follow('loadeddata', function () {
+      action(dataCurent);
+    });
+  }
+  function addEventListenerKeyDown(keyDownAction) {
+    Lampa.Player.listener.follow('ready', onPlayerReady);
+    function onPlayerReady() {
+      document.addEventListener("keydown", keyDownAction);
+      Lampa.Player.listener.follow('destroy', listenDestroy);
+    }
+    function listenDestroy() {
+      document.removeEventListener("keydown", keyDownAction);
+      Lampa.Player.listener.remove('destroy', listenDestroy);
+    }
+  }
+  function isOpened() {
+    return Lampa.Player.opened();
+  }
+  function isOpenedAndLoaded() {
+    return isOpened() && getVideoDuration() > 0;
+  }
+  function getPositionByPercent(percent) {
+    return getVideoDuration() * percent / 100;
+  }
+  function getVideoDuration() {
+    return Lampa.PlayerVideo.video().duration;
+  }
+  function setVideoPositionSec(seconds) {
+    if (getVideoDuration() > 0) {
+      Lampa.PlayerVideo.to(seconds);
+    }
+  }
+  function nextVideoInPlaylist() {
+    Lampa.PlayerPlaylist.next();
+  }
+  function getSeasonEpisodeFromTitle(title) {
+    if (title.indexOf('/') > 0) {
+      var indexOfFirstSpace = title.indexOf(' ');
+      var indexOfLastSpace = title.lastIndexOf(' ');
+      if (indexOfFirstSpace > 0 && indexOfLastSpace > 0) {
+        var season = title.substring(1, indexOfFirstSpace);
+        var episode = title.substring(indexOfLastSpace + 1, title.length);
+        var data = {
+          season: parseInt(season),
+          episode: parseInt(episode)
+        };
+        if (isNaN(data.season)) data.season = 0;
+        if (isNaN(data.episode)) data.episode = 0;
+        return data;
+      }
+    }
+    return {
+      season: 0,
+      episode: 0
+    };
+  }
+  var Player = {
+    addEventListenerKeyDown: addEventListenerKeyDown,
+    addEventListenerLoaded: addEventListenerLoaded,
+    isOpened: isOpened,
+    isOpenedAndLoaded: isOpenedAndLoaded,
+    getPositionByPercent: getPositionByPercent,
+    setVideoPositionSec: setVideoPositionSec,
+    nextVideoInPlaylist: nextVideoInPlaylist
+  };
+
+  //import Subscribe from '../../utils/subscribe'
+  function setAppEvents(onAppStartAction, onAppReadyAction) {
+    Lampa.Listener.follow('app', function (e) {
+      if (e.type == 'start') {
+        onAppStartAction();
+      } else if (e.type == 'ready') {
+        onAppReadyAction();
+      }
+    });
+  }
+  function setAppKeyDown(onAppKeyDown) {
+    Lampa.Keypad.listener.follow('keydown', function (e) {
+      if (!Player.isOpened()) {
+        onAppKeyDown(e);
+      }
+    });
+  }
+  function setCardSelect(onsetCardSelect) {
+    Lampa.Listener.follow('full', function (e) {
+      if (e.type == 'complite') {
+        onsetCardSelect(e.object.card);
+      }
+    });
+  }
+  var AppEvent = {
+    setAppEvents: setAppEvents,
+    setAppKeyDown: setAppKeyDown,
+    setCardSelect: setCardSelect
+  };
+
+  // function setCardSelect(onsetCardSelect) {
+  //   Lampa.Listener.follow('activity', e =>{
+  //     console.log('TiViAl', 'setCardSelect', `e.component=${e.component} e.type=${e.type}`);
+  //     if(e.component=='full' && e.type=='start'){
+  //       onsetCardSelect(e.object.card);
+  //     }
+  //   });
+  // }
+
+  var Btn = {
+    'backBtnCode': 8,
+    'zeroBtnCode': 48,
+    'btn1Code': 49,
+    'btn2Code': 50,
+    'btn3Code': 51,
+    'btn4Code': 52,
+    'btn5Code': 53,
+    'btn6Code': 54,
+    'btn7Code': 55,
+    'btn8Code': 56,
+    'btn9Code': 57,
+    'numLockZeroBtnCodeForDeveloper': 96
+  };
+
+  function getPropsFromObjectArray(objectArray) {
+    return Object.keys(objectArray);
+  }
+  function getArrayFromObjectArrayProps(objectArray) {
+    return getPropsFromObjectArray(objectArray).map(function (prop) {
       return objectArray[prop];
     });
   }
   var ObjectArray = {
-    getArrayFromObjectProps: getArrayFromObjectProps
+    getPropsFromObjectArray: getPropsFromObjectArray,
+    getArrayFromObjectArrayProps: getArrayFromObjectArrayProps
   };
 
   var categories = {
@@ -19513,7 +19519,7 @@
       value: 'history'
     }
   };
-  var categoriesArray = ObjectArray.getArrayFromObjectProps(categories);
+  var categoriesArray = ObjectArray.getArrayFromObjectArrayProps(categories);
   var categoriesValues = categoriesArray.map(function (c) {
     return c.value;
   });
@@ -19747,6 +19753,46 @@
     return Object.entries(localStorage);
   }
 
+  function getESEdition() {
+    var array = [];
+    switch (true) {
+      case !Array.isArray:
+        return 3;
+      case !window.Promise:
+        return 5;
+      case !array.includes:
+        return 6;
+      case !''.padStart:
+        return 7;
+      case !Promise.prototype["finally"]:
+        return 8;
+      case !window.BigInt:
+        return 9;
+      case !Promise.allSettled:
+        return 10;
+      case !''.replaceAll:
+        return 11;
+      case !array.at:
+        return 12;
+      default:
+        return 13;
+    }
+  }
+  function getESYear(edition) {
+    return {
+      3: 1999,
+      5: 2009
+    }[edition] || 2009 + edition; // nullish coalescing (??) is not allowed
+  }
+  function getVersionWithYear() {
+    var edition = getESEdition();
+    var year = getESYear(edition);
+    return 'Edition: ' + edition + ' | Year: ' + year;
+  }
+  var EsVersion = {
+    getVersionWithYear: getVersionWithYear
+  };
+
   var systemInfo = {
     userAgent: null,
     platform: null,
@@ -19754,13 +19800,16 @@
     device: null,
     deviceName: null,
     isAndroid: null,
-    isWindow: null
+    isWindow: null,
+    esVersion: null
   };
   var System = {
     init: init$p,
-    systemInfo: systemInfo
+    systemInfo: systemInfo,
+    isRunInAndroidApp: isRunInAndroidApp
   };
   function init$p() {
+    systemInfo.esVersion = EsVersion.getVersionWithYear();
     systemInfo.userAgent = navigator.userAgent;
     var userAgentLowCase = systemInfo.userAgent.toLowerCase();
     systemInfo.isAndroid = userAgentLowCase.includes('android'); //navigator.userAgent.match(/Android/i);
@@ -19789,6 +19838,19 @@
       return device.substring(0, indexSpace);
     } else return device;
   }
+  function isRunInAndroidApp() {
+    return typeof AndroidJS !== 'undefined';
+  }
+
+  // function showAndroidJS() {
+  //     if(typeof AndroidJS !== 'undefined'){
+  //         console.log('TiViAl', 'AndroidJS', AndroidJS);
+  //         console.log('TiViAl', 'AndroidJS==null', AndroidJS==null);
+  //         console.log('TiViAl', 'typeof AndroidJS', typeof AndroidJS);
+  //         console.log('TiViAl', 'typeof AndroidJS !== undefined', typeof AndroidJS !== 'undefined');
+  //         console.log('TiViAl', 'AndroidJS.appVersion()', AndroidJS.appVersion());
+  //     }
+  // }
 
   var Opt = {
     setFirstLoadDefaultOptions: setFirstLoadDefaultOptions
@@ -19848,7 +19910,7 @@
       _iterator.f();
     }
     Local.setKeyValue(deviceNameKey, System.systemInfo.deviceName);
-    if (System.systemInfo.deviceName != 'SmartTv') {
+    if (System.systemInfo.deviceName != 'SmartTV') {
       setPlayerInner();
     }
   }
@@ -19925,11 +19987,36 @@
       Lampa.Controller.toggle(enabledName);
     }
   }
+  function nofity(text) {
+    Lampa.Noty.show(text);
+  }
+  function showSelectItemAsync(title, items) {
+    return new Promise(function (resolve) {
+      var enabledName = Lampa.Controller.enabled().name;
+      Lampa.Select.show({
+        title: title,
+        items: items,
+        onSelect: function onSelect(item) {
+          return close(item);
+        },
+        onBack: function onBack() {
+          return close(null);
+        }
+      });
+      function close(result) {
+        Lampa.Controller.toggle(enabledName);
+        resolve(result);
+      }
+    });
+  }
   var Msg = {
     showHtmlModal: showHtmlModal,
     showSelectActionOne: showSelectActionOne,
-    showSelectActionInItem: showSelectActionInItem
+    showSelectActionInItem: showSelectActionInItem,
+    nofity: nofity,
+    showSelectItemAsync: showSelectItemAsync
   };
+  // if(actionReturn instanceof Promise){ await actionReturn; }
 
   var Log = /*#__PURE__*/function () {
     function Log(author, scriptName) {
@@ -20516,6 +20603,38 @@
     showSelectFavsActions: showSelectFavsActions
   };
 
+  var Movie = /*#__PURE__*/function () {
+    function Movie(card) {
+      _classCallCheck(this, Movie);
+      this.cardId = card.id;
+      this.imdbId = card.imdb_id;
+      this.kpId = card.kinopoisk_id;
+      if (card.title) this.title = card.title;else this.title = card.name;
+      if (card.original_title) this.titleOrig = card.original_title;else this.titleOrig = card.original_name;
+      if (card.seasons) this.seasons = card.seasons;else {
+        this.seasons = card.number_of_seasons;
+        this.episodes = card.number_of_episodes;
+      }
+      this.urlKp = 'https://www.kinopoisk.ru/';
+      this.kpType = 'film';
+      if (this.isSerial()) this.kpType = 'series';
+      this.urlKpId = this.urlKp + this.kpType + '/' + this.kpId;
+      this.urlImdb = 'https://www.imdb.com/';
+      this.urlImdbId = "".concat(this.urlImdb, "/title/").concat(this.imdbId);
+    }
+    return _createClass(Movie, [{
+      key: "getIdInfo",
+      value: function getIdInfo() {
+        return "cardId = ".concat(this.cardId, " kpId = ").concat(this.kpId, " imdbId = ").concat(this.imdbId);
+      }
+    }, {
+      key: "isSerial",
+      value: function isSerial() {
+        return this.seasons != null;
+      }
+    }]);
+  }();
+
   var timeCodesUrl = 'add/timeCodes.json';
   function loadTimeCodes() {
     return _loadTimeCodes.apply(this, arguments);
@@ -20583,42 +20702,14 @@
     checkDoubleClick: checkDoubleClick
   };
 
-  var Movie = /*#__PURE__*/function () {
-    function Movie(card) {
-      _classCallCheck(this, Movie);
-      this.cardId = card.id;
-      this.imdbId = card.imdb_id;
-      this.kpId = card.kinopoisk_id;
-      if (card.title) this.title = card.title;else this.title = card.name;
-      if (card.original_title) this.titleOrig = card.original_title;else this.titleOrig = card.original_name;
-      if (card.seasons) this.seasons = card.seasons;else {
-        this.seasons = card.number_of_seasons;
-        this.episodes = card.number_of_episodes;
-      }
-      this.urlKp = 'https://www.kinopoisk.ru/';
-      this.kpType = 'film';
-      if (this.isSerial()) this.kpType = 'series';
-      this.urlKpId = this.urlKp + this.kpType + '/' + this.kpId;
-      this.urlImdb = 'https://www.imdb.com/';
-      this.urlImdbId = "".concat(this.urlImdb, "/title/").concat(this.imdbId);
-    }
-    return _createClass(Movie, [{
-      key: "getIdInfo",
-      value: function getIdInfo() {
-        return "cardId = ".concat(this.cardId, " kpId = ").concat(this.kpId, " imdbId = ").concat(this.imdbId);
-      }
-    }, {
-      key: "isSerial",
-      value: function isSerial() {
-        return this.seasons != null;
-      }
-    }]);
-  }();
-
   var timeCodes = [];
   var timeCodesRem = [];
   var log$1;
-  var _movie;
+  var _movieData = {
+    movie: null,
+    season: 0,
+    episode: 0
+  };
   var modes = {
     persent: {
       title: 'Проценты',
@@ -20630,7 +20721,7 @@
     },
     loadRemSelect: {
       title: 'Загрузить...',
-      actionSet: showSelectTimeCodesRemote
+      actionSet: selectOneTimeCodeFromRemTimeCodes
     },
     loadRemById: {
       title: 'по id',
@@ -20639,11 +20730,15 @@
     }
   };
   var _timeCodesMode = modes.persent;
+  var timeCodesModeSource = {
+    player: 1,
+    manual: 2
+  };
   function init$l(author) {
     log$1 = new Log(author, 'TimeCode');
     initTimeCodes();
     Player.addEventListenerKeyDown(onPlayerKeyDown);
-    Player.addEventListenerLoaded(setTimeCodesOnPlayerLoaded);
+    Player.addEventListenerLoaded(onPlayerLoaded);
     log$1.event('init');
   }
   function initTimeCodes() {
@@ -20653,140 +20748,334 @@
       });
     }
   }
-  function setCurMovie(card) {
-    _movie = new Movie(card);
-    //log.eventParam('setCurMovie', _movie);
+  function onPlayerLoaded(data) {
+    _movieData.movie = new Movie(data.card);
+    _movieData.season = data.season;
+    _movieData.episode = data.episode;
+
+    //console.log('_____setTimeCodesOnPlayerLoaded _movieData', _movieData);
+
+    setTimeCodesOnPlayerLoaded(timeCodesModeSource.player, _timeCodesMode);
   }
-  function setTimeCodesMode(_x) {
-    return _setTimeCodesMode.apply(this, arguments);
+  function setTimeCodesOnPlayerLoaded(_x, _x2) {
+    return _setTimeCodesOnPlayerLoaded.apply(this, arguments);
   }
-  function _setTimeCodesMode() {
-    _setTimeCodesMode = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(mode) {
-      var actionReturn;
+  function _setTimeCodesOnPlayerLoaded() {
+    _setTimeCodesOnPlayerLoaded = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(source, mode) {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
-            _timeCodesMode = mode;
-            if (!_timeCodesMode.actionSet) {
-              _context.next = 6;
+            if (!mode.actionOnPlayerLoaded) {
+              _context.next = 4;
               break;
             }
-            actionReturn = _timeCodesMode.actionSet();
-            if (!(actionReturn instanceof Promise)) {
-              _context.next = 6;
-              break;
-            }
-            _context.next = 6;
-            return actionReturn;
-          case 6:
-            if (Player.isOpenedAndLoaded()) {
-              setTimeCodesOnPlayerLoaded();
-            }
-          case 7:
+            _context.next = 3;
+            return mode.actionOnPlayerLoaded(source);
+          case 3:
+            return _context.abrupt("return", _context.sent);
+          case 4:
+            return _context.abrupt("return", true);
+          case 5:
           case "end":
             return _context.stop();
         }
       }, _callee);
     }));
+    return _setTimeCodesOnPlayerLoaded.apply(this, arguments);
+  }
+  function setTimeCodesMode(_x3) {
     return _setTimeCodesMode.apply(this, arguments);
   }
-  function setTimeCodesOnPlayerLoaded() {
-    if (_timeCodesMode.actionOnPlayerLoaded) {
-      _timeCodesMode.actionOnPlayerLoaded();
-    }
-  }
-  function setTimeCodesByPercents() {
-    for (var i = 0; i < timeCodes.length; i++) {
-      timeCodes[i].timeInSec = Player.getPositionByPercent(i * 10);
-    }
-  }
-  function setTimeCodesBy10min() {
-    for (var i = 0; i < timeCodes.length; i++) {
-      timeCodes[i].timeInSec = i * 10 * 60;
-    }
-  }
-  function loadAllTimeCodes() {
-    return _loadAllTimeCodes.apply(this, arguments);
-  }
-  function _loadAllTimeCodes() {
-    _loadAllTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+  function _setTimeCodesMode() {
+    _setTimeCodesMode = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(mode) {
+      var actionSetSeted, actionLoadedOk;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
-            return Rep.loadTimeCodes();
-          case 2:
-            timeCodesRem = _context2.sent;
+            if (!mode.actionSet) {
+              _context2.next = 6;
+              break;
+            }
+            _context2.next = 3;
+            return mode.actionSet();
           case 3:
+            actionSetSeted = _context2.sent;
+            if (!(actionSetSeted != true)) {
+              _context2.next = 6;
+              break;
+            }
+            return _context2.abrupt("return");
+          case 6:
+            actionLoadedOk = true;
+            if (!Player.isOpenedAndLoaded()) {
+              _context2.next = 11;
+              break;
+            }
+            _context2.next = 10;
+            return setTimeCodesOnPlayerLoaded(timeCodesModeSource.manual, mode);
+          case 10:
+            actionLoadedOk = _context2.sent;
+          case 11:
+            if (actionLoadedOk == true) {
+              _timeCodesMode = mode;
+            }
+          case 12:
           case "end":
             return _context2.stop();
         }
       }, _callee2);
     }));
+    return _setTimeCodesMode.apply(this, arguments);
+  }
+  function setTimeCodesByPercents() {
+    for (var i = 0; i < timeCodes.length; i++) {
+      timeCodes[i].timeInSec = Player.getPositionByPercent(i * 10);
+    }
+    return true;
+  }
+  function setTimeCodesBy10min() {
+    for (var i = 0; i < timeCodes.length; i++) {
+      timeCodes[i].timeInSec = i * 10 * 60;
+    }
+    return true;
+  }
+  function loadAllTimeCodes() {
     return _loadAllTimeCodes.apply(this, arguments);
   }
-  function setTimeCodesByRemIdData() {
-    //console.log('3 setTimeCodesByRemIdData', timeCodesRem);
-
-    if (!timeCodesRem || timeCodesRem.length == 0) {
-      setTimeCodesByPercents();
-    } else {
-      var timeCodeId = timeCodesRem.find(function (t) {
-        return t.cardId == _movie.cardId;
-      });
-      if (!timeCodeId) {
-        timeCodeId = timeCodesRem.find(function (t) {
-          return t.kpId == _movie.kpId;
-        });
-      }
-      if (!timeCodeId) {
-        timeCodeId = timeCodesRem.find(function (t) {
-          return t.imdbId == _movie.imdbId;
-        });
-      }
-      if (!timeCodeId) {
-        setTimeCodesByPercents();
-      } else {
-        setTimeCodesByRemData(timeCodeId);
-        log$1.eventParam('setTimeCodesByRemIdData', timeCodeId);
-      }
-    }
-  }
-  function showSelectTimeCodesRemote() {
-    return _showSelectTimeCodesRemote.apply(this, arguments);
-  }
-  function _showSelectTimeCodesRemote() {
-    _showSelectTimeCodesRemote = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      var remTimeCodes, items;
+  function _loadAllTimeCodes() {
+    _loadAllTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
       return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return Rep.loadTimeCodes();
+            return getTimeCodesFromRemote();
           case 2:
-            remTimeCodes = _context3.sent;
-            items = getShowItemsFromRepository(remTimeCodes);
-            Msg.showSelectActionOne('Тайм коды:', items, setTimeCodesByRemData);
-          case 5:
+            timeCodesRem = _context3.sent;
+            return _context3.abrupt("return", true);
+          case 4:
           case "end":
             return _context3.stop();
         }
       }, _callee3);
     }));
-    return _showSelectTimeCodesRemote.apply(this, arguments);
+    return _loadAllTimeCodes.apply(this, arguments);
+  }
+  function setTimeCodesByRemIdData(_x4) {
+    return _setTimeCodesByRemIdData.apply(this, arguments);
+  }
+  function _setTimeCodesByRemIdData() {
+    _setTimeCodesByRemIdData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(source) {
+      var timeCodeId, nameSE, timeCode;
+      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
+          case 0:
+            if (!(timeCodesRem && timeCodesRem.length > 0)) {
+              _context4.next = 27;
+              break;
+            }
+            timeCodeId = timeCodesRem.find(function (t) {
+              return t.cardId == _movieData.movie.cardId;
+            });
+            if (!timeCodeId) {
+              timeCodeId = timeCodesRem.find(function (t) {
+                return t.kpId == _movieData.movie.kpId;
+              });
+            }
+            if (!timeCodeId) {
+              timeCodeId = timeCodesRem.find(function (t) {
+                return t.imdbId == _movieData.movie.imdbId;
+              });
+            }
+            if (!timeCodeId) {
+              _context4.next = 27;
+              break;
+            }
+            if (!timeCodeId.props) {
+              _context4.next = 27;
+              break;
+            }
+            if (!(_movieData.season > 0 && _movieData.episode > 0)) {
+              _context4.next = 13;
+              break;
+            }
+            nameSE = "s".concat(_movieData.season, "e").concat(_movieData.episode);
+            if (!timeCodeId.props.includes(nameSE)) {
+              _context4.next = 11;
+              break;
+            }
+            setTimeCodesByRemData(timeCodeId.timeCodes[nameSE]);
+            return _context4.abrupt("return", true);
+          case 11:
+            _context4.next = 27;
+            break;
+          case 13:
+            if (!(source == timeCodesModeSource.player || timeCodeId.props.length == 1)) {
+              _context4.next = 17;
+              break;
+            }
+            setTimeCodesByRemData(timeCodeId.timeCodes[timeCodeId.props[0]]);
+            _context4.next = 26;
+            break;
+          case 17:
+            if (!(source == timeCodesModeSource.manual)) {
+              _context4.next = 26;
+              break;
+            }
+            _context4.next = 20;
+            return selectOneTimeCodeFromRemTimeCode(timeCodeId);
+          case 20:
+            timeCode = _context4.sent;
+            if (!timeCode) {
+              _context4.next = 25;
+              break;
+            }
+            setTimeCodesByRemData(timeCode);
+            _context4.next = 26;
+            break;
+          case 25:
+            return _context4.abrupt("return", false);
+          case 26:
+            return _context4.abrupt("return", true);
+          case 27:
+            setTimeCodesByPercents();
+            return _context4.abrupt("return", true);
+          case 29:
+          case "end":
+            return _context4.stop();
+        }
+      }, _callee4);
+    }));
+    return _setTimeCodesByRemIdData.apply(this, arguments);
+  }
+  function selectOneTimeCodeFromRemTimeCodes() {
+    return _selectOneTimeCodeFromRemTimeCodes.apply(this, arguments);
+  }
+  function _selectOneTimeCodeFromRemTimeCodes() {
+    _selectOneTimeCodeFromRemTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+      var remTimeCodes, remTimeCode, timeCode;
+      return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+        while (1) switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.next = 2;
+            return getTimeCodesFromRemote();
+          case 2:
+            remTimeCodes = _context5.sent;
+            _context5.next = 5;
+            return Msg.showSelectItemAsync('Тайм коды:', remTimeCodes);
+          case 5:
+            remTimeCode = _context5.sent;
+            if (!(remTimeCode && remTimeCode.props)) {
+              _context5.next = 18;
+              break;
+            }
+            timeCode = null;
+            if (!(remTimeCode.props.length > 1)) {
+              _context5.next = 14;
+              break;
+            }
+            _context5.next = 11;
+            return selectOneTimeCodeFromRemTimeCode(remTimeCode);
+          case 11:
+            timeCode = _context5.sent;
+            _context5.next = 15;
+            break;
+          case 14:
+            timeCode = remTimeCode.timeCode;
+          case 15:
+            if (!timeCode) {
+              _context5.next = 18;
+              break;
+            }
+            setTimeCodesByRemData(timeCode);
+            return _context5.abrupt("return", true);
+          case 18:
+            return _context5.abrupt("return", false);
+          case 19:
+          case "end":
+            return _context5.stop();
+        }
+      }, _callee5);
+    }));
+    return _selectOneTimeCodeFromRemTimeCodes.apply(this, arguments);
+  }
+  function getTimeCodesFromRemote() {
+    return _getTimeCodesFromRemote.apply(this, arguments);
+  }
+  function _getTimeCodesFromRemote() {
+    _getTimeCodesFromRemote = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+      var remTimeCodes;
+      return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+        while (1) switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.next = 2;
+            return Rep.loadTimeCodes();
+          case 2:
+            remTimeCodes = _context6.sent;
+            return _context6.abrupt("return", getShowItemsFromRepository(remTimeCodes));
+          case 4:
+          case "end":
+            return _context6.stop();
+        }
+      }, _callee6);
+    }));
+    return _getTimeCodesFromRemote.apply(this, arguments);
   }
   function getShowItemsFromRepository(remTimeCodes) {
     remTimeCodes.forEach(function (code) {
-      if (code.s && code.e) {
-        code.subtitle = "\u0421\u0435\u0437\u043E\u043D ".concat(code.s, " \u044D\u043F\u0438\u0437\u043E\u0434 ").concat(code.e);
+      var propsTimeCodes = ObjectArray.getPropsFromObjectArray(code.timeCodes);
+      if (Array.isArray(propsTimeCodes) && propsTimeCodes.length > 0) {
+        code.props = propsTimeCodes;
+        if (propsTimeCodes.length == 1) {
+          code.subtitle = propsTimeCodes[0];
+          code.timeCode = code.timeCodes[code.subtitle];
+        } else {
+          code.subtitle = propsTimeCodes.toString();
+        }
+      } else {
+        code.subtitle = 'error';
       }
     });
     return remTimeCodes;
   }
+  function selectOneTimeCodeFromRemTimeCode(_x5) {
+    return _selectOneTimeCodeFromRemTimeCode.apply(this, arguments);
+  }
+  function _selectOneTimeCodeFromRemTimeCode() {
+    _selectOneTimeCodeFromRemTimeCode = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(remTimeCode) {
+      var items, result;
+      return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+        while (1) switch (_context7.prev = _context7.next) {
+          case 0:
+            items = remTimeCode.props.map(function (p) {
+              return {
+                title: p,
+                timeCode: remTimeCode.timeCodes[p]
+              };
+            });
+            _context7.next = 3;
+            return Msg.showSelectItemAsync('Тайм коды:', items);
+          case 3:
+            result = _context7.sent;
+            if (!result) {
+              _context7.next = 8;
+              break;
+            }
+            return _context7.abrupt("return", result.timeCode);
+          case 8:
+            return _context7.abrupt("return", null);
+          case 9:
+          case "end":
+            return _context7.stop();
+        }
+      }, _callee7);
+    }));
+    return _selectOneTimeCodeFromRemTimeCode.apply(this, arguments);
+  }
   function setTimeCodesByRemData(timeCode) {
     for (var i = 0; i < timeCodes.length; i++) {
-      timeCodes[i].timeInSec = getSecondsFromValue(timeCode.timeCodes[i]);
+      timeCodes[i].timeInSec = getSecondsFromValue(timeCode[i]);
     }
+    //log.eventParam('setTimeCodesByRemIdData', timeCodeId);
   }
   function getSecondsFromValue(value) {
     if (value == null || typeof value !== 'number' || !isFinite(value) || isNaN(value) || value == 0) return 0;else return Converter.getSecondsFromNumberInTimeFormat(value);
@@ -20817,7 +21106,7 @@
     }
   }
   function selectTimeCodesMode() {
-    var items = ObjectArray.getArrayFromObjectProps(modes);
+    var items = ObjectArray.getArrayFromObjectArrayProps(modes);
     items.forEach(addSubTitle);
     Msg.showSelectActionOne('Режим таймкода:', items, setTimeCodesMode);
     function addSubTitle(mode) {
@@ -20830,48 +21119,7 @@
   }
   var TimeCode = {
     init: init$l,
-    selectTimeCodesMode: selectTimeCodesMode,
-    setCurMovie: setCurMovie
-  };
-
-  function getESEdition() {
-    var array = [];
-    switch (true) {
-      case !Array.isArray:
-        return 3;
-      case !window.Promise:
-        return 5;
-      case !array.includes:
-        return 6;
-      case !''.padStart:
-        return 7;
-      case !Promise.prototype["finally"]:
-        return 8;
-      case !window.BigInt:
-        return 9;
-      case !Promise.allSettled:
-        return 10;
-      case !''.replaceAll:
-        return 11;
-      case !array.at:
-        return 12;
-      default:
-        return 13;
-    }
-  }
-  function getESYear(edition) {
-    return {
-      3: 1999,
-      5: 2009
-    }[edition] || 2009 + edition; // nullish coalescing (??) is not allowed
-  }
-  function getVersionWithYear() {
-    var edition = getESEdition();
-    var year = getESYear(edition);
-    return 'Edition: ' + edition + ' | Year: ' + year;
-  }
-  var EsVersion = {
-    getVersionWithYear: getVersionWithYear
+    selectTimeCodesMode: selectTimeCodesMode
   };
 
   var MovieComent = {
@@ -20939,18 +21187,21 @@
     }, {
       title: "Открыть кинопоиск",
       action: function action() {
-        return openUrl(movie.urlKpId, '_blank');
+        return openUrl(movie.urlKpId);
       }
     }, {
       title: "Открыть imdb",
       action: function action() {
-        return openUrl(movie.urlImdbId, '_top');
+        return openUrl(movie.urlImdbId);
       }
     }];
     Msg.showSelectActionInItem('Кино', itemsAdd);
   }
-  function openUrl(url, param) {
-    window.open(url, param);
+  function openUrl(url) {
+    window.open(url);
+
+    //$('<a href="'+url+'"><a/>')[0].click();
+
     // console.log('TiViAl', url);
     // let a= document.createElement('a');
     // a.target= '_blank';
@@ -20959,7 +21210,6 @@
   }
 
   //import Test from './test.js'
-  //import Ip from './utils/ipLocal.js'
 
   var Main = {
     init: init$k,
@@ -20969,17 +21219,17 @@
   var log = new Log(author, 'Main');
   log.event('loaded');
   function init$k() {
-    log.event(EsVersion.getVersionWithYear());
-    System.init();
-    log.event(System.systemInfo.userAgent);
-    log.eventParam('DiviceName:', System.systemInfo.deviceName);
     AppEvent.setAppEvents(onAppStart, onAppReady);
     AppEvent.setAppKeyDown(onAppKeyDown);
     AppEvent.setCardSelect(onCardSelect);
+    Opt.setFirstLoadDefaultOptions();
     log.event('init');
   }
   function onAppStart() {
-    Opt.setFirstLoadDefaultOptions();
+    System.init();
+    log.event(System.systemInfo.esVersion);
+    log.event(System.systemInfo.userAgent);
+    log.eventParam('DiviceName:', System.systemInfo.deviceName);
     log.event('onAppStart');
   }
   function onAppReady() {
@@ -21010,7 +21260,11 @@
     if (e.code == Btn.zeroBtnCode) {
       TimeCode.selectTimeCodesMode();
     } else if (e.code == Btn.btn7Code) {
-      window.open('https://tivial19.github.io/lampa/data/');
+      if (System.isRunInAndroidApp()) {
+        AndroidJS.openYoutube('https://www.youtube.com/playlist?app=desktop&list=PLxeSeX3dh5RayyI1M1-y6lyLhuFeGuIIv');
+      } else {
+        Msg.nofity('Привет Машуха от TiViAl');
+      }
     } else if (e.code == Btn.btn8Code) {
       Favs.showSelectFavsActions();
     } else {
@@ -21018,7 +21272,6 @@
     }
   }
   function onCardSelect(card) {
-    TimeCode.setCurMovie(card);
     CardButton.drawButtonOnCard(card);
   }
   function onHeadFavClick() {
@@ -23487,7 +23740,6 @@
             noenter: !Account.hasPremium()
           });
         });
-        console.log('start', 'settings_input_links', items);
         Select.show({
           title: Lang.translate('settings_input_links'),
           items: items,
@@ -23544,7 +23796,6 @@
               btn: $(this)
             });
           });
-          console.log('start', 'settings_rest_source', items);
           Select.show({
             title: Lang.translate('settings_rest_source'),
             items: items,
@@ -24986,9 +25237,7 @@
       params.onSearch(input);
     }
     function change(text) {
-      console.log('Keybord change:', text);
       input = text.trim();
-      console.log('Keybord input:', input);
       if (input) {
         search.find('.search-box__input').text(input);
       } else {
@@ -29425,7 +29674,7 @@
     this.speechRecognition = function () {
       var _this2 = this;
       var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      console.log('Speechaaaaa', 'status:', SpeechRecognition ? true : false);
+      console.log('Speech', 'status:', SpeechRecognition ? true : false);
       if (SpeechRecognition) {
         recognition = new SpeechRecognition();
         recognition.continuous = false;
@@ -29621,7 +29870,6 @@
         subtitle: Lang.translate('settings_for_local'),
         url: '127.0.0.1:8090'
       }]);
-      console.log('input', 'title_links', links);
       Select.show({
         title: Lang.translate('title_links'),
         items: links,
@@ -29937,7 +30185,6 @@
           });
         }
         var enabled = Controller.enabled().name;
-        console.log('params', items);
         Select.show({
           title: Lang.translate('title_choice'),
           items: items,
@@ -33230,7 +33477,6 @@
       var type = $(e.target).data('type');
       if (action == 'catalog') catalog();
       if (action == 'movie' || action == 'tv' || action == 'anime') {
-        console.log("Lampa menu action == ".concat(action));
         Activity$1.push({
           url: action,
           title: (action == 'movie' ? Lang.translate('menu_movies') : action == 'anime' ? Lang.translate('menu_anime') : Lang.translate('menu_tv')) + ' - ' + Storage.field('source').toUpperCase(),
@@ -33275,7 +33521,6 @@
         });
       }
       if (action == 'favorite') {
-        console.log("Lampa menu action == favorite component=".concat(type == 'history' ? 'favorite' : 'bookmarks', " type=").concat(type));
         Activity$1.push({
           url: '',
           title: Lang.translate(type == 'book' ? 'settings_input_links' : 'title_history'),
@@ -34750,7 +34995,6 @@
     });
     Premiere.init();
     Extend.init();
-    Preroll.init();
   }
   var AdManager = {
     init: init$3
@@ -35233,6 +35477,7 @@
     Params.init();
     Controller.observe();
     Console.init();
+    Main.init();
     Keypad.init();
     Layer.init();
     Storage.init();
@@ -35328,7 +35573,6 @@
 
     /** Стартуем */
 
-    Main.init();
     Lampa.Listener.send('app', {
       type: 'start'
     });
