@@ -19468,6 +19468,105 @@
     'numLockZeroBtnCodeForDeveloper': 96
   };
 
+  function getESEdition() {
+    var array = [];
+    switch (true) {
+      case !Array.isArray:
+        return 3;
+      case !window.Promise:
+        return 5;
+      case !array.includes:
+        return 6;
+      case !''.padStart:
+        return 7;
+      case !Promise.prototype["finally"]:
+        return 8;
+      case !window.BigInt:
+        return 9;
+      case !Promise.allSettled:
+        return 10;
+      case !''.replaceAll:
+        return 11;
+      case !array.at:
+        return 12;
+      default:
+        return 13;
+    }
+  }
+  function getESYear(edition) {
+    return {
+      3: 1999,
+      5: 2009
+    }[edition] || 2009 + edition; // nullish coalescing (??) is not allowed
+  }
+  function getVersionWithYear() {
+    var edition = getESEdition();
+    var year = getESYear(edition);
+    return 'Edition: ' + edition + ' | Year: ' + year;
+  }
+  var EsVersion = {
+    getVersionWithYear: getVersionWithYear
+  };
+
+  var systemInfo = {
+    userAgent: null,
+    platform: null,
+    system: null,
+    device: null,
+    deviceName: null,
+    isAndroid: null,
+    isWindow: null,
+    esVersion: null
+  };
+  var System = {
+    init: init$p,
+    systemInfo: systemInfo,
+    isRunInAndroidApp: isRunInAndroidApp
+  };
+  function init$p() {
+    systemInfo.esVersion = EsVersion.getVersionWithYear();
+    systemInfo.userAgent = navigator.userAgent;
+    var userAgentLowCase = systemInfo.userAgent.toLowerCase();
+    systemInfo.isAndroid = userAgentLowCase.includes('android'); //navigator.userAgent.match(/Android/i);
+    systemInfo.isWindow = userAgentLowCase.includes('windows');
+    var sysInfo = getSystemInfoFromText(systemInfo.userAgent);
+    if (sysInfo != null && Array.isArray(sysInfo) && sysInfo.length > 2) {
+      systemInfo.platform = sysInfo[0];
+      systemInfo.system = sysInfo[1];
+      systemInfo.device = sysInfo[2];
+      systemInfo.deviceName = getDeviceNameFromDevice(systemInfo.device);
+    }
+  }
+  function getSystemInfoFromText(text) {
+    var indexStart = text.indexOf('(');
+    var indexEnd = text.indexOf(')');
+    if (indexStart > 0 && indexEnd > indexStart) {
+      var info = text.substring(indexStart + 1, indexEnd);
+      var infoArray = info.split('; ');
+      return infoArray;
+    }
+    return null;
+  }
+  function getDeviceNameFromDevice(device) {
+    var indexSpace = device.indexOf(" ");
+    if (indexSpace > 0) {
+      return device.substring(0, indexSpace);
+    } else return device;
+  }
+  function isRunInAndroidApp() {
+    return typeof AndroidJS !== 'undefined';
+  }
+
+  // function showAndroidJS() {
+  //     if(typeof AndroidJS !== 'undefined'){
+  //         console.log('TiViAl', 'AndroidJS', AndroidJS);
+  //         console.log('TiViAl', 'AndroidJS==null', AndroidJS==null);
+  //         console.log('TiViAl', 'typeof AndroidJS', typeof AndroidJS);
+  //         console.log('TiViAl', 'typeof AndroidJS !== undefined', typeof AndroidJS !== 'undefined');
+  //         console.log('TiViAl', 'AndroidJS.appVersion()', AndroidJS.appVersion());
+  //     }
+  // }
+
   function getPropsFromObjectArray(objectArray) {
     return Object.keys(objectArray);
   }
@@ -19635,6 +19734,126 @@
   //     localStorage.setItem(localStorageKey, getFavoritesAllJson());
   // }
 
+  // import Controller from '../../interaction/controller'
+  // import Modal from '../../interaction/modal'
+  // import Activity from '../../interaction/activity'
+  // import Select from '../../interaction/select'
+
+  var Msg = {
+    nofity: nofity,
+    selectYesNo: selectYesNo,
+    selectItemAsync: selectItemAsync,
+    showHtmlModal: showHtmlModal
+  };
+  function nofity(text) {
+    Lampa.Noty.show(text);
+  }
+  function selectYesNo(_x) {
+    return _selectYesNo.apply(this, arguments);
+  }
+  function _selectYesNo() {
+    _selectYesNo = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(title) {
+      var yesTitle,
+        noTitle,
+        itemsAdd,
+        result,
+        _args = arguments;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            yesTitle = _args.length > 1 && _args[1] !== undefined ? _args[1] : "Да";
+            noTitle = _args.length > 2 && _args[2] !== undefined ? _args[2] : "Нет";
+            itemsAdd = [{
+              title: yesTitle
+            }, {
+              title: noTitle
+            }];
+            _context.next = 5;
+            return selectItemAsync(title, itemsAdd);
+          case 5:
+            result = _context.sent;
+            if (!(result != null && result.title == yesTitle)) {
+              _context.next = 10;
+              break;
+            }
+            return _context.abrupt("return", true);
+          case 10:
+            return _context.abrupt("return", false);
+          case 11:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _selectYesNo.apply(this, arguments);
+  }
+  function selectItemAsync(title, items) {
+    return new Promise(function (resolve) {
+      var enabledName = Lampa.Controller.enabled().name;
+      Lampa.Select.show({
+        title: title,
+        items: items,
+        onSelect: function onSelect(item) {
+          return close(item);
+        },
+        onBack: function onBack() {
+          return close(null);
+        }
+      });
+      function close(result) {
+        Lampa.Controller.toggle(enabledName);
+        resolve(result);
+      }
+    });
+  }
+  function showHtmlModal(title, modalHtml) {
+    var enabledName = Lampa.Controller.enabled().name;
+    Lampa.Modal.open({
+      title: title,
+      html: modalHtml,
+      size: "large",
+      mask: !0,
+      onBack: function onBack() {
+        Lampa.Modal.close();
+        finall();
+      },
+      onSelect: finall
+    });
+    function finall() {
+      Lampa.Controller.toggle(enabledName);
+    }
+  }
+
+  // function showSelectActionOne(title, items, actionSelect, actionBack) {
+  //     var enabledName = Lampa.Controller.enabled().name;
+  //     Lampa.Select.show({
+  //         title: title,
+  //         items: items,
+  //         onSelect: (e)=>{ finall(); actionSelect(e);},
+  //         onBack: ()=>{ finall(); if(actionBack!=null){ actionBack();}}
+  //     });
+
+  //     function finall(){
+  //         Lampa.Controller.toggle(enabledName);
+  //     }
+  // }
+
+  // function showSelectActionInItem(title, items, actionBack) {
+  //     var enabledName = Lampa.Controller.enabled().name;  
+  //     Lampa.Select.show({
+  //         title: title,
+  //         items: items,
+  //         onSelect: (e)=>{ finall(); e.action(e);},
+  //         onBack: ()=>{ finall(); if(actionBack!=null){ actionBack();}}
+  //     });
+
+  //     function finall(){
+  //         Lampa.Controller.toggle(enabledName);
+  //     }
+  // }
+
+  // if(actionReturn instanceof Promise){ await actionReturn; }
+
   var ActivityParam = /*#__PURE__*/function () {
     function ActivityParam(title, component) {
       _classCallCheck(this, ActivityParam);
@@ -19666,7 +19885,8 @@
   }();
 
   var Show = {
-    showViewByKeyCode: showViewByKeyCode
+    showViewByKeyCode: showViewByKeyCode,
+    showOptMenu: showOptMenu
   };
   function showViewByKeyCode(code) {
     if (code == Btn.btn1Code) {
@@ -19737,6 +19957,69 @@
       source: activityParam.source
     });
   }
+  function showOptMenu() {
+    return _showOptMenu.apply(this, arguments);
+  }
+  function _showOptMenu() {
+    _showOptMenu = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var optActions, optAction;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            optActions = [{
+              title: "Передать привет",
+              action: hello
+            }, {
+              title: "Загрузить файл",
+              action: loadFileTest
+            }];
+            if (System.isRunInAndroidApp()) optActions.push({
+              title: "Открыть смотрю",
+              action: openYouTube
+            });
+            _context.next = 4;
+            return Msg.selectItemAsync('Дополнения', optActions);
+          case 4:
+            optAction = _context.sent;
+            if (!(optAction != null)) {
+              _context.next = 8;
+              break;
+            }
+            _context.next = 8;
+            return optAction.action();
+          case 8:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _showOptMenu.apply(this, arguments);
+  }
+  function hello() {
+    Msg.nofity('Привет Машуха от TiViAl');
+  }
+  function openYouTube() {
+    if (System.isRunInAndroidApp()) {
+      AndroidJS.openYoutube('https://www.youtube.com/playlist?app=desktop&list=PLxeSeX3dh5RayyI1M1-y6lyLhuFeGuIIv');
+    }
+  }
+  function loadFileTest() {
+    var jsonData = {
+      title: 'hi',
+      value: 35
+    };
+    saveTextToFile(JSON.stringify(jsonData), 'json.txt', 'application/json');
+  }
+  function saveTextToFile(text, fileName) {
+    var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
+    var a = document.createElement("a");
+    var file = new Blob([text], {
+      type: contentType
+    });
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+  }
 
   var Local = {
     getKey: getKey,
@@ -19752,105 +20035,6 @@
   function getAllKeysWithValues() {
     return Object.entries(localStorage);
   }
-
-  function getESEdition() {
-    var array = [];
-    switch (true) {
-      case !Array.isArray:
-        return 3;
-      case !window.Promise:
-        return 5;
-      case !array.includes:
-        return 6;
-      case !''.padStart:
-        return 7;
-      case !Promise.prototype["finally"]:
-        return 8;
-      case !window.BigInt:
-        return 9;
-      case !Promise.allSettled:
-        return 10;
-      case !''.replaceAll:
-        return 11;
-      case !array.at:
-        return 12;
-      default:
-        return 13;
-    }
-  }
-  function getESYear(edition) {
-    return {
-      3: 1999,
-      5: 2009
-    }[edition] || 2009 + edition; // nullish coalescing (??) is not allowed
-  }
-  function getVersionWithYear() {
-    var edition = getESEdition();
-    var year = getESYear(edition);
-    return 'Edition: ' + edition + ' | Year: ' + year;
-  }
-  var EsVersion = {
-    getVersionWithYear: getVersionWithYear
-  };
-
-  var systemInfo = {
-    userAgent: null,
-    platform: null,
-    system: null,
-    device: null,
-    deviceName: null,
-    isAndroid: null,
-    isWindow: null,
-    esVersion: null
-  };
-  var System = {
-    init: init$p,
-    systemInfo: systemInfo,
-    isRunInAndroidApp: isRunInAndroidApp
-  };
-  function init$p() {
-    systemInfo.esVersion = EsVersion.getVersionWithYear();
-    systemInfo.userAgent = navigator.userAgent;
-    var userAgentLowCase = systemInfo.userAgent.toLowerCase();
-    systemInfo.isAndroid = userAgentLowCase.includes('android'); //navigator.userAgent.match(/Android/i);
-    systemInfo.isWindow = userAgentLowCase.includes('windows');
-    var sysInfo = getSystemInfoFromText(systemInfo.userAgent);
-    if (sysInfo != null && Array.isArray(sysInfo) && sysInfo.length > 2) {
-      systemInfo.platform = sysInfo[0];
-      systemInfo.system = sysInfo[1];
-      systemInfo.device = sysInfo[2];
-      systemInfo.deviceName = getDeviceNameFromDevice(systemInfo.device);
-    }
-  }
-  function getSystemInfoFromText(text) {
-    var indexStart = text.indexOf('(');
-    var indexEnd = text.indexOf(')');
-    if (indexStart > 0 && indexEnd > indexStart) {
-      var info = text.substring(indexStart + 1, indexEnd);
-      var infoArray = info.split('; ');
-      return infoArray;
-    }
-    return null;
-  }
-  function getDeviceNameFromDevice(device) {
-    var indexSpace = device.indexOf(" ");
-    if (indexSpace > 0) {
-      return device.substring(0, indexSpace);
-    } else return device;
-  }
-  function isRunInAndroidApp() {
-    return typeof AndroidJS !== 'undefined';
-  }
-
-  // function showAndroidJS() {
-  //     if(typeof AndroidJS !== 'undefined'){
-  //         console.log('TiViAl', 'AndroidJS', AndroidJS);
-  //         console.log('TiViAl', 'AndroidJS==null', AndroidJS==null);
-  //         console.log('TiViAl', 'typeof AndroidJS', typeof AndroidJS);
-  //         console.log('TiViAl', 'typeof AndroidJS !== undefined', typeof AndroidJS !== 'undefined');
-  //         console.log('TiViAl', 'AndroidJS.appVersion()', AndroidJS.appVersion());
-  //     }
-  // }
 
   var Opt = {
     setFirstLoadDefaultOptions: setFirstLoadDefaultOptions
@@ -19924,99 +20108,6 @@
     }
     return isFirst;
   }
-
-  // import Controller from '../../interaction/controller'
-  // import Modal from '../../interaction/modal'
-  // import Activity from '../../interaction/activity'
-  // import Select from '../../interaction/select'
-
-  function showHtmlModal(title, modalHtml) {
-    var enabledName = Lampa.Controller.enabled().name;
-    Lampa.Modal.open({
-      title: title,
-      html: modalHtml,
-      size: "large",
-      mask: !0,
-      onBack: function onBack() {
-        Lampa.Modal.close();
-        finall();
-      },
-      onSelect: finall
-    });
-    function finall() {
-      Lampa.Controller.toggle(enabledName);
-    }
-  }
-  function showSelectActionOne(title, items, actionSelect, actionBack) {
-    var enabledName = Lampa.Controller.enabled().name;
-    Lampa.Select.show({
-      title: title,
-      items: items,
-      onSelect: function onSelect(e) {
-        finall();
-        actionSelect(e);
-      },
-      onBack: function onBack() {
-        finall();
-        if (actionBack != null) {
-          actionBack();
-        }
-      }
-    });
-    function finall() {
-      Lampa.Controller.toggle(enabledName);
-    }
-  }
-  function showSelectActionInItem(title, items, actionBack) {
-    var enabledName = Lampa.Controller.enabled().name;
-    Lampa.Select.show({
-      title: title,
-      items: items,
-      onSelect: function onSelect(e) {
-        finall();
-        e.action(e);
-      },
-      onBack: function onBack() {
-        finall();
-        if (actionBack != null) {
-          actionBack();
-        }
-      }
-    });
-    function finall() {
-      Lampa.Controller.toggle(enabledName);
-    }
-  }
-  function nofity(text) {
-    Lampa.Noty.show(text);
-  }
-  function showSelectItemAsync(title, items) {
-    return new Promise(function (resolve) {
-      var enabledName = Lampa.Controller.enabled().name;
-      Lampa.Select.show({
-        title: title,
-        items: items,
-        onSelect: function onSelect(item) {
-          return close(item);
-        },
-        onBack: function onBack() {
-          return close(null);
-        }
-      });
-      function close(result) {
-        Lampa.Controller.toggle(enabledName);
-        resolve(result);
-      }
-    });
-  }
-  var Msg = {
-    showHtmlModal: showHtmlModal,
-    showSelectActionOne: showSelectActionOne,
-    showSelectActionInItem: showSelectActionInItem,
-    nofity: nofity,
-    showSelectItemAsync: showSelectItemAsync
-  };
-  // if(actionReturn instanceof Promise){ await actionReturn; }
 
   var Log = /*#__PURE__*/function () {
     function Log(author, scriptName) {
@@ -20464,6 +20555,10 @@
     }
   }
 
+  var Favs = {
+    init: init$m,
+    showSelectFavsActions: showSelectFavsActions
+  };
   var log$2;
   function init$m(_x) {
     return _init.apply(this, arguments);
@@ -20485,123 +20580,213 @@
     return _init.apply(this, arguments);
   }
   function showSelectFavsActions() {
-    var itemsAdd = [{
-      title: "Загрузить категорию",
-      action: function action() {
-        return askCategoryOfFavs(loadFavoriteCategoryAsk);
-      }
-    }, {
-      title: "Очистить категорию",
-      action: function action() {
-        return askCategoryOfFavs(clearCategoryAsk);
-      }
-    }, {
-      title: "Загрузить все",
-      action: loadFavoriteAllAsk
-    }, {
-      title: "Очистить все",
-      action: clearAllAsk
-    }, {
-      title: "Окно разработчика",
-      action: DevModal.showFavoriteDev
-    }];
-    Msg.showSelectActionInItem('Дополнения', itemsAdd);
+    return _showSelectFavsActions.apply(this, arguments);
   }
-  function loadFavoriteAllAsk() {
-    var itemsAdd = [{
-      title: "Да",
-      action: loadFavoriteAll
-    }, {
-      title: "Отмена",
-      action: function action() {}
-    }];
-    Msg.showSelectActionInItem('Очистить и загрузить все?', itemsAdd);
-  }
-  function loadFavoriteAll() {
-    return _loadFavoriteAll.apply(this, arguments);
-  }
-  function _loadFavoriteAll() {
-    _loadFavoriteAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var favCurJson;
+  function _showSelectFavsActions() {
+    _showSelectFavsActions = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var favsActions, favsAction;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
-            return Rep$1.loadFavoritesAll();
-          case 2:
-            favCurJson = _context2.sent;
-            Fav.clearFavoriteAndSetFromJson(favCurJson);
-          case 4:
+            favsActions = [{
+              title: "Загрузить категорию",
+              action: addCategory
+            }, {
+              title: "Очистить категорию",
+              action: clearCategory
+            }, {
+              title: "Загрузить все",
+              action: loadFavoriteAllAsk
+            }, {
+              title: "Очистить все",
+              action: clearAllAsk
+            }, {
+              title: "Окно разработчика",
+              action: DevModal.showFavoriteDev
+            }];
+            _context2.next = 3;
+            return Msg.selectItemAsync('Избранное', favsActions);
+          case 3:
+            favsAction = _context2.sent;
+            if (!(favsAction != null)) {
+              _context2.next = 7;
+              break;
+            }
+            _context2.next = 7;
+            return favsAction.action();
+          case 7:
           case "end":
             return _context2.stop();
         }
       }, _callee2);
     }));
-    return _loadFavoriteAll.apply(this, arguments);
+    return _showSelectFavsActions.apply(this, arguments);
   }
-  function clearAllAsk() {
-    var itemsAdd = [{
-      title: "Да",
-      action: Fav.clearAll
-    }, {
-      title: "Отмена",
-      action: function action() {}
-    }];
-    Msg.showSelectActionInItem('Очистить текущие?', itemsAdd);
+  function addCategory() {
+    return _addCategory.apply(this, arguments);
   }
-  function askCategoryOfFavs(actionSelect) {
-    Msg.showSelectActionOne('Категории:', Fav.categoriesArray, actionSelect);
-  }
-  function loadFavoriteCategoryAsk(category) {
-    var itemsAdd = [{
-      title: "Да",
-      action: function action() {
-        return loadFavoriteCategory(category.value);
-      }
-    }, {
-      title: "Отмена",
-      action: function action() {}
-    }];
-    Msg.showSelectActionInItem("\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C ".concat(category.title, "?"), itemsAdd);
-  }
-  function loadFavoriteCategory(_x2) {
-    return _loadFavoriteCategory.apply(this, arguments);
-  }
-  function _loadFavoriteCategory() {
-    _loadFavoriteCategory = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(category) {
-      var favCurJson;
+  function _addCategory() {
+    _addCategory = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      var category, askYes;
       return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
             _context3.next = 2;
-            return Rep$1.loadFavoritesAll();
+            return selectCategoryOfFavs();
           case 2:
-            favCurJson = _context3.sent;
-            Fav.addFavsToCategory(favCurJson, category);
-          case 4:
+            category = _context3.sent;
+            if (!(category != null)) {
+              _context3.next = 10;
+              break;
+            }
+            _context3.next = 6;
+            return Msg.selectYesNo("\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C ".concat(category.title, "?"));
+          case 6:
+            askYes = _context3.sent;
+            if (!(askYes == true)) {
+              _context3.next = 10;
+              break;
+            }
+            _context3.next = 10;
+            return loadFavoriteCategory(category.value);
+          case 10:
           case "end":
             return _context3.stop();
         }
       }, _callee3);
     }));
+    return _addCategory.apply(this, arguments);
+  }
+  function loadFavoriteCategory(_x2) {
     return _loadFavoriteCategory.apply(this, arguments);
   }
-  function clearCategoryAsk(category) {
-    var itemsAdd = [{
-      title: "Да",
-      action: function action() {
-        return Fav.clearFavoriteInCategory(category.value);
-      }
-    }, {
-      title: "Отмена",
-      action: function action() {}
-    }];
-    Msg.showSelectActionInItem("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C ".concat(category.title, "?"), itemsAdd);
+  function _loadFavoriteCategory() {
+    _loadFavoriteCategory = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(category) {
+      var favCurJson;
+      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.next = 2;
+            return Rep$1.loadFavoritesAll();
+          case 2:
+            favCurJson = _context4.sent;
+            Fav.addFavsToCategory(favCurJson, category);
+          case 4:
+          case "end":
+            return _context4.stop();
+        }
+      }, _callee4);
+    }));
+    return _loadFavoriteCategory.apply(this, arguments);
   }
-  var Favs = {
-    init: init$m,
-    showSelectFavsActions: showSelectFavsActions
-  };
+  function clearCategory() {
+    return _clearCategory.apply(this, arguments);
+  }
+  function _clearCategory() {
+    _clearCategory = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+      var category, askYes;
+      return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+        while (1) switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.next = 2;
+            return selectCategoryOfFavs();
+          case 2:
+            category = _context5.sent;
+            if (!(category != null)) {
+              _context5.next = 8;
+              break;
+            }
+            _context5.next = 6;
+            return Msg.selectYesNo("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C ".concat(category.title, "?"));
+          case 6:
+            askYes = _context5.sent;
+            if (askYes == true) {
+              Fav.clearFavoriteInCategory(category.value);
+            }
+          case 8:
+          case "end":
+            return _context5.stop();
+        }
+      }, _callee5);
+    }));
+    return _clearCategory.apply(this, arguments);
+  }
+  function selectCategoryOfFavs() {
+    return Msg.selectItemAsync('Категории:', Fav.categoriesArray);
+  }
+  function loadFavoriteAllAsk() {
+    return _loadFavoriteAllAsk.apply(this, arguments);
+  }
+  function _loadFavoriteAllAsk() {
+    _loadFavoriteAllAsk = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+      var askYes;
+      return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+        while (1) switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.next = 2;
+            return Msg.selectYesNo('Очистить и загрузить все?');
+          case 2:
+            askYes = _context6.sent;
+            if (!(askYes == true)) {
+              _context6.next = 6;
+              break;
+            }
+            _context6.next = 6;
+            return loadFavoriteAll();
+          case 6:
+          case "end":
+            return _context6.stop();
+        }
+      }, _callee6);
+    }));
+    return _loadFavoriteAllAsk.apply(this, arguments);
+  }
+  function loadFavoriteAll() {
+    return _loadFavoriteAll.apply(this, arguments);
+  }
+  function _loadFavoriteAll() {
+    _loadFavoriteAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+      var favCurJson;
+      return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+        while (1) switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.next = 2;
+            return Rep$1.loadFavoritesAll();
+          case 2:
+            favCurJson = _context7.sent;
+            Fav.clearFavoriteAndSetFromJson(favCurJson);
+          case 4:
+          case "end":
+            return _context7.stop();
+        }
+      }, _callee7);
+    }));
+    return _loadFavoriteAll.apply(this, arguments);
+  }
+  function clearAllAsk() {
+    return _clearAllAsk.apply(this, arguments);
+  }
+  function _clearAllAsk() {
+    _clearAllAsk = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+      var askYes;
+      return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+        while (1) switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.next = 2;
+            return Msg.selectYesNo('Очистить все текущие?');
+          case 2:
+            askYes = _context8.sent;
+            if (askYes == true) {
+              Fav.clearAll();
+            }
+          case 4:
+          case "end":
+            return _context8.stop();
+        }
+      }, _callee8);
+    }));
+    return _clearAllAsk.apply(this, arguments);
+  }
 
   var Movie = /*#__PURE__*/function () {
     function Movie(card) {
@@ -20702,6 +20887,10 @@
     checkDoubleClick: checkDoubleClick
   };
 
+  var TimeCode = {
+    init: init$l,
+    selectTimeCodesMode: selectTimeCodesMode
+  };
   var timeCodes = [];
   var timeCodesRem = [];
   var log$1;
@@ -20741,6 +20930,42 @@
     Player.addEventListenerLoaded(onPlayerLoaded);
     log$1.event('init');
   }
+  function selectTimeCodesMode() {
+    return _selectTimeCodesMode.apply(this, arguments);
+  }
+  function _selectTimeCodesMode() {
+    _selectTimeCodesMode = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var items, newMode, addSubTitle;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            addSubTitle = function _addSubTitle(mode) {
+              if (mode.title == _timeCodesMode.title) {
+                mode.subtitle = 'текущий';
+              } else {
+                mode.subtitle = '';
+              }
+            };
+            items = ObjectArray.getArrayFromObjectArrayProps(modes);
+            items.forEach(addSubTitle);
+            _context.next = 5;
+            return Msg.selectItemAsync('Режим таймкода:', items);
+          case 5:
+            newMode = _context.sent;
+            if (!(newMode != null)) {
+              _context.next = 9;
+              break;
+            }
+            _context.next = 9;
+            return setTimeCodesMode(newMode);
+          case 9:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _selectTimeCodesMode.apply(this, arguments);
+  }
   function initTimeCodes() {
     for (var i = 0; i < 10; i++) {
       timeCodes.push({
@@ -20761,25 +20986,25 @@
     return _setTimeCodesOnPlayerLoaded.apply(this, arguments);
   }
   function _setTimeCodesOnPlayerLoaded() {
-    _setTimeCodesOnPlayerLoaded = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(source, mode) {
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
+    _setTimeCodesOnPlayerLoaded = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(source, mode) {
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
           case 0:
             if (!mode.actionOnPlayerLoaded) {
-              _context.next = 4;
+              _context2.next = 4;
               break;
             }
-            _context.next = 3;
+            _context2.next = 3;
             return mode.actionOnPlayerLoaded(source);
           case 3:
-            return _context.abrupt("return", _context.sent);
+            return _context2.abrupt("return", _context2.sent);
           case 4:
-            return _context.abrupt("return", true);
+            return _context2.abrupt("return", true);
           case 5:
           case "end":
-            return _context.stop();
+            return _context2.stop();
         }
-      }, _callee);
+      }, _callee2);
     }));
     return _setTimeCodesOnPlayerLoaded.apply(this, arguments);
   }
@@ -20787,43 +21012,43 @@
     return _setTimeCodesMode.apply(this, arguments);
   }
   function _setTimeCodesMode() {
-    _setTimeCodesMode = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(mode) {
+    _setTimeCodesMode = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(mode) {
       var actionSetSeted, actionLoadedOk;
-      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-        while (1) switch (_context2.prev = _context2.next) {
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
           case 0:
             if (!mode.actionSet) {
-              _context2.next = 6;
+              _context3.next = 6;
               break;
             }
-            _context2.next = 3;
+            _context3.next = 3;
             return mode.actionSet();
           case 3:
-            actionSetSeted = _context2.sent;
+            actionSetSeted = _context3.sent;
             if (!(actionSetSeted != true)) {
-              _context2.next = 6;
+              _context3.next = 6;
               break;
             }
-            return _context2.abrupt("return");
+            return _context3.abrupt("return");
           case 6:
             actionLoadedOk = true;
             if (!Player.isOpenedAndLoaded()) {
-              _context2.next = 11;
+              _context3.next = 11;
               break;
             }
-            _context2.next = 10;
+            _context3.next = 10;
             return setTimeCodesOnPlayerLoaded(timeCodesModeSource.manual, mode);
           case 10:
-            actionLoadedOk = _context2.sent;
+            actionLoadedOk = _context3.sent;
           case 11:
             if (actionLoadedOk == true) {
               _timeCodesMode = mode;
             }
           case 12:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
-      }, _callee2);
+      }, _callee3);
     }));
     return _setTimeCodesMode.apply(this, arguments);
   }
@@ -20843,20 +21068,20 @@
     return _loadAllTimeCodes.apply(this, arguments);
   }
   function _loadAllTimeCodes() {
-    _loadAllTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-        while (1) switch (_context3.prev = _context3.next) {
+    _loadAllTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
           case 0:
-            _context3.next = 2;
+            _context4.next = 2;
             return getTimeCodesFromRemote();
           case 2:
-            timeCodesRem = _context3.sent;
-            return _context3.abrupt("return", true);
+            timeCodesRem = _context4.sent;
+            return _context4.abrupt("return", true);
           case 4:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
-      }, _callee3);
+      }, _callee4);
     }));
     return _loadAllTimeCodes.apply(this, arguments);
   }
@@ -20864,13 +21089,13 @@
     return _setTimeCodesByRemIdData.apply(this, arguments);
   }
   function _setTimeCodesByRemIdData() {
-    _setTimeCodesByRemIdData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(source) {
+    _setTimeCodesByRemIdData = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(source) {
       var timeCodeId, nameSE, timeCode;
-      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-        while (1) switch (_context4.prev = _context4.next) {
+      return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+        while (1) switch (_context5.prev = _context5.next) {
           case 0:
             if (!(timeCodesRem && timeCodesRem.length > 0)) {
-              _context4.next = 27;
+              _context5.next = 27;
               break;
             }
             timeCodeId = timeCodesRem.find(function (t) {
@@ -20887,63 +21112,63 @@
               });
             }
             if (!timeCodeId) {
-              _context4.next = 27;
+              _context5.next = 27;
               break;
             }
             if (!timeCodeId.props) {
-              _context4.next = 27;
+              _context5.next = 27;
               break;
             }
             if (!(_movieData.season > 0 && _movieData.episode > 0)) {
-              _context4.next = 13;
+              _context5.next = 13;
               break;
             }
             nameSE = "s".concat(_movieData.season, "e").concat(_movieData.episode);
             if (!timeCodeId.props.includes(nameSE)) {
-              _context4.next = 11;
+              _context5.next = 11;
               break;
             }
             setTimeCodesByRemData(timeCodeId.timeCodes[nameSE]);
-            return _context4.abrupt("return", true);
+            return _context5.abrupt("return", true);
           case 11:
-            _context4.next = 27;
+            _context5.next = 27;
             break;
           case 13:
             if (!(source == timeCodesModeSource.player || timeCodeId.props.length == 1)) {
-              _context4.next = 17;
+              _context5.next = 17;
               break;
             }
             setTimeCodesByRemData(timeCodeId.timeCodes[timeCodeId.props[0]]);
-            _context4.next = 26;
+            _context5.next = 26;
             break;
           case 17:
             if (!(source == timeCodesModeSource.manual)) {
-              _context4.next = 26;
+              _context5.next = 26;
               break;
             }
-            _context4.next = 20;
+            _context5.next = 20;
             return selectOneTimeCodeFromRemTimeCode(timeCodeId);
           case 20:
-            timeCode = _context4.sent;
+            timeCode = _context5.sent;
             if (!timeCode) {
-              _context4.next = 25;
+              _context5.next = 25;
               break;
             }
             setTimeCodesByRemData(timeCode);
-            _context4.next = 26;
+            _context5.next = 26;
             break;
           case 25:
-            return _context4.abrupt("return", false);
+            return _context5.abrupt("return", false);
           case 26:
-            return _context4.abrupt("return", true);
+            return _context5.abrupt("return", true);
           case 27:
             setTimeCodesByPercents();
-            return _context4.abrupt("return", true);
+            return _context5.abrupt("return", true);
           case 29:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
-      }, _callee4);
+      }, _callee5);
     }));
     return _setTimeCodesByRemIdData.apply(this, arguments);
   }
@@ -20951,50 +21176,50 @@
     return _selectOneTimeCodeFromRemTimeCodes.apply(this, arguments);
   }
   function _selectOneTimeCodeFromRemTimeCodes() {
-    _selectOneTimeCodeFromRemTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+    _selectOneTimeCodeFromRemTimeCodes = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
       var remTimeCodes, remTimeCode, timeCode;
-      return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-        while (1) switch (_context5.prev = _context5.next) {
+      return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+        while (1) switch (_context6.prev = _context6.next) {
           case 0:
-            _context5.next = 2;
+            _context6.next = 2;
             return getTimeCodesFromRemote();
           case 2:
-            remTimeCodes = _context5.sent;
-            _context5.next = 5;
-            return Msg.showSelectItemAsync('Тайм коды:', remTimeCodes);
+            remTimeCodes = _context6.sent;
+            _context6.next = 5;
+            return Msg.selectItemAsync('Тайм коды:', remTimeCodes);
           case 5:
-            remTimeCode = _context5.sent;
+            remTimeCode = _context6.sent;
             if (!(remTimeCode && remTimeCode.props)) {
-              _context5.next = 18;
+              _context6.next = 18;
               break;
             }
             timeCode = null;
             if (!(remTimeCode.props.length > 1)) {
-              _context5.next = 14;
+              _context6.next = 14;
               break;
             }
-            _context5.next = 11;
+            _context6.next = 11;
             return selectOneTimeCodeFromRemTimeCode(remTimeCode);
           case 11:
-            timeCode = _context5.sent;
-            _context5.next = 15;
+            timeCode = _context6.sent;
+            _context6.next = 15;
             break;
           case 14:
             timeCode = remTimeCode.timeCode;
           case 15:
             if (!timeCode) {
-              _context5.next = 18;
+              _context6.next = 18;
               break;
             }
             setTimeCodesByRemData(timeCode);
-            return _context5.abrupt("return", true);
+            return _context6.abrupt("return", true);
           case 18:
-            return _context5.abrupt("return", false);
+            return _context6.abrupt("return", false);
           case 19:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
-      }, _callee5);
+      }, _callee6);
     }));
     return _selectOneTimeCodeFromRemTimeCodes.apply(this, arguments);
   }
@@ -21002,21 +21227,21 @@
     return _getTimeCodesFromRemote.apply(this, arguments);
   }
   function _getTimeCodesFromRemote() {
-    _getTimeCodesFromRemote = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+    _getTimeCodesFromRemote = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
       var remTimeCodes;
-      return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-        while (1) switch (_context6.prev = _context6.next) {
+      return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+        while (1) switch (_context7.prev = _context7.next) {
           case 0:
-            _context6.next = 2;
+            _context7.next = 2;
             return Rep.loadTimeCodes();
           case 2:
-            remTimeCodes = _context6.sent;
-            return _context6.abrupt("return", getShowItemsFromRepository(remTimeCodes));
+            remTimeCodes = _context7.sent;
+            return _context7.abrupt("return", getShowItemsFromRepository(remTimeCodes));
           case 4:
           case "end":
-            return _context6.stop();
+            return _context7.stop();
         }
-      }, _callee6);
+      }, _callee7);
     }));
     return _getTimeCodesFromRemote.apply(this, arguments);
   }
@@ -21041,10 +21266,10 @@
     return _selectOneTimeCodeFromRemTimeCode.apply(this, arguments);
   }
   function _selectOneTimeCodeFromRemTimeCode() {
-    _selectOneTimeCodeFromRemTimeCode = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(remTimeCode) {
+    _selectOneTimeCodeFromRemTimeCode = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(remTimeCode) {
       var items, result;
-      return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-        while (1) switch (_context7.prev = _context7.next) {
+      return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+        while (1) switch (_context8.prev = _context8.next) {
           case 0:
             items = remTimeCode.props.map(function (p) {
               return {
@@ -21052,22 +21277,22 @@
                 timeCode: remTimeCode.timeCodes[p]
               };
             });
-            _context7.next = 3;
-            return Msg.showSelectItemAsync('Тайм коды:', items);
+            _context8.next = 3;
+            return Msg.selectItemAsync('Тайм коды:', items);
           case 3:
-            result = _context7.sent;
+            result = _context8.sent;
             if (!result) {
-              _context7.next = 8;
+              _context8.next = 8;
               break;
             }
-            return _context7.abrupt("return", result.timeCode);
+            return _context8.abrupt("return", result.timeCode);
           case 8:
-            return _context7.abrupt("return", null);
+            return _context8.abrupt("return", null);
           case 9:
           case "end":
-            return _context7.stop();
+            return _context8.stop();
         }
-      }, _callee7);
+      }, _callee8);
     }));
     return _selectOneTimeCodeFromRemTimeCode.apply(this, arguments);
   }
@@ -21105,22 +21330,6 @@
       Player.setVideoPositionSec(timeL.timeInSec);
     }
   }
-  function selectTimeCodesMode() {
-    var items = ObjectArray.getArrayFromObjectArrayProps(modes);
-    items.forEach(addSubTitle);
-    Msg.showSelectActionOne('Режим таймкода:', items, setTimeCodesMode);
-    function addSubTitle(mode) {
-      if (mode.title == _timeCodesMode.title) {
-        mode.subtitle = 'текущий';
-      } else {
-        mode.subtitle = '';
-      }
-    }
-  }
-  var TimeCode = {
-    init: init$l,
-    selectTimeCodesMode: selectTimeCodesMode
-  };
 
   var MovieComent = {
     showMovieComments: showMovieComments
@@ -21173,29 +21382,50 @@
       return onCardButtonClick(card);
     });
   }
-  function onCardButtonClick(card) {
-    var movie = new Movie(card);
-
-    // console.log(card);
-    // console.log(movie);
-
-    var itemsAdd = [{
-      title: "Показать коменты",
-      action: function action() {
-        return MovieComent.showMovieComments(movie);
-      }
-    }, {
-      title: "Открыть кинопоиск",
-      action: function action() {
-        return openUrl(movie.urlKpId);
-      }
-    }, {
-      title: "Открыть imdb",
-      action: function action() {
-        return openUrl(movie.urlImdbId);
-      }
-    }];
-    Msg.showSelectActionInItem('Кино', itemsAdd);
+  function onCardButtonClick(_x) {
+    return _onCardButtonClick.apply(this, arguments);
+  }
+  function _onCardButtonClick() {
+    _onCardButtonClick = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(card) {
+      var movie, cardActions, cardAction;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            movie = new Movie(card); // console.log(card);
+            // console.log(movie);
+            cardActions = [{
+              title: "Показать коменты",
+              action: function action() {
+                return MovieComent.showMovieComments(movie);
+              }
+            }, {
+              title: "Открыть кинопоиск",
+              action: function action() {
+                return openUrl(movie.urlKpId);
+              }
+            }, {
+              title: "Открыть imdb",
+              action: function action() {
+                return openUrl(movie.urlImdbId);
+              }
+            }];
+            _context.next = 4;
+            return Msg.selectItemAsync('Кино', cardActions);
+          case 4:
+            cardAction = _context.sent;
+            if (!(cardAction != null)) {
+              _context.next = 8;
+              break;
+            }
+            _context.next = 8;
+            return cardAction.action();
+          case 8:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return _onCardButtonClick.apply(this, arguments);
   }
   function openUrl(url) {
     window.open(url);
@@ -21211,25 +21441,21 @@
 
   //import Test from './test.js'
 
-  var Main = {
-    init: init$k,
-    onHeadFavClick: onHeadFavClick
-  };
   var author = 'TiViAl';
   var log = new Log(author, 'Main');
   log.event('loaded');
   function init$k() {
-    AppEvent.setAppEvents(onAppStart, onAppReady);
-    AppEvent.setAppKeyDown(onAppKeyDown);
-    AppEvent.setCardSelect(onCardSelect);
-    Opt.setFirstLoadDefaultOptions();
     log.event('init');
-  }
-  function onAppStart() {
     System.init();
     log.event(System.systemInfo.esVersion);
     log.event(System.systemInfo.userAgent);
     log.eventParam('DiviceName:', System.systemInfo.deviceName);
+    Opt.setFirstLoadDefaultOptions();
+    AppEvent.setAppEvents(onAppStart, onAppReady);
+    AppEvent.setAppKeyDown(onAppKeyDown);
+    AppEvent.setCardSelect(onCardSelect);
+  }
+  function onAppStart() {
     log.event('onAppStart');
   }
   function onAppReady() {
@@ -21260,11 +21486,7 @@
     if (e.code == Btn.zeroBtnCode) {
       TimeCode.selectTimeCodesMode();
     } else if (e.code == Btn.btn7Code) {
-      if (System.isRunInAndroidApp()) {
-        AndroidJS.openYoutube('https://www.youtube.com/playlist?app=desktop&list=PLxeSeX3dh5RayyI1M1-y6lyLhuFeGuIIv');
-      } else {
-        Msg.nofity('Привет Машуха от TiViAl');
-      }
+      Show.showOptMenu();
     } else if (e.code == Btn.btn8Code) {
       Favs.showSelectFavsActions();
     } else {
@@ -21277,6 +21499,18 @@
   function onHeadFavClick() {
     Favs.showSelectFavsActions();
   }
+  function onHeadFeedClick() {
+    TimeCode.selectTimeCodesMode();
+  }
+  function onHeadFullClick() {
+    Show.showOptMenu();
+  }
+  var Main = {
+    init: init$k,
+    onHeadFavClick: onHeadFavClick,
+    onHeadFeedClick: onHeadFeedClick,
+    onHeadFullClick: onHeadFullClick
+  };
 
   var html$8;
   var last$2;
@@ -21305,19 +21539,22 @@
       }
     });
     html$8.find('.full-screen').on('hover:enter', function () {
-      Utils$2.toggleFullscreen();
-    }).toggleClass('hide', Platform.tv() || Platform.is('android') || !Utils$2.canFullScreen());
+      Main.onHeadFullClick();
+      //Utils.toggleFullscreen()
+      //}).toggleClass('hide',Platform.tv() || Platform.is('android') || !Utils.canFullScreen())
+    }).toggleClass('hide', Platform.tv() || !Utils$2.canFullScreen());
     if (!Lang.selected(['ru', 'uk', 'be'])) {
       html$8.find('.open--feed').remove();
     } else {
-      html$8.find('.open--feed').on('hover:enter', function () {
-        Activity$1.push({
-          url: '',
-          title: Lang.translate('menu_feed'),
-          component: 'feed',
-          page: 1
-        });
-      });
+      html$8.find('.open--feed').on('hover:enter', Main.onHeadFeedClick);
+      // ()=>{
+      //     Activity.push({
+      //         url: '',
+      //         title: Lang.translate('menu_feed'),
+      //         component: 'feed',
+      //         page: 1
+      //     })
+      // })
     }
     html$8.find('.open--premium').toggleClass('hide', window.lampa_settings.white_use ? true : !Lang.selected(['ru', 'uk', 'be'])).on('hover:enter', Main.onHeadFavClick);
     //{
