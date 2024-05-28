@@ -20022,7 +20022,7 @@ const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=2
   }
   function openYouTube() {
     if (System.isRunInAndroidApp()) {
-      AndroidJS.openYoutube('https://www.youtube.com/playlist?app=desktop&list=PLxeSeX3dh5RayyI1M1-y6lyLhuFeGuIIv');
+      AndroidJS.openYoutube('https://tivial19.github.io/lampa/start.js');
     }
   }
   function loadFileTest() {
