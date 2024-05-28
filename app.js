@@ -19996,7 +19996,21 @@
     return _showOptMenu.apply(this, arguments);
   }
   function hello() {
-    Msg.nofity('Привет Машуха от TiViAl');
+    //Msg.nofity('Привет Машуха от TiViAl');
+const winHtml = `<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Window with Blob</title>
+        </head>
+        <body>
+            <h1>Hello from the new window!</h1>
+        </body>
+    </html>`;
+
+const winUrl = URL.createObjectURL(new Blob([winHtml], { type: "text/html" }));
+const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=200`);
+
+
   }
   function openYouTube() {
     if (System.isRunInAndroidApp()) {
@@ -20008,7 +20022,7 @@
       title: 'hi',
       value: 35
     };
-    saveTextToFile$1(JSON.stringify(jsonData), 'jsonTest.json', 'application/json');
+    saveTextToFile$1(JSON.stringify(jsonData), 'json.txt', 'application/json');
   }
   function saveTextToFile$1(text, fileName) {
     var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
@@ -20129,10 +20143,6 @@
   }();
 
   var _remoteHost = null;
-  var contentTypes = {
-    text: 'text/plain',
-    json: 'application/json'
-  };
   var RepCore = {
     init: init$o,
     saveTextToFile: saveTextToFile,
@@ -20142,7 +20152,7 @@
     _remoteHost = remoteHost;
   }
   function saveTextToFile(fileName, text) {
-    var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : contentTypes.json;
+    var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
     var a = document.createElement("a");
     var file = new Blob([text], {
       type: contentType
