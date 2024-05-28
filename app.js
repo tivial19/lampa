@@ -19997,18 +19997,26 @@
   }
   function hello() {
     //Msg.nofity('Привет Машуха от TiViAl');
-const winHtml = `<!DOCTYPE html>
-    <html>
-        <head>
-            <title>Window with Blob</title>
-        </head>
-        <body>
-            <h1>Hello from the new window!</h1>
-        </body>
-    </html>`;
+const htmlStr=`
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Загрузка файла</title>
+</head>
+<body>
+  <h1>Нажмите для загрузки</h1>
+  <a href="https://tivial19.github.io/lampa/start.js" download="test.txt">Данные</a>
+</body>
+</html>
+`;
 
-const winUrl = URL.createObjectURL(new Blob([winHtml], { type: "text/html" }));
-const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=200`);
+const parser = new DOMParser();
+const html = parser.parseFromString(htmlStr, 'text/html');
+const body = html.body;
+document.body.appendChild(body);
+
+//const winUrl = URL.createObjectURL(new Blob([htmlStr], { type: "text/html" }));
+//const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=200`);
 
 
   }
