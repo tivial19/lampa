@@ -20008,9 +20008,9 @@
       title: 'hi',
       value: 35
     };
-    saveTextToFile(JSON.stringify(jsonData), 'json.txt', 'application/json');
+    saveTextToFile$1(JSON.stringify(jsonData), 'json.txt', 'application/json');
   }
-  function saveTextToFile(text, fileName) {
+  function saveTextToFile$1(text, fileName) {
     var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
     var a = document.createElement("a");
     var file = new Blob([text], {
@@ -20129,8 +20129,23 @@
   }();
 
   var _remoteHost = null;
+  var RepCore = {
+    init: init$o,
+    saveTextToFile: saveTextToFile,
+    loadTextFromUrl: loadTextFromUrl
+  };
   function init$o(remoteHost) {
     _remoteHost = remoteHost;
+  }
+  function saveTextToFile(fileName, text) {
+    var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
+    var a = document.createElement("a");
+    var file = new Blob([text], {
+      type: contentType
+    });
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
   }
 
   // async function loadTextFromUrl(url) {
@@ -20159,10 +20174,6 @@
       return _remoteHost + url;
     }
   }
-  var RepCore = {
-    init: init$o,
-    loadTextFromUrl: loadTextFromUrl
-  };
 
   //const localHostName='localhost';
   //window.location.hostname==localHostName
@@ -20180,8 +20191,17 @@
   //     });
   // }
 
+  var fileSaveName = 'favsAll.json';
+  var favoritesCurrentUrl = 'add/' + fileSaveName;
   var favoritesHtmlUrl = 'add/favorites.html';
-  var favoritesCurrentUrl = 'add/favsAll.json';
+  var Rep$1 = {
+    saveFavsToFileDownload: saveFavsToFileDownload,
+    loadFavoritesAll: loadFavoritesAll,
+    loadFavoritesQueryDom: loadFavoritesQueryDom
+  };
+  function saveFavsToFileDownload(favsJsonText) {
+    RepCore.saveTextToFile(fileSaveName, favsJsonText);
+  }
   function loadFavoritesAll() {
     return _loadFavoritesAll.apply(this, arguments);
   }
@@ -20249,10 +20269,6 @@
     }));
     return _loadFavoritesText.apply(this, arguments);
   }
-  var Rep$1 = {
-    loadFavoritesQueryDom: loadFavoritesQueryDom,
-    loadFavoritesAll: loadFavoritesAll
-  };
 
   var ViewController = /*#__PURE__*/function () {
     function ViewController(viewTarget, domElement) {
@@ -20601,6 +20617,9 @@
               title: "Очистить все",
               action: clearAllAsk
             }, {
+              title: "Сохранить все",
+              action: saveAll
+            }, {
               title: "Окно разработчика",
               action: DevModal.showFavoriteDev
             }];
@@ -20786,6 +20805,9 @@
       }, _callee8);
     }));
     return _clearAllAsk.apply(this, arguments);
+  }
+  function saveAll() {
+    Rep$1.saveFavsToFileDownload(Fav.getFavoritesAllJson());
   }
 
   var Movie = /*#__PURE__*/function () {
