@@ -20008,7 +20008,7 @@
       title: 'hi',
       value: 35
     };
-    saveTextToFile$1(JSON.stringify(jsonData), 'json.txt', 'application/json');
+    saveTextToFile$1(JSON.stringify(jsonData), 'json', 'application/json');
   }
   function saveTextToFile$1(text, fileName) {
     var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
@@ -20129,6 +20129,10 @@
   }();
 
   var _remoteHost = null;
+  var contentTypes = {
+    text: 'text/plain',
+    json: 'application/json'
+  };
   var RepCore = {
     init: init$o,
     saveTextToFile: saveTextToFile,
@@ -20138,7 +20142,7 @@
     _remoteHost = remoteHost;
   }
   function saveTextToFile(fileName, text) {
-    var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
+    var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : contentTypes.json;
     var a = document.createElement("a");
     var file = new Blob([text], {
       type: contentType
