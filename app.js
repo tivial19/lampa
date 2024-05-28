@@ -20008,7 +20008,7 @@
       title: 'hi',
       value: 35
     };
-    saveTextToFile$1(JSON.stringify(jsonData), 'json', 'application/json');
+    saveTextToFile$1(JSON.stringify(jsonData), 'jsonTest.json', 'application/json');
   }
   function saveTextToFile$1(text, fileName) {
     var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
