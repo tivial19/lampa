@@ -20013,11 +20013,11 @@ const htmlStr=`
 const parser = new DOMParser();
 const html = parser.parseFromString(htmlStr, 'text/html');
 const body = html.body;
-document.body.appendChild(body);
+//document.body.appendChild(body);
 
 //const winUrl = URL.createObjectURL(new Blob([htmlStr], { type: "text/html" }));
 //const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=200`);
-
+window.open("https://ya.ru/", "yandex", "popup");
 
   }
   function openYouTube() {
