@@ -20067,6 +20067,9 @@
               title: "Загрузить файл",
               action: loadFileTest
             }, {
+              title: "Скопировать в буфер",
+              action: copyToClipBoard
+            }, {
               title: "Открыть окно избранного",
               action: openWindowFavoritesDev
             }, {
@@ -20123,38 +20126,32 @@
     a.download = fileName;
     a.click();
   }
-  function openWindowFavoritesDev() {
-    return _openWindowFavoritesDev.apply(this, arguments);
+  function copyToClipBoard() {
+    return _copyToClipBoard.apply(this, arguments);
   }
-  function _openWindowFavoritesDev() {
-    _openWindowFavoritesDev = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var favoritesHtmlUrl, favoritesHtmlText, winUrl;
+  function _copyToClipBoard() {
+    _copyToClipBoard = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
-            favoritesHtmlUrl = 'add/favorites.html';
-            _context2.next = 3;
-            return RepCore.loadTextFromUrl(favoritesHtmlUrl);
+            _context2.next = 2;
+            return navigator.clipboard.writeText('Hiiii text to clipboard');
+          case 2:
+            Msg.nofity('Скопировано!');
           case 3:
-            favoritesHtmlText = _context2.sent;
-            winUrl = URL.createObjectURL(new Blob([favoritesHtmlText], {
-              type: "text/html"
-            }));
-            window.open(winUrl);
-          case 6:
           case "end":
             return _context2.stop();
         }
       }, _callee2);
     }));
+    return _copyToClipBoard.apply(this, arguments);
+  }
+  function openWindowFavoritesDev() {
     return _openWindowFavoritesDev.apply(this, arguments);
   }
-  function openWindowFromHtmlDocument() {
-    return _openWindowFromHtmlDocument.apply(this, arguments);
-  }
-  function _openWindowFromHtmlDocument() {
-    _openWindowFromHtmlDocument = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      var favoritesHtmlUrl, favoritesHtmlText, parser, htmlDocument, winUrl;
+  function _openWindowFavoritesDev() {
+    _openWindowFavoritesDev = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      var favoritesHtmlUrl, favoritesHtmlText, winUrl;
       return _regeneratorRuntime().wrap(function _callee3$(_context3) {
         while (1) switch (_context3.prev = _context3.next) {
           case 0:
@@ -20163,6 +20160,32 @@
             return RepCore.loadTextFromUrl(favoritesHtmlUrl);
           case 3:
             favoritesHtmlText = _context3.sent;
+            winUrl = URL.createObjectURL(new Blob([favoritesHtmlText], {
+              type: "text/html"
+            }));
+            window.open(winUrl);
+          case 6:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3);
+    }));
+    return _openWindowFavoritesDev.apply(this, arguments);
+  }
+  function openWindowFromHtmlDocument() {
+    return _openWindowFromHtmlDocument.apply(this, arguments);
+  }
+  function _openWindowFromHtmlDocument() {
+    _openWindowFromHtmlDocument = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+      var favoritesHtmlUrl, favoritesHtmlText, parser, htmlDocument, winUrl;
+      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
+          case 0:
+            favoritesHtmlUrl = 'add/favorites.html';
+            _context4.next = 3;
+            return RepCore.loadTextFromUrl(favoritesHtmlUrl);
+          case 3:
+            favoritesHtmlText = _context4.sent;
             // //console.log('_______text', text);
             parser = new DOMParser();
             htmlDocument = parser.parseFromString(favoritesHtmlText, 'text/html');
@@ -20175,9 +20198,9 @@
             //window.open(htmlDocument);
           case 9:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
-      }, _callee3);
+      }, _callee4);
     }));
     return _openWindowFromHtmlDocument.apply(this, arguments);
   }
@@ -20199,7 +20222,7 @@
     // //document.body.appendChild(htmlDocument.body);
     // divNoty[0].appendChild(htmlDocument.body);
   }
-  var htmlStr = "\n<!DOCTYPE html>\n<html>\n<head>\n  <title>\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0444\u0430\u0439\u043B\u0430</title>\n</head>\n<body>\n  <h1>\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u0434\u043B\u044F \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438</h1>\n  <a href=\"https://tivial19.github.io/lampa/start.js\" download=\"test.txt\">\u0414\u0430\u043D\u043D\u044B\u0435</a>\n  <a href=\"intent:https://tivial19.github.io/lampa/data#Intent;end\" target=\"_blank\">Open Browser</a>\n</body>\n</html>\n";
+  var htmlStr = "\n<!DOCTYPE html>\n<html>\n<head>\n  <title>\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0444\u0430\u0439\u043B\u0430</title>\n</head>\n<body>\n  <h1>\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u0434\u043B\u044F \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438</h1>\n  <a href=\"https://tivial19.github.io/lampa/start.js\" download=\"test.txt\">\u0414\u0430\u043D\u043D\u044B\u0435</a>\n  </br></br>\n  <a href=\"intent:https://tivial19.github.io/lampa/data#Intent;end\" target=\"_blank\">Open Browser</a>\n</body>\n</html>\n";
 
   var Local = {
     getKey: getKey,
@@ -20309,8 +20332,12 @@
   }();
 
   var ClipBoard = {
+    copyToClipboardAsync: copyToClipboardAsync,
     copyToClipboard: copyToClipboard
   };
+  function copyToClipboardAsync(text) {
+    return navigator.clipboard.writeText(text);
+  }
   function copyToClipboard(text) {
     var el = document.createElement('textarea');
     el.value = text;
@@ -20984,9 +21011,48 @@
     return _clearAllAsk.apply(this, arguments);
   }
   function saveAll() {
-    //Rep.saveFavsToFileDownload(Fav.getFavoritesAllJson());
-    ClipBoard.copyToClipboard(Fav.getFavoritesAllJson());
-    Msg.nofity('Скопированно в буфер!');
+    return _saveAll.apply(this, arguments);
+  }
+  function _saveAll() {
+    _saveAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+      var clipActions, clipAction;
+      return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+        while (1) switch (_context9.prev = _context9.next) {
+          case 0:
+            //Rep.saveFavsToFileDownload(Fav.getFavoritesAllJson());
+            clipActions = [{
+              title: "По старому",
+              action: function action() {
+                return ClipBoard.copyToClipboard(Fav.getFavoritesAllJson());
+              }
+            }, {
+              title: "По новому",
+              action: function action() {
+                return ClipBoard.copyToClipboardAsync(Fav.getFavoritesAllJson());
+              }
+            }];
+            _context9.next = 3;
+            return Msg.selectItemAsync('В буфер как?', clipActions);
+          case 3:
+            clipAction = _context9.sent;
+            if (!(clipAction == null)) {
+              _context9.next = 6;
+              break;
+            }
+            return _context9.abrupt("return");
+          case 6:
+            _context9.next = 8;
+            return clipAction.action();
+          case 8:
+            //await ClipBoard.copyToClipboardAsync(Fav.getFavoritesAllJson());
+            Msg.nofity('Скопированно в буфер!');
+          case 9:
+          case "end":
+            return _context9.stop();
+        }
+      }, _callee9);
+    }));
+    return _saveAll.apply(this, arguments);
   }
 
   var Movie = /*#__PURE__*/function () {
