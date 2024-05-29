@@ -19648,7 +19648,7 @@
   }
   function getFavoritesAllJson() {
     var data = getFavoritesAll();
-    return JSON.stringify(data);
+    return JSON.stringify(data, null, 2);
   }
   function getFavoritesLook() {
     return getFavoritesAll()[categories.Look.value];
@@ -19972,6 +19972,9 @@
             }, {
               title: "Загрузить файл",
               action: loadFileTest
+            }, {
+              title: "Скопировать в буфер",
+              action: copyToClipBoard
             }];
             if (System.isRunInAndroidApp()) optActions.push({
               title: "Открыть смотрю",
@@ -19996,33 +19999,11 @@
     return _showOptMenu.apply(this, arguments);
   }
   function hello() {
-    //Msg.nofity('Привет Машуха от TiViAl');
-const htmlStr=`
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Загрузка файла</title>
-</head>
-<body>
-  <h1>Нажмите для загрузки</h1>
-  <a href="https://tivial19.github.io/lampa/start.js" download="test.txt">Данные</a>
-</body>
-</html>
-`;
-
-//const parser = new DOMParser();
-//const html = parser.parseFromString(htmlStr, 'text/html');
-//const body = html.body;
-//document.body.appendChild(body);
-
-const winUrl = URL.createObjectURL(new Blob([htmlStr], { type: "text/html" }));
-const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=200`);
-//window.open("https://ya.ru/", "yandex", "popup");
-
+    Msg.nofity('Привет Машуха от TiViAl');
   }
   function openYouTube() {
     if (System.isRunInAndroidApp()) {
-      AndroidJS.openYoutube('https://tivial19.github.io/lampa/start.js');
+      AndroidJS.openYoutube('https://www.youtube.com/playlist?app=desktop&list=PLxeSeX3dh5RayyI1M1-y6lyLhuFeGuIIv');
     }
   }
   function loadFileTest() {
@@ -20030,7 +20011,7 @@ const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=2
       title: 'hi',
       value: 35
     };
-    saveTextToFile$1(JSON.stringify(jsonData), 'json.txt', 'application/json');
+    saveTextToFile$1(JSON.stringify(jsonData), 'jsonTest.json', 'application/json');
   }
   function saveTextToFile$1(text, fileName) {
     var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
@@ -20040,7 +20021,29 @@ const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=2
     });
     a.href = URL.createObjectURL(file);
     a.download = fileName;
+    document.body.appendChild(a); //not need
+    console.log('____saveTextToFile document:', document);
+    console.log('____saveTextToFile document.body:', document.body);
     a.click();
+    a.remove(); //not need
+  }
+  function copyToClipBoard() {
+    var jsonData = {
+      title: 'hi',
+      value: 35
+    };
+    copyToClipboard(JSON.stringify(jsonData));
+  }
+  function copyToClipboard(text) {
+    var el = document.createElement('textarea');
+    el.value = text;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
   }
 
   var Local = {
@@ -20151,6 +20154,10 @@ const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=2
   }();
 
   var _remoteHost = null;
+  var contentTypes = {
+    text: 'text/plain',
+    json: 'application/json'
+  };
   var RepCore = {
     init: init$o,
     saveTextToFile: saveTextToFile,
@@ -20160,7 +20167,7 @@ const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=2
     _remoteHost = remoteHost;
   }
   function saveTextToFile(fileName, text) {
-    var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
+    var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : contentTypes.json;
     var a = document.createElement("a");
     var file = new Blob([text], {
       type: contentType
