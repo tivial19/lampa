@@ -19567,6 +19567,79 @@
   //     }
   // }
 
+  var _remoteHost = null;
+  var contentTypes = {
+    text: 'text/plain',
+    json: 'application/json'
+  };
+  var RepCore = {
+    init: init$o,
+    saveTextToFile: saveTextToFile$1,
+    loadTextFromUrl: loadTextFromUrl
+  };
+  function init$o(remoteHost) {
+    _remoteHost = remoteHost;
+  }
+  function saveTextToFile$1(fileName, text) {
+    var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : contentTypes.json;
+    var a = document.createElement("a");
+    var file = new Blob([text], {
+      type: contentType
+    });
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+  }
+
+  // async function loadTextFromUrl(url) {
+  //     const urlCorrect = getUrlWithCorrection(url);
+  //     const response = await fetch(urlCorrect);
+  //     return await response.text();
+  // }
+
+  function loadTextFromUrl(url) {
+    var urlCorrect = getUrlWithCorrection(url);
+    return new Promise(function (resolve) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == XMLHttpRequest.DONE && xmlHttp.status == 200) {
+          resolve(xmlHttp.responseText);
+        }
+      };
+      xmlHttp.open("GET", urlCorrect, true); // true for asynchronous
+      xmlHttp.send(null);
+    });
+  }
+  function getUrlWithCorrection(url) {
+    if (_remoteHost == null) {
+      return url;
+    } else {
+      return _remoteHost + url;
+    }
+  }
+
+  //const localHostName='localhost';
+  //window.location.hostname==localHostName
+  //console.log('hostname', window.location.hostname);
+  //console.log('window.location.host', window.location.host);
+
+  // function loadTextFromUrlPromise(url) {
+  //     return new Promise(function(resolve, reject){
+  //         const urlCorrect = getUrlWithCorrection(url);
+  //         console.log('TiViAl','urlCorrect', urlCorrect);
+  //         fetch(urlCorrect)
+  //         .then(response => {console.log('TiViAl','response'); response.text();})
+  //         .then(text=>{console.log('TiViAl','text', text);resolve(text);});
+  //         //reject('erorrrrrrrrrrrrr!');.catch(e=>console.log(`catch: ${e}`));
+  //     });
+  // }
+
+  var Objects = {
+    getPropsFromObjectArray: getPropsFromObjectArray,
+    getArrayFromObjectArrayProps: getArrayFromObjectArrayProps,
+    //nameOf,
+    createNewObjectFromObjectWithProps: createNewObjectFromObjectWithProps
+  };
   function getPropsFromObjectArray(objectArray) {
     return Object.keys(objectArray);
   }
@@ -19575,10 +19648,31 @@
       return objectArray[prop];
     });
   }
-  var ObjectArray = {
-    getPropsFromObjectArray: getPropsFromObjectArray,
-    getArrayFromObjectArrayProps: getArrayFromObjectArrayProps
-  };
+
+  // function nameOf(variable) {
+  //     return Object.keys({variable})[0];
+  // }
+
+  function createNewObjectFromObjectWithProps(donor, props) {
+    //console.log('____Objects props', props);
+
+    var result = {};
+    var _iterator = _createForOfIteratorHelper(props),
+      _step;
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var prop = _step.value;
+        result[prop] = donor[prop];
+      }
+
+      //console.log('____Objects result', result);
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+    return result;
+  }
 
   var categories = {
     Look: {
@@ -19618,7 +19712,7 @@
       value: 'history'
     }
   };
-  var categoriesArray = ObjectArray.getArrayFromObjectArrayProps(categories);
+  var categoriesArray = Objects.getArrayFromObjectArrayProps(categories);
   var categoriesValues = categoriesArray.map(function (c) {
     return c.value;
   });
@@ -19973,8 +20067,8 @@
               title: "Загрузить файл",
               action: loadFileTest
             }, {
-              title: "Скопировать в буфер",
-              action: copyToClipBoard
+              title: "Открыть окно",
+              action: openTestWindow
             }];
             if (System.isRunInAndroidApp()) optActions.push({
               title: "Открыть смотрю",
@@ -20011,9 +20105,9 @@
       title: 'hi',
       value: 35
     };
-    saveTextToFile$1(JSON.stringify(jsonData), 'jsonTest.json', 'application/json');
+    saveTextToFile(JSON.stringify(jsonData), 'jsonTest.json', 'application/json');
   }
-  function saveTextToFile$1(text, fileName) {
+  function saveTextToFile(text, fileName) {
     var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
     var a = document.createElement("a");
     var file = new Blob([text], {
@@ -20021,30 +20115,51 @@
     });
     a.href = URL.createObjectURL(file);
     a.download = fileName;
-    document.body.appendChild(a); //not need
-    console.log('____saveTextToFile document:', document);
-    console.log('____saveTextToFile document.body:', document.body);
     a.click();
-    a.remove(); //not need
   }
-  function copyToClipBoard() {
-    var jsonData = {
-      title: 'hi',
-      value: 35
-    };
-    copyToClipboard(JSON.stringify(jsonData));
+  function openTestWindow() {
+    return _openTestWindow.apply(this, arguments);
   }
-  function copyToClipboard(text) {
-    var el = document.createElement('textarea');
-    el.value = text;
-    el.setAttribute('readonly', '');
-    el.style.position = 'absolute';
-    el.style.left = '-9999px';
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
+  function _openTestWindow() {
+    _openTestWindow = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var favoritesHtmlUrl, text, parser, htmlDocument, winUrl;
+      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            favoritesHtmlUrl = 'add/favorites.html';
+            _context2.next = 3;
+            return RepCore.loadTextFromUrl(favoritesHtmlUrl);
+          case 3:
+            text = _context2.sent;
+            //console.log('_______text', text);
+            parser = new DOMParser();
+            htmlDocument = parser.parseFromString(text, 'text/html');
+            console.log('________htmlDocument', htmlDocument);
+            console.log('________htmlDocument text', htmlDocument.textContent);
+            winUrl = URL.createObjectURL(new Blob([htmlStr], {
+              type: "text/html"
+            })); //const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=200`);
+            window.open(winUrl);
+
+            //window.open(htmlDocument.URL);
+
+            // const divNoty = document.body.getElementsByClassName('helper');
+
+            // console.log('____openTestWindow document.body:', document.body);
+            // console.log('____openTestWindow document.body.children:', document.body.children);
+            // console.log('____openTestWindow document divNoty :', divNoty);
+
+            // //document.body.appendChild(htmlDocument.body);
+            // divNoty[0].appendChild(htmlDocument.body);
+          case 10:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    return _openTestWindow.apply(this, arguments);
   }
+  var htmlStr = "\n<!DOCTYPE html>\n<html>\n<head>\n  <title>\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0444\u0430\u0439\u043B\u0430</title>\n</head>\n<body>\n  <h1>\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u0434\u043B\u044F \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438</h1>\n  <a href=\"https://tivial19.github.io/lampa/start.js\" download=\"test.txt\">\u0414\u0430\u043D\u043D\u044B\u0435</a>\n</body>\n</html>\n";
 
   var Local = {
     getKey: getKey,
@@ -20153,72 +20268,20 @@
     }]);
   }();
 
-  var _remoteHost = null;
-  var contentTypes = {
-    text: 'text/plain',
-    json: 'application/json'
+  var ClipBoard = {
+    copyToClipboard: copyToClipboard
   };
-  var RepCore = {
-    init: init$o,
-    saveTextToFile: saveTextToFile,
-    loadTextFromUrl: loadTextFromUrl
-  };
-  function init$o(remoteHost) {
-    _remoteHost = remoteHost;
+  function copyToClipboard(text) {
+    var el = document.createElement('textarea');
+    el.value = text;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
   }
-  function saveTextToFile(fileName, text) {
-    var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : contentTypes.json;
-    var a = document.createElement("a");
-    var file = new Blob([text], {
-      type: contentType
-    });
-    a.href = URL.createObjectURL(file);
-    a.download = fileName;
-    a.click();
-  }
-
-  // async function loadTextFromUrl(url) {
-  //     const urlCorrect = getUrlWithCorrection(url);
-  //     const response = await fetch(urlCorrect);
-  //     return await response.text();
-  // }
-
-  function loadTextFromUrl(url) {
-    var urlCorrect = getUrlWithCorrection(url);
-    return new Promise(function (resolve) {
-      var xmlHttp = new XMLHttpRequest();
-      xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == XMLHttpRequest.DONE && xmlHttp.status == 200) {
-          resolve(xmlHttp.responseText);
-        }
-      };
-      xmlHttp.open("GET", urlCorrect, true); // true for asynchronous
-      xmlHttp.send(null);
-    });
-  }
-  function getUrlWithCorrection(url) {
-    if (_remoteHost == null) {
-      return url;
-    } else {
-      return _remoteHost + url;
-    }
-  }
-
-  //const localHostName='localhost';
-  //window.location.hostname==localHostName
-  //console.log('hostname', window.location.hostname);
-  //console.log('window.location.host', window.location.host);
-
-  // function loadTextFromUrlPromise(url) {
-  //     return new Promise(function(resolve, reject){
-  //         const urlCorrect = getUrlWithCorrection(url);
-  //         console.log('TiViAl','urlCorrect', urlCorrect);
-  //         fetch(urlCorrect)
-  //         .then(response => {console.log('TiViAl','response'); response.text();})
-  //         .then(text=>{console.log('TiViAl','text', text);resolve(text);});
-  //         //reject('erorrrrrrrrrrrrr!');.catch(e=>console.log(`catch: ${e}`));
-  //     });
-  // }
 
   var fileSaveName = 'favsAll.json';
   var favoritesCurrentUrl = 'add/' + fileSaveName;
@@ -20226,7 +20289,8 @@
   var Rep$1 = {
     saveFavsToFileDownload: saveFavsToFileDownload,
     loadFavoritesAll: loadFavoritesAll,
-    loadFavoritesQueryDom: loadFavoritesQueryDom
+    loadFavoritesQueryDom: loadFavoritesQueryDom,
+    loadFavoritesDomTest: loadFavoritesDomTest
   };
   function saveFavsToFileDownload(favsJsonText) {
     RepCore.saveTextToFile(fileSaveName, favsJsonText);
@@ -20256,7 +20320,7 @@
   }
   function _loadFavoritesQueryDom() {
     _loadFavoritesQueryDom = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var text, dom;
+      var text, domQuery;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
@@ -20264,12 +20328,10 @@
             return loadFavoritesText();
           case 2:
             text = _context2.sent;
-            dom = jQuery(text); // const text2 = await loadTextFromUrl(favoritesHtmlUrl2);
-            // var dom2 = document.createElement('div');
-            // dom2.innerHTML = text2;
-            // // console.log('dom', dom);
-            // console.log('dom2', dom2);
-            return _context2.abrupt("return", dom);
+            domQuery = jQuery(text); //console.log('_______text', text);
+            //console.log('_______domQuery', domQuery);
+            //console.log('_______domQuery[0]', domQuery['0']);
+            return _context2.abrupt("return", domQuery);
           case 5:
           case "end":
             return _context2.stop();
@@ -20297,6 +20359,40 @@
       }, _callee3);
     }));
     return _loadFavoritesText.apply(this, arguments);
+  }
+  function loadFavoritesDomTest() {
+    return _loadFavoritesDomTest.apply(this, arguments);
+  }
+  function _loadFavoritesDomTest() {
+    _loadFavoritesDomTest = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+      var text, parser, htmlDocument, htmlDocumentBody, htmlDocumentBodyDiv;
+      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+        while (1) switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.next = 2;
+            return loadFavoritesText();
+          case 2:
+            text = _context4.sent;
+            //console.log('_______text', text);
+            //const text2 = await loadTextFromUrl(favoritesHtmlUrl2);
+            // var dom2 = document.createElement('div');
+            // dom2.innerHTML = text2;
+            parser = new DOMParser();
+            htmlDocument = parser.parseFromString(text, 'text/html');
+            htmlDocumentBody = htmlDocument.body;
+            htmlDocumentBodyDiv = htmlDocumentBody.children[0];
+            console.log('________htmlDocument', htmlDocument);
+            console.log('________htmlDocument.URL', htmlDocument.URL);
+            console.log('________htmlDocumentBodyDiv', htmlDocumentBodyDiv);
+            window.open(htmlDocument.URL);
+            return _context4.abrupt("return", htmlDocument);
+          case 12:
+          case "end":
+            return _context4.stop();
+        }
+      }, _callee4);
+    }));
+    return _loadFavoritesDomTest.apply(this, arguments);
   }
 
   var ViewController = /*#__PURE__*/function () {
@@ -20552,7 +20648,12 @@
   view.onSave = showAllFav;
   function init$n() {
     return _init$1.apply(this, arguments);
-  }
+  } // async function testDom() {
+  //     const html = await Rep.loadFavoritesDomTest();
+  //     // const viewController = new ViewController(view, html);
+  //     // const viewTest = viewController.getView();
+  //     // console.log('__________viewTest', viewTest);
+  // }
   function _init$1() {
     _init$1 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var viewController;
@@ -20565,6 +20666,8 @@
             htmlQ = _context.sent;
             viewController = new ViewController(view, htmlQ['0']);
             view = viewController.getView();
+
+            //testDom();
           case 5:
           case "end":
             return _context.stop();
@@ -20684,7 +20787,7 @@
           case 2:
             category = _context3.sent;
             if (!(category != null)) {
-              _context3.next = 10;
+              _context3.next = 11;
               break;
             }
             _context3.next = 6;
@@ -20692,12 +20795,14 @@
           case 6:
             askYes = _context3.sent;
             if (!(askYes == true)) {
-              _context3.next = 10;
+              _context3.next = 11;
               break;
             }
             _context3.next = 10;
             return loadFavoriteCategory(category.value);
           case 10:
+            Msg.nofity("\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F '".concat(category.title, "' \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u0430!"));
+          case 11:
           case "end":
             return _context3.stop();
         }
@@ -20750,6 +20855,7 @@
             askYes = _context5.sent;
             if (askYes == true) {
               Fav.clearFavoriteInCategory(category.value);
+              Msg.nofity("\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F '".concat(category.title, "' \u043E\u0447\u0438\u0449\u0435\u043D\u0430!"));
             }
           case 8:
           case "end":
@@ -20803,7 +20909,8 @@
           case 2:
             favCurJson = _context7.sent;
             Fav.clearFavoriteAndSetFromJson(favCurJson);
-          case 4:
+            Msg.nofity('Избранное загружено!');
+          case 5:
           case "end":
             return _context7.stop();
         }
@@ -20826,6 +20933,7 @@
             askYes = _context8.sent;
             if (askYes == true) {
               Fav.clearAll();
+              Msg.nofity('Избранное очищенно!');
             }
           case 4:
           case "end":
@@ -20836,7 +20944,9 @@
     return _clearAllAsk.apply(this, arguments);
   }
   function saveAll() {
-    Rep$1.saveFavsToFileDownload(Fav.getFavoritesAllJson());
+    //Rep.saveFavsToFileDownload(Fav.getFavoritesAllJson());
+    ClipBoard.copyToClipboard(Fav.getFavoritesAllJson());
+    Msg.nofity('Скопированно в буфер!');
   }
 
   var Movie = /*#__PURE__*/function () {
@@ -20997,7 +21107,7 @@
                 mode.subtitle = '';
               }
             };
-            items = ObjectArray.getArrayFromObjectArrayProps(modes);
+            items = Objects.getArrayFromObjectArrayProps(modes);
             items.forEach(addSubTitle);
             _context.next = 5;
             return Msg.selectItemAsync('Режим таймкода:', items);
@@ -21298,7 +21408,7 @@
   }
   function getShowItemsFromRepository(remTimeCodes) {
     remTimeCodes.forEach(function (code) {
-      var propsTimeCodes = ObjectArray.getPropsFromObjectArray(code.timeCodes);
+      var propsTimeCodes = Objects.getPropsFromObjectArray(code.timeCodes);
       if (Array.isArray(propsTimeCodes) && propsTimeCodes.length > 0) {
         code.props = propsTimeCodes;
         if (propsTimeCodes.length == 1) {
@@ -21450,6 +21560,11 @@
                 return MovieComent.showMovieComments(movie);
               }
             }, {
+              title: "Скопировать инфу",
+              action: function action() {
+                return copyMovieInfoToClipboard(movie);
+              }
+            }, {
               title: "Открыть кинопоиск",
               action: function action() {
                 return openUrl(movie.urlKpId);
@@ -21488,6 +21603,14 @@
     // a.target= '_blank';
     // a.href= url;
     // a.click();
+  }
+  function copyMovieInfoToClipboard(movie) {
+    var info = Objects.createNewObjectFromObjectWithProps(movie, ['title', 'cardId', 'kpId', 'imdbId']);
+    var jsonText = JSON.stringify(info);
+    jsonText = jsonText.substring(1, jsonText.length - 1);
+    jsonText = jsonText.replaceAll(',', ', ');
+    ClipBoard.copyToClipboard(jsonText);
+    Msg.nofity('Информация скопирована в буфер!');
   }
 
   //import Test from './test.js'
