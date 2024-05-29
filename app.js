@@ -20067,8 +20067,14 @@
               title: "Загрузить файл",
               action: loadFileTest
             }, {
-              title: "Открыть окно",
-              action: openTestWindow
+              title: "Открыть окно избранного",
+              action: openWindowFavoritesDev
+            }, {
+              title: "Открыть окно html",
+              action: openWindowFromHtmlDocument
+            }, {
+              title: "Открыть окно Test",
+              action: openWindowTest
             }];
             if (System.isRunInAndroidApp()) optActions.push({
               title: "Открыть смотрю",
@@ -20117,12 +20123,12 @@
     a.download = fileName;
     a.click();
   }
-  function openTestWindow() {
-    return _openTestWindow.apply(this, arguments);
+  function openWindowFavoritesDev() {
+    return _openWindowFavoritesDev.apply(this, arguments);
   }
-  function _openTestWindow() {
-    _openTestWindow = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      var favoritesHtmlUrl, text, parser, htmlDocument, winUrl;
+  function _openWindowFavoritesDev() {
+    _openWindowFavoritesDev = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+      var favoritesHtmlUrl, favoritesHtmlText, winUrl;
       return _regeneratorRuntime().wrap(function _callee2$(_context2) {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
@@ -20130,36 +20136,70 @@
             _context2.next = 3;
             return RepCore.loadTextFromUrl(favoritesHtmlUrl);
           case 3:
-            text = _context2.sent;
-            //console.log('_______text', text);
-            parser = new DOMParser();
-            htmlDocument = parser.parseFromString(text, 'text/html');
-            console.log('________htmlDocument', htmlDocument);
-            console.log('________htmlDocument text', htmlDocument.textContent);
-            winUrl = URL.createObjectURL(new Blob([htmlStr], {
+            favoritesHtmlText = _context2.sent;
+            winUrl = URL.createObjectURL(new Blob([favoritesHtmlText], {
               type: "text/html"
-            })); //const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=200`);
+            }));
             window.open(winUrl);
-
-            //window.open(htmlDocument.URL);
-
-            // const divNoty = document.body.getElementsByClassName('helper');
-
-            // console.log('____openTestWindow document.body:', document.body);
-            // console.log('____openTestWindow document.body.children:', document.body.children);
-            // console.log('____openTestWindow document divNoty :', divNoty);
-
-            // //document.body.appendChild(htmlDocument.body);
-            // divNoty[0].appendChild(htmlDocument.body);
-          case 10:
+          case 6:
           case "end":
             return _context2.stop();
         }
       }, _callee2);
     }));
-    return _openTestWindow.apply(this, arguments);
+    return _openWindowFavoritesDev.apply(this, arguments);
   }
-  var htmlStr = "\n<!DOCTYPE html>\n<html>\n<head>\n  <title>\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0444\u0430\u0439\u043B\u0430</title>\n</head>\n<body>\n  <h1>\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u0434\u043B\u044F \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438</h1>\n  <a href=\"https://tivial19.github.io/lampa/start.js\" download=\"test.txt\">\u0414\u0430\u043D\u043D\u044B\u0435</a>\n</body>\n</html>\n";
+  function openWindowFromHtmlDocument() {
+    return _openWindowFromHtmlDocument.apply(this, arguments);
+  }
+  function _openWindowFromHtmlDocument() {
+    _openWindowFromHtmlDocument = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+      var favoritesHtmlUrl, favoritesHtmlText, parser, htmlDocument, winUrl;
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            favoritesHtmlUrl = 'add/favorites.html';
+            _context3.next = 3;
+            return RepCore.loadTextFromUrl(favoritesHtmlUrl);
+          case 3:
+            favoritesHtmlText = _context3.sent;
+            // //console.log('_______text', text);
+            parser = new DOMParser();
+            htmlDocument = parser.parseFromString(favoritesHtmlText, 'text/html');
+            console.log('________htmlDocument', htmlDocument);
+            winUrl = URL.createObjectURL(new Blob([htmlDocument], {
+              type: "text/html"
+            }));
+            window.open(winUrl);
+
+            //window.open(htmlDocument);
+          case 9:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3);
+    }));
+    return _openWindowFromHtmlDocument.apply(this, arguments);
+  }
+  function openWindowTest() {
+    var winUrl = URL.createObjectURL(new Blob([htmlStr], {
+      type: "text/html"
+    }));
+    //const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=200`);
+    window.open(winUrl);
+
+    //window.open(htmlDocument.URL);
+
+    // const divNoty = document.body.getElementsByClassName('helper');
+
+    // console.log('____openTestWindow document.body:', document.body);
+    // console.log('____openTestWindow document.body.children:', document.body.children);
+    // console.log('____openTestWindow document divNoty :', divNoty);
+
+    // //document.body.appendChild(htmlDocument.body);
+    // divNoty[0].appendChild(htmlDocument.body);
+  }
+  var htmlStr = "\n<!DOCTYPE html>\n<html>\n<head>\n  <title>\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0444\u0430\u0439\u043B\u0430</title>\n</head>\n<body>\n  <h1>\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u0434\u043B\u044F \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438</h1>\n  <a href=\"https://tivial19.github.io/lampa/start.js\" download=\"test.txt\">\u0414\u0430\u043D\u043D\u044B\u0435</a>\n  <a href=\"intent:https://tivial19.github.io/lampa/data#Intent;end\" target=\"_blank\">Open Browser</a>\n</body>\n</html>\n";
 
   var Local = {
     getKey: getKey,
