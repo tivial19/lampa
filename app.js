@@ -20242,23 +20242,37 @@
     }]);
   }();
 
-  var ClipBoard = {
-    copyToClipboardAsync: copyToClipboardAsync,
-    copyToClipboard: copyToClipboard
+  var serverLocalUrl = 'http://192.168.0.2:8081/';
+  var serverCommands = {
+    sendFile: 'sendFile'
   };
-  function copyToClipboardAsync(text) {
-    return navigator.clipboard.writeText(text);
+  var Server = {
+    serverLocalUrl: serverLocalUrl,
+    sendTextToLocal: sendTextToLocal
+  };
+  function getServerUrl(serverCommand) {
+    return serverLocalUrl + serverCommand;
   }
-  function copyToClipboard(text) {
-    var el = document.createElement('textarea');
-    el.value = text;
-    el.setAttribute('readonly', '');
-    el.style.position = 'absolute';
-    el.style.left = '-9999px';
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
+  function sendTextToLocal(text) {
+    sendText(getServerUrl(serverCommands.sendFile), text);
+  }
+  function sendText(url, text) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onload = function () {
+      console.log("sendText \u0417\u0430\u0433\u0440\u0443\u0436\u0435\u043D\u043E: ".concat(xmlHttp.status, " ").concat(xmlHttp.response));
+    };
+    xmlHttp.onerror = function () {
+      // происходит, только когда запрос совсем не получилось выполнить
+      console.log("sendText \u041E\u0448\u0438\u0431\u043A\u0430 \u0441\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\u044F");
+    };
+    xmlHttp.onreadystatechange = function () {
+      if (xmlHttp.readyState == XMLHttpRequest.DONE && xmlHttp.status == 200) {
+        console.log('sendText onreadystatechange', xmlHttp.responseText);
+      }
+    };
+    xmlHttp.withCredentials = true;
+    xmlHttp.open("post", url); // true for asynchronous
+    xmlHttp.send(text);
   }
 
   var fileSaveName = 'favsAll.json';
@@ -20963,17 +20977,30 @@
   }
   function sendFavsAllToServer() {
     return _sendFavsAllToServer.apply(this, arguments);
-  }
+  } // function saveAll() {
+  //     const fileName = Rep.saveFavsToFile(Fav.getFavoritesAllJson());
+  //     Msg.nofity(`Сохранено в файл ${fileName}`);
+  // }
+  // async function saveAll() {
+  //     //Rep.saveFavsToFileDownload(Fav.getFavoritesAllJson());
+  //     const clipActions=[
+  //         {title:"По старому", action: ()=>ClipBoard.copyToClipboard(Fav.getFavoritesAllJson())},
+  //         {title:"По новому", action: ()=>ClipBoard.copyToClipboardAsync(Fav.getFavoritesAllJson())}
+  //     ];
+  //     const clipAction = await Msg.selectItemAsync('В буфер как?', clipActions);
+  //     if(clipAction==null) return;
+  //     await clipAction.action();
+  //     //await ClipBoard.copyToClipboardAsync(Fav.getFavoritesAllJson());
+  //     Msg.nofity('Скопированно в буфер!');
+  // }
   function _sendFavsAllToServer() {
     _sendFavsAllToServer = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-      var serverUrl;
       return _regeneratorRuntime().wrap(function _callee8$(_context8) {
         while (1) switch (_context8.prev = _context8.next) {
           case 0:
-            serverUrl = 'http://192.168.0.2:8081';
-            sendData(serverUrl, Fav.getFavoritesAllJson());
-            Msg.nofity("\u041E\u0442\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u043E \u043D\u0430 \u0441\u0435\u0440\u0432\u0435\u0440 ".concat(serverUrl));
-          case 3:
+            Server.sendTextToLocal(Fav.getFavoritesAllJson());
+            Msg.nofity("\u041E\u0442\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u043E \u043D\u0430 \u0441\u0435\u0440\u0432\u0435\u0440 ".concat(Server.serverLocalUrl));
+          case 2:
           case "end":
             return _context8.stop();
         }
@@ -20981,32 +21008,6 @@
     }));
     return _sendFavsAllToServer.apply(this, arguments);
   }
-  function sendData(url, data) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.withCredentials = true;
-    xmlHttp.open("POST", url); // true for asynchronous
-    xmlHttp.send(data);
-  }
-
-  // function saveAll() {
-  //     const fileName = Rep.saveFavsToFile(Fav.getFavoritesAllJson());
-  //     Msg.nofity(`Сохранено в файл ${fileName}`);
-  // }
-
-  // async function saveAll() {
-  //     //Rep.saveFavsToFileDownload(Fav.getFavoritesAllJson());
-
-  //     const clipActions=[
-  //         {title:"По старому", action: ()=>ClipBoard.copyToClipboard(Fav.getFavoritesAllJson())},
-  //         {title:"По новому", action: ()=>ClipBoard.copyToClipboardAsync(Fav.getFavoritesAllJson())}
-  //     ];
-
-  //     const clipAction = await Msg.selectItemAsync('В буфер как?', clipActions);
-  //     if(clipAction==null) return;
-  //     await clipAction.action();
-  //     //await ClipBoard.copyToClipboardAsync(Fav.getFavoritesAllJson());
-  //     Msg.nofity('Скопированно в буфер!');
-  // }
 
   var Movie = /*#__PURE__*/function () {
     function Movie(card) {
@@ -21551,6 +21552,25 @@
     if (timeL) {
       Player.setVideoPositionSec(timeL.timeInSec);
     }
+  }
+
+  var ClipBoard = {
+    copyToClipboardAsync: copyToClipboardAsync,
+    copyToClipboard: copyToClipboard
+  };
+  function copyToClipboardAsync(text) {
+    return navigator.clipboard.writeText(text);
+  }
+  function copyToClipboard(text) {
+    var el = document.createElement('textarea');
+    el.value = text;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
   }
 
   var MovieComent = {
