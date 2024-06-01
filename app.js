@@ -4197,7 +4197,7 @@
   }
 
   var html$i, active$5, _scroll, last$4;
-  function open$5(params) {
+  function open$6(params) {
     active$5 = params;
     html$i = Template$1.get('modal', {
       title: params.title
@@ -4330,7 +4330,7 @@
     return html$i;
   }
   var Modal = {
-    open: open$5,
+    open: open$6,
     close: close$6,
     update: update$a,
     title: title$1,
@@ -13061,7 +13061,7 @@
    * Открыть окно
    * @param {{type:string, object:{}}} params 
    */
-  function open$4(params) {
+  function open$5(params) {
     var enabled = Controller.enabled().name;
     var text = params.type == 'card' ? Lang.translate('broadcast_open') : params.type == 'play' ? Lang.translate('broadcast_play') : '';
     var temp = Template$1.get('broadcast', {
@@ -13137,7 +13137,7 @@
     listener$a = null;
   }
   var Broadcast = {
-    open: open$4
+    open: open$5
   };
 
   var WorkerClass = null;
@@ -18422,7 +18422,7 @@
     params = {},
     additional = [],
     listener$6 = start$7();
-  function open$3() {
+  function open$4() {
     var use_params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     params = use_params;
     input$1 = use_params.input || '';
@@ -18556,7 +18556,7 @@
   }
   var Search = {
     listener: listener$6,
-    open: open$3,
+    open: open$4,
     render: render$5,
     addSource: addSource,
     removeSource: removeSource,
@@ -19567,6 +19567,172 @@
   //     }
   // }
 
+  /*
+  * FileSaver.js
+  * A saveAs() FileSaver implementation.
+  *
+  * By Eli Grey, http://eligrey.com
+  *
+  * License : https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md (MIT)
+  * source  : http://purl.eligrey.com/github/FileSaver.js
+  */
+
+  // The one and only way of getting global scope in all environments
+  // https://stackoverflow.com/q/3277182/1008999
+  var _global = (typeof window === "undefined" ? "undefined" : _typeof(window)) === 'object' && window.window === window ? window : (typeof self === "undefined" ? "undefined" : _typeof(self)) === 'object' && self.self === self ? self : (typeof global === "undefined" ? "undefined" : _typeof(global)) === 'object' && global.global === global ? global : undefined;
+  function bom(blob, opts) {
+    if (typeof opts === 'undefined') opts = {
+      autoBom: false
+    };else if (_typeof(opts) !== 'object') {
+      console.warn('Deprecated: Expected third argument to be a object');
+      opts = {
+        autoBom: !opts
+      };
+    }
+
+    // prepend BOM for UTF-8 XML and text/* types (including HTML)
+    // note: your browser will automatically convert UTF-16 U+FEFF to EF BB BF
+    if (opts.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
+      return new Blob([String.fromCharCode(0xFEFF), blob], {
+        type: blob.type
+      });
+    }
+    return blob;
+  }
+  function download(url, name, opts) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.onload = function () {
+      saveAs(xhr.response, name, opts);
+    };
+    xhr.onerror = function () {
+      console.error('could not download file');
+    };
+    xhr.send();
+  }
+  function corsEnabled(url) {
+    var xhr = new XMLHttpRequest();
+    // use sync to avoid popup blocker
+    xhr.open('HEAD', url, false);
+    try {
+      xhr.send();
+    } catch (e) {}
+    return xhr.status >= 200 && xhr.status <= 299;
+  }
+
+  // `a.click()` doesn't work for all browsers (#465)
+  function click(node) {
+    try {
+      node.dispatchEvent(new MouseEvent('click'));
+    } catch (e) {
+      var evt = document.createEvent('MouseEvents');
+      evt.initMouseEvent('click', true, true, window, 0, 0, 0, 80, 20, false, false, false, false, 0, null);
+      node.dispatchEvent(evt);
+    }
+  }
+
+  // Detect WebView inside a native macOS app by ruling out all browsers
+  // We just need to check for 'Safari' because all other browsers (besides Firefox) include that too
+  // https://www.whatismybrowser.com/guides/the-latest-user-agent/macos
+  var isMacOSWebView = _global.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent);
+  var saveAs = _global.saveAs || (
+  // probably in some web worker
+  (typeof window === "undefined" ? "undefined" : _typeof(window)) !== 'object' || window !== _global ? function saveAs() {/* noop */}
+
+  // Use download attribute first if possible (#193 Lumia mobile) unless this is a macOS WebView
+  : 'download' in HTMLAnchorElement.prototype && !isMacOSWebView ? function saveAs(blob, name, opts) {
+    var URL = _global.URL || _global.webkitURL;
+    // Namespace is used to prevent conflict w/ Chrome Poper Blocker extension (Issue #561)
+    var a = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+    name = name || blob.name || 'download';
+    a.download = name;
+    a.rel = 'noopener'; // tabnabbing
+
+    // TODO: detect chrome extensions & packaged apps
+    // a.target = '_blank'
+
+    if (typeof blob === 'string') {
+      // Support regular links
+      a.href = blob;
+      if (a.origin !== location.origin) {
+        corsEnabled(a.href) ? download(blob, name, opts) : click(a, a.target = '_blank');
+      } else {
+        click(a);
+      }
+    } else {
+      // Support blobs
+      a.href = URL.createObjectURL(blob);
+      setTimeout(function () {
+        URL.revokeObjectURL(a.href);
+      }, 4E4); // 40s
+      setTimeout(function () {
+        click(a);
+      }, 0);
+    }
+  }
+
+  // Use msSaveOrOpenBlob as a second approach
+  : 'msSaveOrOpenBlob' in navigator ? function saveAs(blob, name, opts) {
+    name = name || blob.name || 'download';
+    if (typeof blob === 'string') {
+      if (corsEnabled(blob)) {
+        download(blob, name, opts);
+      } else {
+        var a = document.createElement('a');
+        a.href = blob;
+        a.target = '_blank';
+        setTimeout(function () {
+          click(a);
+        });
+      }
+    } else {
+      navigator.msSaveOrOpenBlob(bom(blob, opts), name);
+    }
+  }
+
+  // Fallback to using FileReader and a popup
+  : function saveAs(blob, name, opts, popup) {
+    // Open a popup immediately do go around popup blocker
+    // Mostly only available on user interaction and the fileReader is async so...
+    popup = popup || open('', '_blank');
+    if (popup) {
+      popup.document.title = popup.document.body.innerText = 'downloading...';
+    }
+    if (typeof blob === 'string') return download(blob, name, opts);
+    var force = blob.type === 'application/octet-stream';
+    var isSafari = /constructor/i.test(_global.HTMLElement) || _global.safari;
+    var isChromeIOS = /CriOS\/[\d]+/.test(navigator.userAgent);
+    if ((isChromeIOS || force && isSafari || isMacOSWebView) && typeof FileReader !== 'undefined') {
+      // Safari doesn't allow downloading of blob URLs
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        var url = reader.result;
+        url = isChromeIOS ? url : url.replace(/^data:[^;]*;/, 'data:attachment/file;');
+        if (popup) popup.location.href = url;else location = url;
+        popup = null; // reverse-tabnabbing #460
+      };
+      reader.readAsDataURL(blob);
+    } else {
+      var URL = _global.URL || _global.webkitURL;
+      var url = URL.createObjectURL(blob);
+      if (popup) popup.location = url;else location.href = url;
+      popup = null; // reverse-tabnabbing #460
+      setTimeout(function () {
+        URL.revokeObjectURL(url);
+      }, 4E4); // 40s
+    }
+  });
+  _global.saveAs = saveAs.saveAs = saveAs;
+
+  // if (typeof module !== 'undefined') {
+  //   module.exports = saveAs;
+  // }
+
+  var FileSaver = {
+    saveAs: saveAs
+  };
+
   var _remoteHost = null;
   var contentTypes = {
     text: 'text/plain',
@@ -19574,13 +19740,20 @@
   };
   var RepCore = {
     init: init$o,
-    saveTextToFile: saveTextToFile$1,
-    loadTextFromUrl: loadTextFromUrl
+    loadTextFromUrl: loadTextFromUrl,
+    downloadFileWithText: downloadFileWithText,
+    saveTextToFile: saveTextToFile
   };
   function init$o(remoteHost) {
     _remoteHost = remoteHost;
   }
-  function saveTextToFile$1(fileName, text) {
+  function saveTextToFile(fileName, text) {
+    var blob = new Blob([text], {
+      type: "text/plain;charset=utf-8"
+    });
+    FileSaver.saveAs(blob, fileName);
+  }
+  function downloadFileWithText(fileName, text) {
     var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : contentTypes.json;
     var a = document.createElement("a");
     var file = new Blob([text], {
@@ -20064,21 +20237,18 @@
               title: "Передать привет",
               action: hello
             }, {
-              title: "Загрузить файл",
-              action: loadFileTest
+              title: "Поддержка FileSave",
+              action: showIsFileSaveIsSupported
             }, {
-              title: "Скопировать в буфер",
-              action: copyToClipBoard
-            }, {
-              title: "Открыть окно избранного",
-              action: openWindowFavoritesDev
-            }, {
-              title: "Открыть окно html",
-              action: openWindowFromHtmlDocument
-            }, {
-              title: "Открыть окно Test",
-              action: openWindowTest
-            }];
+              title: "Поддержка FileSystem",
+              action: showIsFileSystemIsSupported
+            }
+            // {title:"Загрузить файл", action:loadFileTest},
+            // {title:"Скопировать в буфер", action:copyToClipBoard},
+            // {title:"Открыть окно избранного", action:openWindowFavoritesDev},
+            // {title:"Открыть окно html", action:openWindowFromHtmlDocument},
+            // {title:"Открыть окно Test", action:openWindowTest},
+            ];
             if (System.isRunInAndroidApp()) optActions.push({
               title: "Открыть смотрю",
               action: openYouTube
@@ -20109,120 +20279,21 @@
       AndroidJS.openYoutube('https://www.youtube.com/playlist?app=desktop&list=PLxeSeX3dh5RayyI1M1-y6lyLhuFeGuIIv');
     }
   }
-  function loadFileTest() {
-    var jsonData = {
-      title: 'hi',
-      value: 35
-    };
-    saveTextToFile(JSON.stringify(jsonData), 'jsonTest.json', 'application/json');
+  function showIsFileSystemIsSupported() {
+    Msg.nofity("FileSystemIsSupported = ".concat(window.requestFileSystem != null));
   }
-  function saveTextToFile(text, fileName) {
-    var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'text/plain';
-    var a = document.createElement("a");
-    var file = new Blob([text], {
-      type: contentType
-    });
-    a.href = URL.createObjectURL(file);
-    a.download = fileName;
-    a.click();
+  function showIsFileSaveIsSupported() {
+    var isSupported = checkFileSaveIsSupported();
+    Msg.nofity("FileSaveIsSupported = ".concat(isSupported));
   }
-  function copyToClipBoard() {
-    return _copyToClipBoard.apply(this, arguments);
+  function checkFileSaveIsSupported() {
+    try {
+      var isFileSaverSupported = !!new Blob();
+      return isFileSaverSupported;
+    } catch (e) {
+      return false;
+    }
   }
-  function _copyToClipBoard() {
-    _copyToClipBoard = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
-      return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-        while (1) switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 2;
-            return navigator.clipboard.writeText('Hiiii text to clipboard');
-          case 2:
-            Msg.nofity('Скопировано!');
-          case 3:
-          case "end":
-            return _context2.stop();
-        }
-      }, _callee2);
-    }));
-    return _copyToClipBoard.apply(this, arguments);
-  }
-  function openWindowFavoritesDev() {
-    return _openWindowFavoritesDev.apply(this, arguments);
-  }
-  function _openWindowFavoritesDev() {
-    _openWindowFavoritesDev = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      var favoritesHtmlUrl, favoritesHtmlText, winUrl;
-      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-        while (1) switch (_context3.prev = _context3.next) {
-          case 0:
-            favoritesHtmlUrl = 'add/favorites.html';
-            _context3.next = 3;
-            return RepCore.loadTextFromUrl(favoritesHtmlUrl);
-          case 3:
-            favoritesHtmlText = _context3.sent;
-            winUrl = URL.createObjectURL(new Blob([favoritesHtmlText], {
-              type: "text/html"
-            }));
-            window.open(winUrl);
-          case 6:
-          case "end":
-            return _context3.stop();
-        }
-      }, _callee3);
-    }));
-    return _openWindowFavoritesDev.apply(this, arguments);
-  }
-  function openWindowFromHtmlDocument() {
-    return _openWindowFromHtmlDocument.apply(this, arguments);
-  }
-  function _openWindowFromHtmlDocument() {
-    _openWindowFromHtmlDocument = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
-      var favoritesHtmlUrl, favoritesHtmlText, parser, htmlDocument, winUrl;
-      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
-        while (1) switch (_context4.prev = _context4.next) {
-          case 0:
-            favoritesHtmlUrl = 'add/favorites.html';
-            _context4.next = 3;
-            return RepCore.loadTextFromUrl(favoritesHtmlUrl);
-          case 3:
-            favoritesHtmlText = _context4.sent;
-            // //console.log('_______text', text);
-            parser = new DOMParser();
-            htmlDocument = parser.parseFromString(favoritesHtmlText, 'text/html');
-            console.log('________htmlDocument', htmlDocument);
-            winUrl = URL.createObjectURL(new Blob([htmlDocument], {
-              type: "text/html"
-            }));
-            window.open(winUrl);
-
-            //window.open(htmlDocument);
-          case 9:
-          case "end":
-            return _context4.stop();
-        }
-      }, _callee4);
-    }));
-    return _openWindowFromHtmlDocument.apply(this, arguments);
-  }
-  function openWindowTest() {
-    var winUrl = URL.createObjectURL(new Blob([htmlStr], {
-      type: "text/html"
-    }));
-    //const win = window.open(winUrl,"win",`width=800,height=400,screenX=200,screenY=200`);
-    window.open(winUrl);
-
-    //window.open(htmlDocument.URL);
-
-    // const divNoty = document.body.getElementsByClassName('helper');
-
-    // console.log('____openTestWindow document.body:', document.body);
-    // console.log('____openTestWindow document.body.children:', document.body.children);
-    // console.log('____openTestWindow document divNoty :', divNoty);
-
-    // //document.body.appendChild(htmlDocument.body);
-    // divNoty[0].appendChild(htmlDocument.body);
-  }
-  var htmlStr = "\n<!DOCTYPE html>\n<html>\n<head>\n  <title>\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0444\u0430\u0439\u043B\u0430</title>\n</head>\n<body>\n  <h1>\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u0434\u043B\u044F \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438</h1>\n  <a href=\"https://tivial19.github.io/lampa/start.js\" download=\"test.txt\">\u0414\u0430\u043D\u043D\u044B\u0435</a>\n  </br></br>\n  <a href=\"intent:https://tivial19.github.io/lampa/data#Intent;end\" target=\"_blank\">Open Browser</a>\n</body>\n</html>\n";
 
   var Local = {
     getKey: getKey,
@@ -20354,13 +20425,18 @@
   var favoritesCurrentUrl = 'add/' + fileSaveName;
   var favoritesHtmlUrl = 'add/favorites.html';
   var Rep$1 = {
+    saveFavsToFile: saveFavsToFile,
     saveFavsToFileDownload: saveFavsToFileDownload,
     loadFavoritesAll: loadFavoritesAll,
     loadFavoritesQueryDom: loadFavoritesQueryDom,
     loadFavoritesDomTest: loadFavoritesDomTest
   };
-  function saveFavsToFileDownload(favsJsonText) {
+  function saveFavsToFile(favsJsonText) {
     RepCore.saveTextToFile(fileSaveName, favsJsonText);
+    return fileSaveName;
+  }
+  function saveFavsToFileDownload(favsJsonText) {
+    RepCore.downloadFileWithText(fileSaveName, favsJsonText);
   }
   function loadFavoritesAll() {
     return _loadFavoritesAll.apply(this, arguments);
@@ -20819,6 +20895,9 @@
               title: "Сохранить все",
               action: saveAll
             }, {
+              title: "Загрузить все",
+              action: downloadAll
+            }, {
               title: "Окно разработчика",
               action: DevModal.showFavoriteDev
             }];
@@ -20826,13 +20905,15 @@
             return Msg.selectItemAsync('Избранное', favsActions);
           case 3:
             favsAction = _context2.sent;
-            if (!(favsAction != null)) {
-              _context2.next = 7;
+            if (!(favsAction == null)) {
+              _context2.next = 6;
               break;
             }
-            _context2.next = 7;
+            return _context2.abrupt("return");
+          case 6:
+            _context2.next = 8;
             return favsAction.action();
-          case 7:
+          case 8:
           case "end":
             return _context2.stop();
         }
@@ -20853,23 +20934,27 @@
             return selectCategoryOfFavs();
           case 2:
             category = _context3.sent;
-            if (!(category != null)) {
-              _context3.next = 11;
+            if (!(category == null)) {
+              _context3.next = 5;
               break;
             }
-            _context3.next = 6;
+            return _context3.abrupt("return");
+          case 5:
+            _context3.next = 7;
             return Msg.selectYesNo("\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C ".concat(category.title, "?"));
-          case 6:
+          case 7:
             askYes = _context3.sent;
-            if (!(askYes == true)) {
-              _context3.next = 11;
+            if (!(askYes != true)) {
+              _context3.next = 10;
               break;
             }
-            _context3.next = 10;
-            return loadFavoriteCategory(category.value);
+            return _context3.abrupt("return");
           case 10:
+            _context3.next = 12;
+            return loadFavoriteCategory(category.value);
+          case 12:
             Msg.nofity("\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F '".concat(category.title, "' \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u0430!"));
-          case 11:
+          case 13:
           case "end":
             return _context3.stop();
         }
@@ -20912,19 +20997,25 @@
             return selectCategoryOfFavs();
           case 2:
             category = _context5.sent;
-            if (!(category != null)) {
-              _context5.next = 8;
+            if (!(category == null)) {
+              _context5.next = 5;
               break;
             }
-            _context5.next = 6;
+            return _context5.abrupt("return");
+          case 5:
+            _context5.next = 7;
             return Msg.selectYesNo("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C ".concat(category.title, "?"));
-          case 6:
+          case 7:
             askYes = _context5.sent;
-            if (askYes == true) {
-              Fav.clearFavoriteInCategory(category.value);
-              Msg.nofity("\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F '".concat(category.title, "' \u043E\u0447\u0438\u0449\u0435\u043D\u0430!"));
+            if (!(askYes != true)) {
+              _context5.next = 10;
+              break;
             }
-          case 8:
+            return _context5.abrupt("return");
+          case 10:
+            Fav.clearFavoriteInCategory(category.value);
+            Msg.nofity("\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F '".concat(category.title, "' \u043E\u0447\u0438\u0449\u0435\u043D\u0430!"));
+          case 12:
           case "end":
             return _context5.stop();
         }
@@ -20948,13 +21039,15 @@
             return Msg.selectYesNo('Очистить и загрузить все?');
           case 2:
             askYes = _context6.sent;
-            if (!(askYes == true)) {
-              _context6.next = 6;
+            if (!(askYes != true)) {
+              _context6.next = 5;
               break;
             }
-            _context6.next = 6;
+            return _context6.abrupt("return");
+          case 5:
+            _context6.next = 7;
             return loadFavoriteAll();
-          case 6:
+          case 7:
           case "end":
             return _context6.stop();
         }
@@ -20998,11 +21091,15 @@
             return Msg.selectYesNo('Очистить все текущие?');
           case 2:
             askYes = _context8.sent;
-            if (askYes == true) {
-              Fav.clearAll();
-              Msg.nofity('Избранное очищенно!');
+            if (!(askYes != true)) {
+              _context8.next = 5;
+              break;
             }
-          case 4:
+            return _context8.abrupt("return");
+          case 5:
+            Fav.clearAll();
+            Msg.nofity('Избранное очищенно!');
+          case 7:
           case "end":
             return _context8.stop();
         }
@@ -21015,38 +21112,13 @@
   }
   function _saveAll() {
     _saveAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
-      var clipActions, clipAction;
+      var fileName;
       return _regeneratorRuntime().wrap(function _callee9$(_context9) {
         while (1) switch (_context9.prev = _context9.next) {
           case 0:
-            //Rep.saveFavsToFileDownload(Fav.getFavoritesAllJson());
-            clipActions = [{
-              title: "По старому",
-              action: function action() {
-                return ClipBoard.copyToClipboard(Fav.getFavoritesAllJson());
-              }
-            }, {
-              title: "По новому",
-              action: function action() {
-                return ClipBoard.copyToClipboardAsync(Fav.getFavoritesAllJson());
-              }
-            }];
-            _context9.next = 3;
-            return Msg.selectItemAsync('В буфер как?', clipActions);
-          case 3:
-            clipAction = _context9.sent;
-            if (!(clipAction == null)) {
-              _context9.next = 6;
-              break;
-            }
-            return _context9.abrupt("return");
-          case 6:
-            _context9.next = 8;
-            return clipAction.action();
-          case 8:
-            //await ClipBoard.copyToClipboardAsync(Fav.getFavoritesAllJson());
-            Msg.nofity('Скопированно в буфер!');
-          case 9:
+            fileName = Rep$1.saveFavsToFile(Fav.getFavoritesAllJson());
+            Msg.nofity("\u0421\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u043E \u0432 \u0444\u0430\u0439\u043B ".concat(fileName));
+          case 2:
           case "end":
             return _context9.stop();
         }
@@ -21054,6 +21126,24 @@
     }));
     return _saveAll.apply(this, arguments);
   }
+  function downloadAll() {
+    Rep$1.saveFavsToFileDownload(Fav.getFavoritesAllJson());
+  }
+
+  // async function saveAll() {
+  //     //Rep.saveFavsToFileDownload(Fav.getFavoritesAllJson());
+
+  //     const clipActions=[
+  //         {title:"По старому", action: ()=>ClipBoard.copyToClipboard(Fav.getFavoritesAllJson())},
+  //         {title:"По новому", action: ()=>ClipBoard.copyToClipboardAsync(Fav.getFavoritesAllJson())}
+  //     ];
+
+  //     const clipAction = await Msg.selectItemAsync('В буфер как?', clipActions);
+  //     if(clipAction==null) return;
+  //     await clipAction.action();
+  //     //await ClipBoard.copyToClipboardAsync(Fav.getFavoritesAllJson());
+  //     Msg.nofity('Скопированно в буфер!');
+  // }
 
   var Movie = /*#__PURE__*/function () {
     function Movie(card) {
@@ -21219,13 +21309,15 @@
             return Msg.selectItemAsync('Режим таймкода:', items);
           case 5:
             newMode = _context.sent;
-            if (!(newMode != null)) {
-              _context.next = 9;
+            if (!(newMode == null)) {
+              _context.next = 8;
               break;
             }
-            _context.next = 9;
+            return _context.abrupt("return");
+          case 8:
+            _context.next = 10;
             return setTimeCodesMode(newMode);
-          case 9:
+          case 10:
           case "end":
             return _context.stop();
         }
@@ -21456,7 +21548,7 @@
             return Msg.selectItemAsync('Тайм коды:', remTimeCodes);
           case 5:
             remTimeCode = _context6.sent;
-            if (!(remTimeCode && remTimeCode.props)) {
+            if (!(remTimeCode != null && remTimeCode.props)) {
               _context6.next = 18;
               break;
             }
@@ -21548,7 +21640,7 @@
             return Msg.selectItemAsync('Тайм коды:', items);
           case 3:
             result = _context8.sent;
-            if (!result) {
+            if (!(result != null)) {
               _context8.next = 8;
               break;
             }
@@ -26075,7 +26167,7 @@
       connect();
     } else install();
   }
-  function open$2(hash, movie) {
+  function open$3(hash, movie) {
     SERVER.hash = hash;
     if (movie) SERVER.movie = movie;
     if (Platform.is('android') && !Storage.field('internal_torrclient')) {
@@ -26492,7 +26584,7 @@
   }
   var Torrent = {
     start: start$3,
-    open: open$2,
+    open: open$3,
     opened: opened,
     back: back$4
   };
@@ -34975,7 +35067,7 @@
     };
   }
 
-  function open$1(callSelected, callCancel) {
+  function open$2(callSelected, callCancel) {
     var html = Template$1.get('lang_choice', {});
     var scroll = new create$q({
       mask: true,
@@ -35029,7 +35121,7 @@
     Controller.toggle('language');
   }
   var LangChoice = {
-    open: open$1
+    open: open$2
   };
 
   function init$6() {
@@ -35084,7 +35176,7 @@
     init: init$6
   };
 
-  function open(callSelected) {
+  function open$1(callSelected) {
     var html = Template$1.get('lang_choice', {});
     var scroll = new create$q({
       mask: true,
@@ -35153,7 +35245,7 @@
     Controller.toggle('developer');
   }
   var Developer = {
-    open: open
+    open: open$1
   };
 
   var CardClass = /*#__PURE__*/function () {
