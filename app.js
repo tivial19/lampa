@@ -19751,7 +19751,11 @@
     var blob = new Blob([text], {
       type: "text/plain;charset=utf-8"
     });
-    FileSaver.saveAs(blob, fileName);
+    var file = new File([text], fileName, {
+      type: "text/plain;charset=utf-8"
+    });
+    FileSaver.saveAs(blob, 'b_' + fileName);
+    FileSaver.saveAs(file, 'f_' + fileName);
   }
   function downloadFileWithText(fileName, text) {
     var contentType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : contentTypes.json;
@@ -20892,10 +20896,10 @@
               title: "Очистить все",
               action: clearAllAsk
             }, {
-              title: "Сохранить все",
+              title: "Сохранить файл",
               action: saveAll
             }, {
-              title: "Загрузить все",
+              title: "Сохранить файл2",
               action: downloadAll
             }, {
               title: "Окно разработчика",
