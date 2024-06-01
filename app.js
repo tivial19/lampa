@@ -19736,6 +19736,9 @@
   var categoriesValues = categoriesArray.map(function (c) {
     return c.value;
   });
+  var categoriesValuesWithoutHistory = categoriesValues.filter(function (c) {
+    return c != categories.History.value;
+  });
   function addFavsToCategory(favAllJson, category) {
     var favsLookNew = convertFavoriteJsonToData(favAllJson)[category];
     var favsLookCur = getFavoritesLook();
@@ -19770,9 +19773,8 @@
   function getFavoritesAll() {
     return Lampa.Favorite.all();
   }
-  function clearFavoriteAndSetFromJson(json) {
+  function setFavsAllFromJson(json) {
     var data = convertFavoriteJsonToData(json);
-    clearAll();
     setDataToFavorite(data);
   }
   function convertFavoriteJsonToData(json) {
@@ -19817,11 +19819,20 @@
       _iterator4.f();
     }
   }
-
-  // function clearLook(){
-  //     clearFavoriteInCategory(categories.Look.value);
-  // }
-
+  function clearAllWithoutHistory() {
+    var _iterator5 = _createForOfIteratorHelper(categoriesValuesWithoutHistory),
+      _step5;
+    try {
+      for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+        var category = _step5.value;
+        clearFavoriteInCategory(category);
+      }
+    } catch (err) {
+      _iterator5.e(err);
+    } finally {
+      _iterator5.f();
+    }
+  }
   function clearFavoriteInCategory(category) {
     Lampa.Favorite.clear(category);
   }
@@ -19829,10 +19840,11 @@
     categories: categories,
     categoriesArray: categoriesArray,
     clearAll: clearAll,
-    getFavoritesAllJson: getFavoritesAllJson,
-    clearFavoriteAndSetFromJson: clearFavoriteAndSetFromJson,
+    clearAllWithoutHistory: clearAllWithoutHistory,
+    clearFavoriteInCategory: clearFavoriteInCategory,
+    setFavsAllFromJson: setFavsAllFromJson,
     addFavsToCategory: addFavsToCategory,
-    clearFavoriteInCategory: clearFavoriteInCategory
+    getFavoritesAllJson: getFavoritesAllJson
   };
 
   // function loadFavoriteFromLocalStorageClearAndSet(localStorageKey) {
@@ -20717,7 +20729,7 @@
               action: clearCategory
             }, {
               title: "Загрузить все",
-              action: loadFavoriteAllAsk
+              action: loadFavoriteAll
             }, {
               title: "Очистить все",
               action: clearAllAsk
@@ -20726,7 +20738,7 @@
               action: downloadFavsAll
             }, {
               title: "Послать на сервер",
-              action: senвFavsAllToServer
+              action: sendFavsAllToServer
             }, {
               title: "Окно разработчика",
               action: DevModal.showFavoriteDev
@@ -20856,55 +20868,54 @@
   function selectCategoryOfFavs() {
     return Msg.selectItemAsync('Категории:', Fav.categoriesArray);
   }
-  function loadFavoriteAllAsk() {
-    return _loadFavoriteAllAsk.apply(this, arguments);
-  }
-  function _loadFavoriteAllAsk() {
-    _loadFavoriteAllAsk = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
-      var askYes;
-      return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-        while (1) switch (_context6.prev = _context6.next) {
-          case 0:
-            _context6.next = 2;
-            return Msg.selectYesNo('Очистить и загрузить все?');
-          case 2:
-            askYes = _context6.sent;
-            if (!(askYes != true)) {
-              _context6.next = 5;
-              break;
-            }
-            return _context6.abrupt("return");
-          case 5:
-            _context6.next = 7;
-            return loadFavoriteAll();
-          case 7:
-          case "end":
-            return _context6.stop();
-        }
-      }, _callee6);
-    }));
-    return _loadFavoriteAllAsk.apply(this, arguments);
-  }
+
+  // async function loadFavoriteAllAsk() {
+  //     const askYes = await Msg.selectYesNo('Очистить и загрузить все?');
+  //     if(askYes!=true) return;
+  //     await loadFavoriteAll();
+  // }
   function loadFavoriteAll() {
     return _loadFavoriteAll.apply(this, arguments);
   }
   function _loadFavoriteAll() {
-    _loadFavoriteAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
-      var favCurJson;
-      return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-        while (1) switch (_context7.prev = _context7.next) {
+    _loadFavoriteAll = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+      var favCurJson, _cleared;
+      return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+        while (1) switch (_context6.prev = _context6.next) {
           case 0:
-            _context7.next = 2;
+            _context6.next = 2;
             return Rep$1.loadFavoritesAll();
           case 2:
-            favCurJson = _context7.sent;
-            Fav.clearFavoriteAndSetFromJson(favCurJson);
+            favCurJson = _context6.sent;
+            if (!(favCurJson != null && favCurJson.length > 0)) {
+              _context6.next = 16;
+              break;
+            }
+            console.log('_____1');
+            _context6.next = 7;
+            return clearAllAsk();
+          case 7:
+            _cleared = _context6.sent;
+            if (!(_cleared != true)) {
+              _context6.next = 10;
+              break;
+            }
+            return _context6.abrupt("return");
+          case 10:
+            console.log('_____2', _cleared);
+            Fav.setFavsAllFromJson(favCurJson);
+            console.log('_____3', _cleared);
             Msg.nofity('Избранное загружено!');
-          case 5:
+            _context6.next = 18;
+            break;
+          case 16:
+            console.log('_____4', cleared);
+            Msg.nofity('Данные пусты!');
+          case 18:
           case "end":
-            return _context7.stop();
+            return _context6.stop();
         }
-      }, _callee7);
+      }, _callee6);
     }));
     return _loadFavoriteAll.apply(this, arguments);
   }
@@ -20912,53 +20923,63 @@
     return _clearAllAsk.apply(this, arguments);
   }
   function _clearAllAsk() {
-    _clearAllAsk = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-      var askYes;
-      return _regeneratorRuntime().wrap(function _callee8$(_context8) {
-        while (1) switch (_context8.prev = _context8.next) {
+    _clearAllAsk = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+      var clearActions, clearAction;
+      return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+        while (1) switch (_context7.prev = _context7.next) {
           case 0:
-            _context8.next = 2;
-            return Msg.selectYesNo('Очистить все текущие?');
-          case 2:
-            askYes = _context8.sent;
-            if (!(askYes != true)) {
-              _context8.next = 5;
+            clearActions = [{
+              title: "Очистить все",
+              action: Fav.clearAll
+            }, {
+              title: "Кроме истории",
+              action: Fav.clearAllWithoutHistory
+            }, {
+              title: "Отменить"
+            }];
+            _context7.next = 3;
+            return Msg.selectItemAsync('Очистить все текущие?', clearActions);
+          case 3:
+            clearAction = _context7.sent;
+            if (!(clearAction == null || clearAction.action == null)) {
+              _context7.next = 6;
               break;
             }
-            return _context8.abrupt("return");
-          case 5:
-            Fav.clearAll();
+            return _context7.abrupt("return", false);
+          case 6:
+            clearAction.action();
             Msg.nofity('Избранное очищенно!');
-          case 7:
+            return _context7.abrupt("return", true);
+          case 9:
           case "end":
-            return _context8.stop();
+            return _context7.stop();
         }
-      }, _callee8);
+      }, _callee7);
     }));
     return _clearAllAsk.apply(this, arguments);
   }
   function downloadFavsAll() {
     Rep$1.saveFavsToFileDownload(Fav.getFavoritesAllJson());
   }
-  function senвFavsAllToServer() {
-    return _senвFavsAllToServer.apply(this, arguments);
+  function sendFavsAllToServer() {
+    return _sendFavsAllToServer.apply(this, arguments);
   }
-  function _senвFavsAllToServer() {
-    _senвFavsAllToServer = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+  function _sendFavsAllToServer() {
+    _sendFavsAllToServer = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
       var serverUrl;
-      return _regeneratorRuntime().wrap(function _callee9$(_context9) {
-        while (1) switch (_context9.prev = _context9.next) {
+      return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+        while (1) switch (_context8.prev = _context8.next) {
           case 0:
-            serverUrl = 'http://192.168.0.2:8081'; //sendData(serverUrl, JSON.stringify({title:'Hi', value:678}));
+            serverUrl = 'http://192.168.0.2:8081';
             sendData(serverUrl, Fav.getFavoritesAllJson());
             Msg.nofity("\u041E\u0442\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u043E \u043D\u0430 \u0441\u0435\u0440\u0432\u0435\u0440 ".concat(serverUrl));
           case 3:
           case "end":
-            return _context9.stop();
+            return _context8.stop();
         }
-      }, _callee9);
+      }, _callee8);
     }));
-    return _senвFavsAllToServer.apply(this, arguments);
+    return _sendFavsAllToServer.apply(this, arguments);
   }
   function sendData(url, data) {
     var xmlHttp = new XMLHttpRequest();
