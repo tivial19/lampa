@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "bld" :"webpack",
+    "wtc" : "webpack --watch",
+    "srv" : "webpack-dev-server",
+    "bld" : "webpack --mode development --entry ./src/main.js -o ./public",
+    "srv" : "webpack server --mode development --entry ./src/main.js"
+  }
+}
