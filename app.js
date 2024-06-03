@@ -20242,7 +20242,7 @@
     }]);
   }();
 
-  var serverLocalUrl = 'http://192.168.0.2:8081/';
+  var serverLocalUrl = 'http://192.168.0.11:8081/';
   var serverCommands = {
     sendFile: 'sendFile'
   };
